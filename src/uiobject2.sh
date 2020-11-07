@@ -5,10 +5,10 @@
 # clear()
 # Clears the text content if this object is an editable field.
 function uio2_clear() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
 
-  length=`get_prop "$node" 'text' | wc -c`
+  local length=`get_prop "$node" 'text' | wc -c`
 
   uio2_click "$device_id" "$node"
   uid_press_key_code $device_id $KEYCODE_MOVE_END
@@ -22,12 +22,12 @@ function uio2_clear() {
 # click()
 # Clicks on this object.
 function uio2_click() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  x=`default "$3" "$ANCHOR_POINT_CENTER"`
-  y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local x=`default "$3" "$ANCHOR_POINT_CENTER"`
+  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
 
-  point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
+  local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
   # It is not base on uio2_click_with_duration, because uses tap instead of swipe
   adb -s $device_id shell input tap "$point_on_surface"
@@ -36,13 +36,13 @@ function uio2_click() {
 # click(long duration)
 # Performs a click on this object that lasts for duration milliseconds.
 function uio2_click_with_duration() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  duration=`default "$3" 500`
-  x=`default "$4" "$ANCHOR_POINT_CENTER"`
-  y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local duration=`default "$3" 500`
+  local x=`default "$4" "$ANCHOR_POINT_CENTER"`
+  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
 
-  point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
+  local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
   adb -s $device_id shell input swipe "$point_on_surface" "$point_on_surface" "$duration"
 }
@@ -50,11 +50,11 @@ function uio2_click_with_duration() {
 # clickAndWait(EventCondition<R> condition, long timeout)
 # Clicks on this object, and waits for the given condition to become true.
 function uio2_click_and_wait() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  wait_time=`default "$3" 5`
-  x=`default "$4" "$ANCHOR_POINT_CENTER"`
-  y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local wait_time=`default "$3" 5`
+  local x=`default "$4" "$ANCHOR_POINT_CENTER"`
+  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
 
   uio2_click "$device_id" "$node" "$x" "$y"
   sleep $wait_time
@@ -63,17 +63,17 @@ function uio2_click_and_wait() {
 # drag(Point dest)
 # Drags this object to the specified location.
 function uio2_drag() {
-  device_id=`default "$1" ''`
-  node_from=`default "$2" ''`
-  x_from=`default "$3" "$ANCHOR_POINT_CENTER"`
-  y_from=`default "$4" "$ANCHOR_POINT_MIDDLE"`
-  node_to=`default "$5" ''`
-  x_to=`default "$6" "$ANCHOR_POINT_CENTER"`
-  y_to=`default "$7" "$ANCHOR_POINT_MIDDLE"`
-  duration=`default "$8" 500`
+  local device_id=`default "$1" ''`
+  local node_from=`default "$2" ''`
+  local x_from=`default "$3" "$ANCHOR_POINT_CENTER"`
+  local y_from=`default "$4" "$ANCHOR_POINT_MIDDLE"`
+  local node_to=`default "$5" ''`
+  local x_to=`default "$6" "$ANCHOR_POINT_CENTER"`
+  local y_to=`default "$7" "$ANCHOR_POINT_MIDDLE"`
+  local duration=`default "$8" 500`
 
-  point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
-  point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
+  local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
 
   adb -s $device_id shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
 }
@@ -99,8 +99,8 @@ function uio2_drag() {
 #
 # equals(Object object)
 function uio2_equals() {
-  objectA="$1"
-  objectB="$2"
+  local objectA="$1"
+  local objectB="$2"
 
   if [ "$objectA" == "$objectB" ]
   then
@@ -114,11 +114,11 @@ function uio2_equals() {
 # findObject(BySelector selector)
 # Searches all elements under this object and returns the first object to match the criteria, or null if no matching objects are found.
 function uio2_find_object() {
-  xml="$1"
-  filter="$2"
-  index=`default "$3" 1`
+  local xml="$1"
+  local filter="$2"
+  local index=`default "$3" 1`
 
-  nodes=`uio2_find_objects "$xml" "$filter"`
+  local nodes=`uio2_find_objects "$xml" "$filter"`
 
   echo `echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
 }
@@ -126,8 +126,8 @@ function uio2_find_object() {
 # findObjects(BySelector selector)
 # Searches all elements under this object and returns all objects that match the criteria.
 function uio2_find_objects() {
-  xml="$1"
-  filter="$2"
+  local xml="$1"
+  local filter="$2"
 
   echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"
 }
@@ -145,7 +145,7 @@ function uio2_find_objects() {
 # getApplicationPackage()
 # Returns the package name of the app that this object belongs to.
 function uio2_get_application_package() {
-  device_id=`default "$1" ''`
+  local device_id=`default "$1" ''`
 
   echo `adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
 }
@@ -154,8 +154,8 @@ function uio2_get_application_package() {
 # getChildCount()
 # Returns the number of child elements directly under this object.
 function uio2_get_children_count() {
-  xml="$1"
-  node="$2"
+  local xml="$1"
+  local node="$2"
 
   echo `uio2_get_children "$xml" "$node" | wc -l`
 }
@@ -164,19 +164,19 @@ function uio2_get_children_count() {
 # Returns a collection of the child elements directly under this object.
 function uio2_get_children() {
   local xml="$1"
-  node="$2"
+  local node="$2"
 
   xml=`uio2_find_objects "$xml"`
-  nodes_amount=`echo "$xml" | wc -l`
-  node_nr=`echo $node | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
-  node_depth=`echo $node | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
-  child_node_depth=$((node_depth + 1))
+  local nodes_amount=`echo "$xml" | wc -l`
+  local node_nr=`echo $node | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local node_depth=`echo $node | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local child_node_depth=$((node_depth + 1))
   xml=`echo "$xml" | sed -n "$((node_nr + 1)),${nodes_amount}p"`
   xml=`echo "$xml" | grep -oE 'NR[0-9]{1,4} DEPTH[0-9]{1,4} <[^\/].+?>'`
 
   while read -r node
   do
-    next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
+    local next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
 
     if [ $next_node_depth -eq $child_node_depth ]
     then
@@ -190,7 +190,7 @@ function uio2_get_children() {
 # getClassName()
 # Returns the class name of the underlying View represented by this object.
 function uio2_get_class_name() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'class'`
 }
@@ -198,7 +198,7 @@ function uio2_get_class_name() {
 # getContentDescription()
 # Returns the content description for this object.
 function uio2_get_content_description() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'content-desc'`
 }
@@ -206,19 +206,19 @@ function uio2_get_content_description() {
 # getParent()
 # Returns this object's parent, or null if it has no parent.
 function uio2_get_parent() {
-  xml="$1"
-  node="$2"
+  local xml="$1"
+  local node="$2"
 
   xml=`uio2_find_objects "$xml"`
-  node_nr=`echo "$node" | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
-  node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
-  parent_node_depth=$((node_depth - 1))
+  local node_nr=`echo "$node" | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local parent_node_depth=$((node_depth - 1))
   xml=`echo "$xml" | sed -n "1,${node_nr}p"`
   xml=`echo "$xml" | sed -n '1!G;h;$p'`
 
   while read -r node
   do
-    next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
+    local next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
 
     if [ $next_node_depth -eq $parent_node_depth ]
     then
@@ -231,7 +231,7 @@ function uio2_get_parent() {
 # getResourceName()
 # Returns the fully qualified resource name for this object's id.
 function uio2_get_resource_id() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'resource-id'`
 }
@@ -239,7 +239,7 @@ function uio2_get_resource_id() {
 # getText()
 # Returns the text value for this object.
 function uio2_get_text() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'text'`
 }
@@ -247,15 +247,15 @@ function uio2_get_text() {
 # getVisibleBounds()
 # Returns the visible bounds of this object in screen coordinates.
 function uio2_get_bounds() {
-  node="$1"
-  which="$2"
+  local node="$1"
+  local which="$2"
 
-  bounds=`get_prop "$node" 'bounds'`
+  local bounds=`get_prop "$node" 'bounds'`
   bounds=`echo "$bounds" | grep -oE '[0-9]+'`
-  left=`echo "$bounds" | sed -n '1p'`
-  top=`echo "$bounds" | sed -n '2p'`
-  right=`echo "$bounds" | sed -n '3p'`
-  bottom=`echo "$bounds" | sed -n '4p'`
+  local left=`echo "$bounds" | sed -n '1p'`
+  local top=`echo "$bounds" | sed -n '2p'`
+  local right=`echo "$bounds" | sed -n '3p'`
+  local bottom=`echo "$bounds" | sed -n '4p'`
 
   case $which in
     left) echo $left ;;
@@ -268,7 +268,7 @@ function uio2_get_bounds() {
 # getVisibleCenter()
 # Returns a point in the center of the visible bounds of this object.
 function uio2_get_visible_center() {
-  node="$1"
+  local node="$1"
 
   calc_point_on_surface "$node"
 }
@@ -277,21 +277,21 @@ function uio2_get_visible_center() {
 # Returns whether there is a match for the given criteria under this object.
 function uio2_has_object() {
   local xml="$1"
-  node="$2"
-  filter="$3"
+  local node="$2"
+  local filter="$3"
 
   xml=`uio2_find_objects "$xml"`
-  nodes_amount=`echo "$xml" | wc -l`
-  node_nr=`echo $node | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
-  node_depth=`echo $node | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
-  child_node_depth=$((node_depth + 1))
+  local nodes_amount=`echo "$xml" | wc -l`
+  local node_nr=`echo $node | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local node_depth=`echo $node | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]+'`
+  local child_node_depth=$((node_depth + 1))
   xml=`echo "$xml" | sed -n "$((node_nr + 1)),${nodes_amount}p"`
   xml=`echo "$xml" | grep -oE 'NR[0-9]{1,4} DEPTH[0-9]{1,4} <[^\/].+?>'`
-  res=''
+  local res=''
 
   while read -r node
   do
-    next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
+    local next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
 
     if [ $next_node_depth -ge $child_node_depth ]
     then
@@ -319,7 +319,7 @@ function uio2_has_object() {
 # isCheckable()
 # Returns whether this object is checkable.
 function uio2_is_checkable() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'checkable'`
 }
@@ -327,7 +327,7 @@ function uio2_is_checkable() {
 # isChecked()
 # Returns whether this object is checked.
 function uio2_is_checked() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'checked'`
 }
@@ -335,7 +335,7 @@ function uio2_is_checked() {
 # isClickable()
 # Returns whether this object is clickable.
 function uio2_is_clickable() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" '[^-]clickable'`
 }
@@ -343,7 +343,7 @@ function uio2_is_clickable() {
 # isEnabled()
 # Returns whether this object is enabled.
 function uio2_is_enabled() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'enabled'`
 }
@@ -351,7 +351,7 @@ function uio2_is_enabled() {
 # isFocusable()
 # Returns whether this object is focusable.
 function uio2_is_focusable() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'focusable'`
 }
@@ -359,7 +359,7 @@ function uio2_is_focusable() {
 # isFocused()
 # Returns whether this object is focused.
 function uio2_is_focused() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'focused'`
 }
@@ -367,7 +367,7 @@ function uio2_is_focused() {
 # isLongClickable()
 # Returns whether this object is long clickable.
 function uio2_is_long_clickable() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'long-clickable'`
 }
@@ -375,7 +375,7 @@ function uio2_is_long_clickable() {
 # isScrollable()
 # Returns whether this object is scrollable.
 function uio2_is_scrollable() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'scrollable'`
 }
@@ -383,7 +383,7 @@ function uio2_is_scrollable() {
 # isSelected()
 # Returns whether this object is selected.
 function uio2_is_selected() {
-  node="$1"
+  local node="$1"
 
   echo `get_prop "$node" 'selected'`
 }
@@ -391,10 +391,10 @@ function uio2_is_selected() {
 # longClick()
 # Performs a long click on this object.
 function uio2_long_click() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  x=`default "$3" "$ANCHOR_POINT_CENTER"`
-  y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local x=`default "$3" "$ANCHOR_POINT_CENTER"`
+  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
 
   uio2_click_with_duration "$device_id" "$node" "$x" "$y" 500
 } 
@@ -438,9 +438,9 @@ function uio2_long_click() {
 # setText(String text)
 # Sets the text content if this object is an editable field.
 function uio2_set_text() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  content=`default "$3" ''`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local content=`default "$3" ''`
 
   uio2_click "$device_id" "$node"
 
@@ -455,13 +455,13 @@ function uio2_set_text() {
 # swipe(Direction direction, float percent)
 # Performs a swipe gesture on this object.
 function uio2_swipe() {
-  device_id=`default "$1" ''`
-  node=`default "$2" ''`
-  direction=`default "$3" "$DIRECTION_DOWN"`
-  percent=`default "$4" '50%'`
-  duration=`default "$5" 500`
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local direction=`default "$3" "$DIRECTION_DOWN"`
+  local percent=`default "$4" '50%'`
+  local duration=`default "$5" 500`
 
-  percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
+  local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
   if [ "$percent_amount" -gt 100 ]
   then
@@ -469,15 +469,15 @@ function uio2_swipe() {
     percent="100%"
   fi
 
-  offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
+  local offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
   
-  start="$offset%"
-  end="$((percent_amount + offset))%"
+  local start="$offset%"
+  local end="$((percent_amount + offset))%"
 
-  x_from="$ANCHOR_POINT_CENTER"
-  x_to="$ANCHOR_POINT_CENTER"
-  y_from="$ANCHOR_POINT_MIDDLE"
-  y_to="$ANCHOR_POINT_MIDDLE"
+  local x_from="$ANCHOR_POINT_CENTER"
+  local x_to="$ANCHOR_POINT_CENTER"
+  local y_from="$ANCHOR_POINT_MIDDLE"
+  local y_to="$ANCHOR_POINT_MIDDLE"
   case $direction in
     $DIRECTION_DOWN)
       y_from="$end"
@@ -497,8 +497,8 @@ function uio2_swipe() {
       ;;
   esac
 
-  point_on_surface_from=`calc_point_on_surface "$node" "$x_from" "$y_from"`
-  point_on_surface_to=`calc_point_on_surface "$node" "$x_to" "$y_to"`
+  local point_on_surface_from=`calc_point_on_surface "$node" "$x_from" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node" "$x_to" "$y_to"`
 
   adb -s $device_id shell input swipe $point_on_surface_from $point_on_surface_to $duration
 }

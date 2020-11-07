@@ -16,8 +16,8 @@ DIRECTION_UP='UP'
 
 # Helpers start
 function default() {
-  current_value="$1"
-  default_value="$2"
+  local current_value="$1"
+  local default_value="$2"
 
   if [ -z "$current_value" ]; then current_value=$default_value; fi
 
@@ -25,17 +25,17 @@ function default() {
 }
 
 function calc_point_on_section() {
-  value="$1"
-  min="$2"
-  max="$3"
-  point=-1
-  is_percentage=`echo "$value" | grep '%'`
+  local value="$1"
+  local min="$2"
+  local max="$3"
+  local point=-1
+  local is_percentage=`echo "$value" | grep '%'`
 
   if [ -n "$is_percentage" ]
   then
-    side=$((max - min))
+    local side=$((max - min))
     value=`echo $value | grep -oE '[0-9]+' | awk '{printf("%d", $1)}'`
-    pixels=`echo "$side $value" | awk '{printf("%d", ($1 / 100 * $2))}'`
+    local pixels=`echo "$side $value" | awk '{printf("%d", ($1 / 100 * $2))}'`
     point=$((min + pixels))
   else
     point=$((min + value))
@@ -47,16 +47,16 @@ function calc_point_on_section() {
 }
 
 function calc_point_on_surface() {
-  node="$1"
-  x=`default "$2" "$ANCHOR_POINT_CENTER"`
-  y=`default "$3" "$ANCHOR_POINT_MIDDLE"`
+  local node="$1"
+  local x=`default "$2" "$ANCHOR_POINT_CENTER"`
+  local y=`default "$3" "$ANCHOR_POINT_MIDDLE"`
 
-  bounds=`get_prop "$node" 'bounds'`
+  local bounds=`get_prop "$node" 'bounds'`
   bounds=`echo "$bounds" | grep -oE '[0-9]+'`
-  left=`echo "$bounds" | sed -n '1p'`
-  top=`echo "$bounds" | sed -n '2p'`
-  right=`echo "$bounds" | sed -n '3p'`
-  bottom=`echo "$bounds" | sed -n '4p'`
+  local left=`echo "$bounds" | sed -n '1p'`
+  local top=`echo "$bounds" | sed -n '2p'`
+  local right=`echo "$bounds" | sed -n '3p'`
+  local bottom=`echo "$bounds" | sed -n '4p'`
 
   x=`calc_point_on_section "$x" "$left" "$right"`
   y=`calc_point_on_section "$y" "$top" "$bottom"`
@@ -65,8 +65,8 @@ function calc_point_on_surface() {
 }
 
 function get_prop() {
-  node="$1"
-  prop_name="$2"
+  local node="$1"
+  local prop_name="$2"
 
   echo "$node" | grep -oE "$prop_name=\".*?\"" | cut -d '=' -f 2 | cut -d '"' -f 2
 }
@@ -87,13 +87,13 @@ function get_prop() {
 
 # Other useful functions start
 function helper_string_length() {
-  string="$1"
+  local string="$1"
 
   echo "$string" | wc -c
 }
 
 function helper_objects_count() {
-  objects="$1"
+  local objects="$1"
 
   echo "$objects" | wc -l
 }
