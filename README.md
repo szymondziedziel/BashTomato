@@ -43,4 +43,4 @@ for more what your code should look like you can refer to ./tests/e2e/example.sh
 
 I used [shUnit2](https://github.com/kward/shunit2#shunit2) to write some unit tests, but also prepared simple apk in ./tests/e2e to be able to run most of BashTomato's functions.
 
-Of course not all if fully tested as this is very early version.
+Of course not all is fully tested as this is very early version.
