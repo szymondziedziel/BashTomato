@@ -20,7 +20,7 @@ and is created to allow to automate simple, daily repetitive work in simple (or 
 
 - compatibility with different Androids based on installed ADB compatibility
 - works immediately after script started
-- bash is on most unix-like systems, so no additional configrations and dependencies needed
+- bash is on most unix-like systems, so no additional configurations and dependencies needed
 
 ## How to use it
 
@@ -32,7 +32,7 @@ and is created to allow to automate simple, daily repetitive work in simple (or 
 ```
 #!/bin/bash
 
-source '../bashtomato/bashtomato.sh'
+source './dist/bashtomato.sh'
 
 # your code goes here
 ```
