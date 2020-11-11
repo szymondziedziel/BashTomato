@@ -158,7 +158,7 @@ function utils_is_device_connected() {
 
   local res=`adb devices | grep "$device_id"`
 
-  if [ -n "$res" ]; then echo true; else echo false; fi
+  if [ -z "$device_id" ] || [ -z "$res" ]; then echo false; else echo true; fi
 }
 #
 # restart_server
@@ -167,7 +167,22 @@ function utils_restart_server() {
 }
 #
 # reboot
+function utils_reboot() {
+  local device_id="$1"
+
+  adb -s "$device_id" reboot
+}
 # display
+function utils_set_display() {
+  local device_id="$1"
+  local resolution=`echo "$@" | grep -oE '--resolution=[0-9]{1,4}x[0-9]{1,4}' | cut -d '=' -f2`
+  local density=`echo "$@" | grep -oE '--density=[0-9]{1,4}' | cut -d '=' -f2`
+  resolution=`default "$resolution" 'reset'`
+  density=`default "$density" 'reset'`
+
+  adb shell wm size "$resolution"
+  adb shell wm density "$density"
+}
 #
 # install & start
 function utils_install_and_start() {
@@ -210,7 +225,12 @@ function utils_clear_data() {
 }
 # 
 # record
-# #TODO
+function utils_record() {
+  local device_id="$1"
+  local filename="$2"
+
+  adb -s "$device_id" shell screenrecord "/sdcard/${filename}.mp4"
+}
 # inspect
 # #TODO
 # 
@@ -236,7 +256,7 @@ function utils_wait_to_see() {
     attempts=$((attempts - 1))
   done
 }
-# TODO make waits to be able to be more generic
+# #TODO make waits to be able to be more generic
 #
 # wait_to_gone
 function utils_wait_to_gone() {
@@ -261,6 +281,27 @@ function utils_wait_to_gone() {
   done
 }
 # TODO make waits to be able to be more generic
+
+# function utils_wait_to() {
+#   local function_name="$1"
+#   local attempts=`default "$2" 30`
+#   local error=`default "$3" 'bashtomato_default_error'`
+#   shift 2
+#   local rest="$@"
+#   
+#   while [ "$attempts" -gt 0 ]
+#   do
+#     result=`"$function_name" "$rest"`
+# 
+#     if [ -n "$result" ]
+#     then
+#       echo "$result"
+#       break
+#     fi
+# 
+#     attempts=$((attempts - 1))
+#   done
+# }
 
 function utils_get_device_orientation() {
   local device_id=`default $1 ''`

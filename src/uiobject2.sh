@@ -17,7 +17,7 @@ function uio2_clear() {
     uid_press_key_code $device_id $KEYCODE_DEL
   done
 }
-# #SKIP but this is poor solution for long texts
+# #SKIP But this is poor solution for long texts
 #
 # click()
 # Clicks on this object.
@@ -65,12 +65,12 @@ function uio2_click_and_wait() {
 function uio2_drag() {
   local device_id=`default "$1" ''`
   local node_from=`default "$2" ''`
-  local x_from=`default "$3" "$ANCHOR_POINT_CENTER"`
-  local y_from=`default "$4" "$ANCHOR_POINT_MIDDLE"`
-  local node_to=`default "$5" ''`
-  local x_to=`default "$6" "$ANCHOR_POINT_CENTER"`
-  local y_to=`default "$7" "$ANCHOR_POINT_MIDDLE"`
-  local duration=`default "$8" 500`
+  local node_to=`default "$3" ''`
+  local duration=`default "$4" 500`
+  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
+  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
+  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"`
+  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"`
 
   local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
   local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
@@ -80,22 +80,23 @@ function uio2_drag() {
 #
 # drag(Point dest, int speed)
 # Drags this object to the specified location.
-# function uio2_drag_with_speed() {
-#   device_id=`default "$1" ''`
-#   node_from=`default "$2" ''`
-#   x_from=`default "$3" "$ANCHOR_POINT_CENTER"`
-#   y_from=`default "$4" "$ANCHOR_POINT_MIDDLE"`
-#   node_to=`default "$5" ''`
-#   x_to=`default "$6" "$ANCHOR_POINT_CENTER"`
-#   y_to=`default "$7" "$ANCHOR_POINT_MIDDLE"`
-#   speed=`default "$8" 1000`
-# 
-#   duration=`calc_duration_from_distance_speed "$speed" "$x_from" "$y_from" "$x_to" "$y_to"`
-#   point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
-#   point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
-# 
-#   adb -s $device_id shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
-# }
+function uio2_drag_with_speed() {
+  local device_id=`default "$1" ''`
+  local node_from=`default "$2" ''`
+  local node_to=`default "$3" ''`
+  local speed=`default "$4" 1000`
+  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
+  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
+  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"`
+  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"`
+
+  local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
+
+  local duration=`calc_duration_from_distance_speed "$speed" "$point_on_surface_from" "$point_on_surface_to"`
+
+  adb -s $device_id shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
+}
 #
 # equals(Object object)
 function uio2_equals() {
@@ -109,7 +110,7 @@ function uio2_equals() {
     echo "false"
   fi
 }
-# #SKIP probably does no make what should do
+# #SKIP Probably does no make what should do
 #
 # findObject(BySelector selector)
 # Searches all elements under this object and returns the first object to match the criteria, or null if no matching objects are found.
@@ -134,12 +135,12 @@ function uio2_find_objects() {
 #
 # fling(Direction direction, int speed)
 # Performs a fling gesture on this object.
-# Please use uio2_swipe with duration from 50 to 200. lower value means faster
+# #SKIP Please use uio2_swipe with duration from 50 to 200. Lower value means faster
 # #SKIP I may be also helpful to experiment with different percents
 #
 # fling(Direction direction)
 # Performs a fling gesture on this object.
-# Please use uio2_swipe with duration from 50 to 200. lower value means faster
+# #SKIP Please use uio2_swipe with duration from 50 to 200. Lower value means faster
 # #SKIP I may be also helpful to experiment with different percents
 #
 # getApplicationPackage()
@@ -149,7 +150,7 @@ function uio2_get_application_package() {
 
   echo `adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
 }
-# #SKIP not sure if will work for all devices
+# #SKIP Not sure if will work for all devices
 #
 # getChildCount()
 # Returns the number of child elements directly under this object.
@@ -401,19 +402,83 @@ function uio2_long_click() {
 #
 # pinchClose(float percent)
 # Performs a pinch close gesture on this object.
-# #TODO
+function uio2_pinch_close() {
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local percent=`default "$3" '50%'`
+  local duration=`default "$4" 500`
+
+  local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
+
+  if [ "$percent_amount" -gt 100 ]
+  then
+    percent_amount=100
+    percent="100%"
+  fi
+
+  local offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
+  
+  local start="$offset%"
+  local end="$((percent_amount + offset))%"
+
+  local y_from="$start"
+  local y_to="$end"
+
+  local point_on_surface_from=`calc_point_on_surface "$node" "$ANCHOR_POINT_CENTER" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node" "$ANCHOR_POINT_CENTER" "$y_to"`
+
+  adb -s "$device_id" shell input tap "$point_on_surface_from" &
+  pid1=$!
+  sleep 0.1
+  adb -s "$device_id" shell input swipe "$point_on_surface_to" "$point_on_surface_from" "$duration" &
+  pid2=$!
+  wait $pid1
+  wait $pid2
+}
 #
 # pinchClose(float percent, int speed)
 # Performs a pinch close gesture on this object.
-# #TODO
+# #SKIP As uio2_pinch_close works, but in weird way in my opinion. It needs further investigation.
 #
 # pinchOpen(float percent)
 # Performs a pinch open gesture on this object.
-# #TODO
+function uio2_pinch_open() {
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local percent=`default "$3" '50%'`
+  local duration=`default "$4" 500`
+
+  local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
+
+  if [ "$percent_amount" -gt 100 ]
+  then
+    percent_amount=100
+    percent="100%"
+  fi
+
+  local offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
+  
+  local start="$offset%"
+  local end="$((percent_amount + offset))%"
+
+  local y_from="$start"
+  local y_to="$end"
+
+  local point_on_surface_from=`calc_point_on_surface "$node" "$ANCHOR_POINT_CENTER" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node" "$ANCHOR_POINT_CENTER" "$y_to"`
+
+  adb -s "$device_id" shell input tap "$point_on_surface_from" &
+  pid1=$!
+  sleep 0.1
+  adb -s "$device_id" shell input swipe "$point_on_surface_from" "$point_on_surface_to" "$duration" &
+  pid2=$!
+  wait $pid1
+  wait $pid2
+}
 #
 # pinchOpen(float percent, int speed)
 # Performs a pinch open gesture on this object.
-# #TODO
+# #SKIP As uio2_pinch_open works, but in weird way in my opinion. It needs further investigation.
 #
 # recycle()
 # Recycle this object.
@@ -446,11 +511,60 @@ function uio2_set_text() {
 
   adb -s $device_id shell input text "$content"
 }
-# #SKIP this is not able to type everything. Need huge improvement.
+# #TODO this is not able to type everything. Need huge improvement.
 #
 # swipe(Direction direction, float percent, int speed)
 # Performs a swipe gesture on this object.
-# #SKIP Please use uio2_swipe
+function uio2_swipe_with_speed() {
+  local device_id=`default "$1" ''`
+  local node=`default "$2" ''`
+  local direction=`default "$3" "$DIRECTION_DOWN"`
+  local percent=`default "$4" '50%'`
+  local speed=`default "$5" 1000`
+
+  local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
+
+  if [ "$percent_amount" -gt 100 ]
+  then
+    percent_amount=100
+    percent="100%"
+  fi
+
+  local offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
+
+  local start="$offset%"
+  local end="$((percent_amount + offset))%"
+
+  local x_from="$ANCHOR_POINT_CENTER"
+  local x_to="$ANCHOR_POINT_CENTER"
+  local y_from="$ANCHOR_POINT_MIDDLE"
+  local y_to="$ANCHOR_POINT_MIDDLE"
+  case $direction in
+    $DIRECTION_DOWN)
+      y_from="$end"
+      y_to="$start"
+      ;;
+    $DIRECTION_LEFT)
+      x_from="$start"
+      x_to="$end"
+      ;;
+    $DIRECTION_RIGHT)
+      x_from="$end"
+      x_to="$start"
+      ;;
+    $DIRECTION_UP)
+      y_from="$start"
+      y_to="$end"
+      ;;
+  esac
+
+  local point_on_surface_from=`calc_point_on_surface "$node" "$x_from" "$y_from"`
+  local point_on_surface_to=`calc_point_on_surface "$node" "$x_to" "$y_to"`
+
+  local duration=`calc_duration_from_distance_speed "$speed" "$point_on_surface_from" "$point_on_surface_to"`
+
+  adb -s $device_id shell input swipe $point_on_surface_from $point_on_surface_to $duration
+}
 #
 # swipe(Direction direction, float percent)
 # Performs a swipe gesture on this object.
@@ -470,7 +584,7 @@ function uio2_swipe() {
   fi
 
   local offset=`echo "$percent_amount" | awk '{printf("%d", ((100 - $1) / 2))}'`
-  
+
   local start="$offset%"
   local end="$((percent_amount + offset))%"
 

@@ -71,18 +71,18 @@ function get_prop() {
   echo "$node" | grep -oE "$prop_name=\".*?\"" | cut -d '=' -f 2 | cut -d '"' -f 2
 }
 
-# function calc_duration_from_distance_speed() {
-#   speed=`default "$1" 1000`
-#   x_from=`default "$2" "$ANCHOR_POINT_CENTER"`
-#   y_from=`default "$3" "$ANCHOR_POINT_MIDDLE"`
-#   x_to=`default "$4" "$ANCHOR_POINT_CENTER"`
-#   y_to=`default "$5" "$ANCHOR_POINT_MIDDLE"`
-# 
-#   distance=`echo "$x_from $y_from $x_to $y_to" | awk '{printf("%d", sqrt(($1 - $3)^2 + ($2 - $4)^2))}'`
-#   duration=`echo "$distance $speed" | awk '{printf("%d", ($1 / $2))}'`
-# 
-#   echo "$duration"
-# }
+function calc_duration_from_distance_speed() {
+  local speed=`default "$1" 1000`
+  local x_from="$2"
+  local y_from="$3"
+  local x_to="$4"
+  local y_to="$5"
+
+  local distance=`echo "$x_from $y_from $x_to $y_to" | awk '{printf("%d", sqrt(($1 - $3)^2 + ($2 - $4)^2))}'`
+  local duration=`echo "$distance $speed" | awk '{printf("%d", ($1 / $2) * 1000)}'`
+
+  echo "$duration"
+}
 # Helpers end
 
 # Other useful functions start

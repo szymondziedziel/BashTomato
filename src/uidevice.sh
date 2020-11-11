@@ -77,7 +77,7 @@ function uid_get_current_activity_name() {
 
   adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f2
 }
-# #SKIP but not sure if it will work for different devices for now
+# #SKIP But not sure if it will work for different devices for now
 #
 # getCurrentPackageName()
 # Retrieves the name of the last package to report accessibility events.
@@ -121,7 +121,7 @@ function uid_get_display_width() {
 #
 # getInstance(Instrumentation instrumentation)
 # Retrieves a singleton instance of UiDevice
-# #TODO
+# #SKIP Probably not needed for ADB
 #
 # getLastTraversedText()
 # Retrieves the text from the last UI traversal event received.
@@ -129,11 +129,15 @@ function uid_get_display_width() {
 #
 # getLauncherPackageName()
 # Retrieves default launcher package name
-# #TODO
+# #SKIP Please try to use uio2_get_application_package from uiobject2.sh
 #
 # getProductName()
 # Retrieves the product name of the device.
-# #TODO
+function uid_get_product_name() {
+  local device_id=`default $1 ''`
+
+  adb -s "$device_id" shell getprop ro.product.name
+}
 #
 # hasAnyWatcherTriggered()
 # Checks if any registered UiWatcher have triggered.
@@ -141,7 +145,7 @@ function uid_get_display_width() {
 #
 # hasObject(BySelector selector)
 # Returns whether there is a match for the given selector criteria.
-# #SKIP please use proper function from uiobject2.sh
+# #SKIP Please use proper function from uiobject2.sh
 #
 # hasWatcherTriggered(String watcherName)
 # Checks if a specific registered UiWatcher has triggered.
@@ -149,11 +153,16 @@ function uid_get_display_width() {
 #
 # isNaturalOrientation()
 # Check if the device is in its natural orientation.
-# #SKIP For different psychical devices when autorotation was enabled I was always getting 0, but device wasn't in natural orientation
+# #SKIP For different psyhical devices when autorotation was enabled I was always getting 0, but device wasn't in natural orientation
 #
 # isScreenOn()
 # Checks the power manager if the screen is ON.
-# #TODO
+function uid_is_screen_on() {
+  local device_id=`default $1 ''`
+
+  adb -s "$device_id" shell dumpsys power | grep 'Display Power: state=ON'
+}
+# #SKIP Not sure if it will work on all devices
 #
 # openNotification()
 # Opens the notification shade.
@@ -162,7 +171,6 @@ function uid_open_notification() {
 
   adb -s $device_id shell cmd statusbar expand-notifications
 }
-# #TODO
 #
 # openQuickSettings()
 # Opens the Quick Settings shade.
@@ -229,7 +237,7 @@ function uid_press_key_code() {
 #
 # pressKeyCode(int keyCode, int metaState)
 # Simulates a short press using a key code.
-# #SKIP please use uid_press_key_code
+# #SKIP Please use uid_press_key_code
 #
 # pressMenu()
 # Simulates a short press on the MENU button.
@@ -316,11 +324,11 @@ function uid_swipe() {
 #
 # swipe(Point[] segments, int segmentSteps)
 # Performs a swipe between points in the Point array.
-# #SKIP please use uid_swipe
+# #SKIP Please use uid_swipe
 #
 # takeScreenshot(File storePath, float scale, int quality)
 # Take a screenshot of current window and store it as PNG The screenshot is adjusted per screen rotation
-# #SKIP please use uid_take_screenshot
+# #SKIP Please use uid_take_screenshot
 #
 # takeScreenshot(File storePath)
 # Take a screenshot of current window and store it as PNG Default scale of 1.0f (original size) and 90% quality is used The screenshot is adjusted per screen rotation
