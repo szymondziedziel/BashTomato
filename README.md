@@ -22,6 +22,13 @@ and is created to automate simple, daily repetitive work in simple (or not that 
 - works with device/ emulator immediately after script started, no code compilation
 - Bash is present on most unix-like systems, so no additional configurations and dependencies needed
 
+## Unfortunately
+
+It uses `adb shell uiautomator dump` to get window's hierarchy, so it causes that BashTomato is not able to:
+
+- touch on screen keyboard
+- inspect webview's content
+
 ## How to use it
 
 - clone repository to your local machine

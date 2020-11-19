@@ -506,6 +506,7 @@ function uio2_set_text() {
   local device_id=`default "$1" ''`
   local node=`default "$2" ''`
   local content=`default "$3" ''`
+  content=`echo "$content" | sed -E 's/(.)/_BTSEP_\1/g' | sed -E 's/_BTSEP_/\\\\/g'`
 
   uio2_click "$device_id" "$node"
 

@@ -147,7 +147,7 @@ toolbar_is_selected=`uio2_is_selected "$toolbar"`
 utils_assert_false "$toolbar_is_selected"
 
 empty=`uio2_find_object "$xml" 'resource-id="com.example.bashtomatotester:id/empty"'`
-uio2_set_text "$device_id" "$empty" 'TestText'
+uio2_set_text "$device_id" "$empty" '1234567890qwertyuiopasdfghjklzxcvbnm!@#$%^&*()_+{}:'\''"|<>?-=[];\,/'
 
 filled=`uio2_find_object "$xml" 'resource-id="com.example.bashtomatotester:id/filled"'`
 uio2_clear "$device_id" "$filled"

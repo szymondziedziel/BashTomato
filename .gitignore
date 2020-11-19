@@ -1,6 +1,7 @@
 3rd
 dist
 temporary_xml_dump.xml
+src/keycodes_for_bash_3_2.sh
 
 # Created by https://www.toptal.com/developers/gitignore/api/vim,zsh,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=vim,zsh,macos
