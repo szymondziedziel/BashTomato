@@ -231,8 +231,6 @@ function utils_record() {
 
   adb -s "$device_id" shell screenrecord "/sdcard/${filename}.mp4"
 }
-# inspect
-# #TODO
 # 
 # wait_to_see
 function utils_wait_to_see() {

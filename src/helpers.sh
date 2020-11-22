@@ -15,6 +15,7 @@ DIRECTION_RIGHT='RIGHT'
 DIRECTION_UP='UP'
 
 # Helpers start
+#
 function default() {
   local current_value="$1"
   local default_value="$2"
@@ -83,18 +84,96 @@ function calc_duration_from_distance_speed() {
 
   echo "$duration"
 }
-# Helpers end
 
+# function calc_colors_distance() {
+#   local color_1_red="$1"
+#   local color_1_green="$2"
+#   local color_1_blue="$3"
+#   local color_2_red="$4"
+#   local color_2_green="$5"
+#   local color_2_blue="$6"
+# 
+#   local distance=`echo "$color_1_red $color_1_green $color_1_blue $color_2_red $color_2_green $color_2_blue" | awk '{printf("%d", sqrt(($1 - $4)^2 + ($2 - $5)^2 + ($3 - $6)^2))}'`
+# 
+#   echo "$distance"
+# }
+# 
+# function find_closest_color() {
+#   colors="Black 0,0,0
+# White 255,255,255
+# Red 255,0,0
+# Lime 0,255,0
+# Blue 0,0,255
+# Yellow 255,255,0
+# Cyan 0,255,255
+# Magenta 255,0,255
+# Silver 192,192,192
+# Gray 128,128,128
+# Maroon 128,0,0
+# Olive 128,128,0
+# Green 0,128,0
+# Purple 128,0,128
+# Teal 0,128,128
+# Navy 0,0,128"
+# }
+
+# Helpers end
+# 
 # Other useful functions start
+# 
+# Returns string length
 function helper_string_length() {
   local string="$1"
 
   echo "$string" | wc -c
 }
+# 
+# Returns substring starting from with of length
+function helper_substring() {
+  local string="$1"
+  local from="$2"
+  local length="$3"
 
+  string=`echo "$string" | sed -E "s/^.{${from}}//"`
+
+  if [ -n "$length" ]
+  then
+    string=`echo "$string" | grep -oE "^.{${length}}" | sed -n '1p'`
+  fi
+
+  echo "$string"
+}
+#
+# Transforms all characters to lower cases
+function helper_to_lower() {
+  local string="$1"
+  echo "$string" | tr '[:upper:]' '[:lower:]'
+}
+#
+# Transforms all characters to upper cases
+function helper_to_upper() {
+  local string="$1"
+  echo "$string" | tr '[:lower:]' '[:upper:]'
+}
+#
+# Transforms first letter to upper case and the rest to lower cases
+function helper_capitalize() {
+  local string="$1"
+
+  local first=`helper_substring "$string" 0 1`
+  local rest=`helper_substring "$string" 1`
+  first=`helper_to_upper "$first"`
+  rest=`helper_to_lower "$rest"`
+
+  echo "${first}${rest}"
+}
+#
+# Returns count of objects, but each must be in new line as it is based on wc program
+# This should specially consume result from uio2_find_objects
 function helper_objects_count() {
   local objects="$1"
 
   echo "$objects" | wc -l
 }
+#
 # Other useful functions end

@@ -334,7 +334,7 @@ function uid_swipe() {
 # Take a screenshot of current window and store it as PNG Default scale of 1.0f (original size) and 90% quality is used The screenshot is adjusted per screen rotation
 function uid_take_screenshot() {
   local device_id=`default $1 ''`
-  local screenshot_file_name=`default $2 temporaty_screenshot_file_name.png`
+  local screenshot_file_name=`default $2 temporary_screenshot_file_name.png`
 
   adb -s $device_id shell screencap -p > $screenshot_file_name
 }
