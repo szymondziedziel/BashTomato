@@ -16,6 +16,8 @@ DIRECTION_UP='UP'
 
 # Helpers start
 #
+# default
+# Helps setup default value for variable
 function default() {
   local current_value="$1"
   local default_value="$2"
@@ -24,7 +26,9 @@ function default() {
 
   echo "$current_value"
 }
-
+# 
+# calc_point_on_section
+# Returns 1-dimentional-point (single number) from between two points
 function calc_point_on_section() {
   local value="$1"
   local min="$2"
@@ -46,7 +50,9 @@ function calc_point_on_section() {
 
   echo $point
 }
-
+#
+# calc_point_on_surface
+# Calculates 2-dimentional-point (two numbers separated by single space) within given rectangle
 function calc_point_on_surface() {
   local node="$1"
   local x=`default "$2" "$ANCHOR_POINT_CENTER"`
@@ -64,7 +70,9 @@ function calc_point_on_surface() {
 
   echo "$x $y"
 }
-
+#
+# get prop
+# Searches for any given XML node attribute's value. Uses regular expression, some attributes may collide like for example click and long-click. Be carefuli as all matches will be returned in separate lines.
 function get_prop() {
   local node="$1"
   local prop_name="$2"
@@ -72,6 +80,8 @@ function get_prop() {
   echo "$node" | grep -oE "$prop_name=\".*?\"" | cut -d '=' -f 2 | cut -d '"' -f 2
 }
 
+# calc_duration_from_distance_speed
+# Function nam is self explanatory
 function calc_duration_from_distance_speed() {
   local speed=`default "$1" 1000`
   local x_from="$2"
@@ -84,7 +94,9 @@ function calc_duration_from_distance_speed() {
 
   echo "$duration"
 }
-
+# 
+# calc_colors_distance
+# Helps in color normalization
 # function calc_colors_distance() {
 #   local color_1_red="$1"
 #   local color_1_green="$2"
@@ -99,35 +111,26 @@ function calc_duration_from_distance_speed() {
 # }
 # 
 # function find_closest_color() {
-#   colors="Black 0,0,0
-# White 255,255,255
-# Red 255,0,0
-# Lime 0,255,0
-# Blue 0,0,255
-# Yellow 255,255,0
-# Cyan 0,255,255
-# Magenta 255,0,255
-# Silver 192,192,192
-# Gray 128,128,128
-# Maroon 128,0,0
-# Olive 128,128,0
-# Green 0,128,0
-# Purple 128,0,128
-# Teal 0,128,128
-# Navy 0,0,128"
+#
 # }
-
+#
 # Helpers end
-# 
+
+
+
 # Other useful functions start
-# 
+#
+# helper_string_length
 # Returns string length
 function helper_string_length() {
   local string="$1"
 
-  echo "$string" | wc -c
+  local length=`echo "$string" | $'s///g' | wc -c`
+  length=$((length - 1))
+  echo "$length"
 }
 # 
+# helper_substring
 # Returns substring starting from with of length
 function helper_substring() {
   local string="$1"
@@ -144,18 +147,21 @@ function helper_substring() {
   echo "$string"
 }
 #
+# helper_to_lower
 # Transforms all characters to lower cases
 function helper_to_lower() {
   local string="$1"
   echo "$string" | tr '[:upper:]' '[:lower:]'
 }
 #
+# helper_to_upper
 # Transforms all characters to upper cases
 function helper_to_upper() {
   local string="$1"
   echo "$string" | tr '[:lower:]' '[:upper:]'
 }
 #
+# helper_capitalize
 # Transforms first letter to upper case and the rest to lower cases
 function helper_capitalize() {
   local string="$1"
@@ -168,6 +174,7 @@ function helper_capitalize() {
   echo "${first}${rest}"
 }
 #
+# helper_objects_count
 # Returns count of objects, but each must be in new line as it is based on wc program
 # This should specially consume result from uio2_find_objects
 function helper_objects_count() {
@@ -175,5 +182,180 @@ function helper_objects_count() {
 
   echo "$objects" | wc -l
 }
+#
+# helper_does_string_starts_with
+# Docs here
+function helper_does_string_starts_with() {
+  local string="$1"
+  local start_string="$2"
+
+  if [[ "$string" == "$start_string"* ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_does_string_ends_with
+# Docs here
+function helper_does_string_ends_with() {
+  local string="$1"
+  local end_string="$2"
+
+  if [[ "$string" == *"$end_string" ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_does_string_contains
+# Docs here
+function helper_does_string_contains() {
+  local string="$1"
+  local substring="$2"
+
+  if [[ "$string" == *"$substring"* ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_string_is_lower_case
+# Docs here
+function helper_string_is_lower_case() {
+  local string="$1"
+
+  local is_lower_case=`echo "$string" | grep '^[a-z]+$'`
+  if [[ -n "$is_lower_case" ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_string_is_upper_case
+# Docs here
+function helper_string_is_upper_case() {
+  local string="$1"
+
+  local is_upper_case=`echo "$string" | grep '^[A-Z]+$'`
+  if [[ -n "$is_upper_case" ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_string_is_capitalised
+# Docs here
+function helper_string_is_capitalised() {
+  local string="$1"
+
+  local is_capitalized=`echo "$string" | grep '^[A-Z][a-z]+$'`
+  if [[ -n "$is_capitalized" ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_does_strings_are_equal
+# Docs here
+function helper_does_strings_are_equal() {
+  local string_a="$1"
+  local string_b="$2"
+
+  string_a=`helper_to_lower "$string_a"`
+  string_b=`helper_to_lower "$string_b"`
+  if [[ "$string_a" == "$string_b" ]]
+  then
+    echo 'true'
+  else
+    echo 'false'
+  fi
+}
+#
+# helper_strings_join
+# Docs here
+function helper_strings_join() {
+  echo "$@" | sed 's/ //g'
+}
+#
+# helper_string_index_of_string
+# Docs here
+function helper_string_index_of_string() {
+  local string_a="$1"
+  local string_b="$2"
+  local start_from=`default "$3" 0`
+
+  string_a=`helper_substring "$string_a" "$start_from"`
+  local match=`echo "$string_a" | grep -oE ".*?$string_b" | sed -n '1p'`
+  local string_b_length=`helper_string_length "$string_b"`
+  local match_length=`helper_string_length "$match"`
+  local index=$((match_length - string_b_length))
+
+  echo "$index"
+}
+#
+# helper_string_to_bytes
+# Docs here
+function helper_string_to_bytes() {
+  local string="$1"
+
+  echo "$string" | xxd -C -u -p
+}
+#
+# helper_string_trim
+# Docs here
+# function helper_string_trim() {
+#   
+# }
+#
+# helper_string_replace
+# Docs here
+function helper_string_replace() {
+  local string_a="$1"
+  local string_b="$2"
+
+  echo "$string_a" | sed "s/$string_a/$string_b/g"
+}
+#
+# helper_numbers_max
+# Docs here
+# function helper_numbers_max() {
+# 
+# }
+#
+# helper_numbers_min
+# Docs here
+# function helper_numbers_min() {
+# 
+# }
+#
+# helper_numbers_sum
+# Docs here
+# function helper_numbers_sum() {
+# 
+# }
+#
+# helper_numbers_count
+# Docs here
+# function helper_numbers_count() {
+# 
+# }
+#
+# helper_numbers_average
+# Docs here
+# function helper_numbers_average() {
+# 
+# }
 #
 # Other useful functions end
