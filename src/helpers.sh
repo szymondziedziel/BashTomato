@@ -14,6 +14,10 @@ DIRECTION_LEFT='LEFT'
 DIRECTION_RIGHT='RIGHT'
 DIRECTION_UP='UP'
 
+# Searching swipe direction
+DIRECTION_VERTICAL='DIRECTION_VERTICAL'
+DIRECTION_HORIZONTAL='DIRECTION_HORIZONTAL'
+
 # Helpers start
 #
 # default
@@ -125,7 +129,7 @@ function calc_duration_from_distance_speed() {
 function helper_string_length() {
   local string="$1"
 
-  local length=`echo "$string" | $'s///g' | wc -c`
+  local length=`echo "$string" | wc -c`
   length=$((length - 1))
   echo "$length"
 }

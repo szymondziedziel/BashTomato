@@ -231,7 +231,7 @@ function utils_record() {
 
   adb -s "$device_id" shell screenrecord "/sdcard/${filename}.mp4"
 }
-# 
+#
 # wait_to_see
 function utils_wait_to_see() {
   local device_id=`default "$1" ''`
@@ -255,6 +255,65 @@ function utils_wait_to_see() {
   done
 }
 # #TODO make waits to be able to be more generic
+#
+function utils_search_node() {
+  local device_id=`default "$1" ''`
+  local object_to_search_in=`default "$2" ''`
+  local filter="$3"
+  local index=`default "$4" 1`
+  local swiping_direction=`default "$5" "$DIRECTION_VERTICAL"`
+  local cycles=`default "$6" 1`
+  local swipe_length=`default $7 '50%'`
+  local swipes_left=`default "$8" 50`
+
+  local previous_xml_hash=`echo '' | md5`
+  local direction_modifier=1
+
+  while [ "$swipes_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
+  do
+    previous_xml_hash=`cat temporary_xml_dump.xml | md5`
+    uid_dump_window_hierarchy "$device_id" > /dev/null
+    local xml=`cat temporary_xml_dump.xml`
+    local o=`uio2_find_object "$xml" "$filter" "$index"`
+
+    if [ -n "$o" ]
+    then
+      echo "$o"
+      break
+    else
+      case_value="${swiping_direction}_${direction_modifier}"
+      case $case_value in
+        "${DIRECTION_VERTICAL}_1")
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_DOWN"
+          ;;
+        "${DIRECTION_VERTICAL}_-1")
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_UP"
+          ;;
+        "${DIRECTION_HORIZONTAL}_1")
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_RIGHT"
+          ;;
+        "${DIRECTION_HORIZONTAL}_-1")
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_LEFT"
+          ;;
+        *)
+          echo "Wrong direction. Do not know how to search."
+          exit
+          ;;
+      esac
+    fi
+
+    uid_dump_window_hierarchy "$device_id" > /dev/null
+    xml=`cat temporary_xml_dump.xml`
+    current_xml_hash=`cat temporary_xml_dump.xml | md5`
+    if [ "$current_xml_hash" == "$previous_xml_hash" ]
+    then
+      cycles=$((cycles - 1))
+      direction_modifier=$((direction_modifier * -1))
+    fi
+
+    swipes_left=$((swipes_left - 1))
+  done
+}
 #
 # wait_to_gone
 function utils_wait_to_gone() {
