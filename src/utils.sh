@@ -237,7 +237,7 @@ function utils_wait_to_see() {
   local device_id=`default "$1" ''`
   local filter="$2"
   local index=`default "$3" 1`
-  local attempts=`default "$3" 30`
+  local attempts=`default "$4" 30`
 
   while [ "$attempts" -gt 0 ]
   do
@@ -320,7 +320,7 @@ function utils_wait_to_gone() {
   local device_id=`default "$1" ''`
   local filter="$2"
   local index=`default "$3" 1`
-  local attempts=`default "$3" 30`
+  local attempts=`default "$4" 30`
 
   while [ "$attempts" -gt 0 ]
   do
