@@ -51,6 +51,9 @@ do
   echo "" >> $dist_path/bashtomato.sh
 done
 
+# Build README.md
+sh ./generate_readme.sh
+
 
 # Tests
 # Units
