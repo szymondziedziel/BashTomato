@@ -11,10 +11,20 @@ function utils_assert_null() {
   if [ "$value" == "$NULL" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value]"
+    fi
     exit 1
   fi
 }
@@ -30,10 +40,20 @@ function utils_assert_not_null() {
   if [ "$value" != "$NULL" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value]"
+    fi
     exit 1
   fi
 }
@@ -48,10 +68,20 @@ function utils_assert_true() {
   if [ "$value" == "$TRUE" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value]"
+    fi
     exit 1
   fi
 }
@@ -66,10 +96,20 @@ function utils_assert_false() {
   if [ "$value" == "$FALSE" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value]"
+    fi
     exit 1
   fi
 }
@@ -84,10 +124,20 @@ function utils_assert_string_is_empty() {
   if [ -z "$value" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value]"
+    fi
     exit 1
   fi
 }
@@ -103,10 +153,20 @@ function utils_assert_strings_are_equal() {
   if [ "$value_a" == "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -122,10 +182,20 @@ function utils_assert_strings_are_different() {
   if [ "$value_a" != "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -141,10 +211,20 @@ function utils_assert_numbers_first_less_than_second() {
   if [ "$value_a" -lt "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -160,10 +240,20 @@ function utils_assert_numbers_first_less_or_equal_than_second() {
   if [ "$value_a" -le "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -179,10 +269,20 @@ function utils_assert_numbers_first_equals_second() {
   if [ "$value_a" -eq "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -198,10 +298,20 @@ function utils_assert_numbers_first_greater_or_equal_than_second() {
   if [ "$value_a" -ge "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -217,10 +327,20 @@ function utils_assert_numbers_first_greater_than_second() {
   if [ "$value_a" -gt "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
@@ -236,10 +356,20 @@ function utils_assert_numbers_first_is_not_equal_to_second() {
   if [ "$value_a" -ne "$value_b" ]
   then
     success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name passed for [$value_a] and [$value_b]"
+    if [ -n "$success_message" ]
+    then
+      echo "$success_message"
+    else
+      echo "$function_name passed for [$value_a] and [$value_b]"
+    fi
   else
     error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    echo "$function_name failed for [$value_a] and [$value_b]"
+    if [ -n "$error_message" ]
+    then
+      echo "$error_message"
+    else
+      echo "$function_name failed for [$value_a] and [$value_b]"
+    fi
     exit 1
   fi
 }
