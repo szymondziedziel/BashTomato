@@ -340,7 +340,7 @@ function utils_record() {
 #
 # wait_to_see
 function utils_wait_to_see() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local filter="$2"
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
@@ -363,7 +363,7 @@ function utils_wait_to_see() {
 # #TODO make waits to be able to be more generic
 #
 function utils_search_node() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local object_to_search_in=`default "$2" ''`
   local filter="$3"
   local index=`default "$4" 1`
@@ -423,7 +423,7 @@ function utils_search_node() {
 #
 # wait_to_gone
 function utils_wait_to_gone() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local filter="$2"
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
@@ -467,7 +467,7 @@ function utils_wait_to_gone() {
 # }
 
 function utils_get_device_orientation() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   adb -s $device_id shell settings get system user_rotation
 }

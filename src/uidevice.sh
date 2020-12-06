@@ -9,7 +9,7 @@
 # click(int x, int y)
 # Perform a click at arbitrary coordinates specified by the user
 function uid_click() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local x="$2"
   local y="$3"
 
@@ -19,7 +19,7 @@ function uid_click() {
 # drag(int startX, int startY, int endX, int endY, int steps)
 # Performs a swipe from one coordinate to another coordinate.
 function uid_drag() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local x_from="$2"
   local y_from="$3"
   local x_to="$4"
@@ -41,8 +41,8 @@ function uid_drag() {
 # This method is deprecated. Use dumpWindowHierarchy(File) or dumpWindowHierarchy(OutputStream) instead.
 # Please use uid_dump_window_hierarchy
 function uid_dump_window_hierarchy() {
-  local device_id=`default $1 ''`
-  local dump_xml_file_name=`default $2 temporary_xml_dump.xml`
+  local device_id="$1"
+  local dump_xml_file_name=`default "$2" 'temporary_xml_dump.xml'`
 
   local dumppath=`adb -s $device_id shell uiautomator dump | cut -d ' ' -f5`
   local dumpfile=`basename $dumppath`
@@ -65,7 +65,7 @@ function uid_dump_window_hierarchy() {
 # freezeRotation()
 # Disables the sensors and freezes the device rotation at its current rotation state.
 function uid_freeze_rotation() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   adb -s $device_id shell settings put system accelerometer_rotation 0
 }
@@ -73,7 +73,7 @@ function uid_freeze_rotation() {
 # getCurrentActivityName()
 # This method is deprecated. The results returned should be considered unreliable
 function uid_get_current_activity_name() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
 
   local result=`adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f2`
   val_or_null "$result"
@@ -87,7 +87,7 @@ function uid_get_current_activity_name() {
 # getDisplayHeight()
 # Gets the height of the display, in pixels.
 function uid_get_display_height() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '2p'`
   val_or_null "$result"
@@ -96,7 +96,7 @@ function uid_get_display_height() {
 # getDisplayRotation()
 # Returns the current rotation of the display, as defined in Surface
 function uid_get_display_rotation() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s $device_id shell settings get system accelerometer_rotation`
   val_or_null "$result"
@@ -105,7 +105,7 @@ function uid_get_display_rotation() {
 # getDisplaySizeDp()
 # Returns the display size in dp (device-independent pixel) The returned display size is adjusted per screen rotation.
 function uid_get_display_size_dp() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s $device_id shell wm density | grep -oE '[0-9]+'`
   val_or_null "$result"
@@ -114,7 +114,7 @@ function uid_get_display_size_dp() {
 # getDisplayWidth()
 # Gets the width of the display, in pixels.
 function uid_get_display_width() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '1p'`
   val_or_null "$result"
@@ -139,7 +139,7 @@ function uid_get_display_width() {
 # getProductName()
 # Retrieves the product name of the device.
 function uid_get_product_name() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s "$device_id" shell getprop ro.product.name`
   val_or_null "$result"
@@ -164,7 +164,7 @@ function uid_get_product_name() {
 # isScreenOn()
 # Checks the power manager if the screen is ON.
 function uid_is_screen_on() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   local result=`adb -s "$device_id" shell dumpsys power | grep 'Display Power: state=ON'`
   val_or_null "$result"
@@ -174,7 +174,7 @@ function uid_is_screen_on() {
 # openNotification()
 # Opens the notification shade.
 function uid_open_notification() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
 
   adb -s $device_id shell cmd statusbar expand-notifications
 }
@@ -190,7 +190,7 @@ function uid_open_notification() {
 # pressBack()
 # Simulates a short press on the BACK button.
 # function uid_press_back() {
-#   device_id=`default $1 ''`
+#   device_id="$1"
 #
 #   adb -s $device_id shell input keyevent $KEYCODE_BACK
 # }
@@ -199,7 +199,7 @@ function uid_open_notification() {
 # pressDPadCenter()
 # Simulates a short press on the CENTER button.
 # function uid_press_d_pad_center() {
-#   device_id=`default $1 ''`
+#   device_id="$1"
 #
 #   adb -s $device_id shell input keyevent $KEYCODE_DPAD_CENTER
 # }
@@ -236,8 +236,8 @@ function uid_open_notification() {
 # pressKeyCode(int keyCode)
 # Simulates a short press using a key code.
 function uid_press_key_code() {
-  local device_id=`default $1 ''`
-  local keycode=`default $2 ''`
+  local device_id="$1"
+  local keycode="$2"
 
   adb -s $device_id shell input keyevent $keycode
 }
@@ -281,7 +281,7 @@ function uid_press_key_code() {
 # setOrientationLeft()
 # Simulates orienting the device to the left and also freezes rotation by disabling the sensors.
 function uid_set_orientation_left() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   uid_freeze_rotation "$device_id"
 
@@ -291,7 +291,7 @@ function uid_set_orientation_left() {
 # setOrientationNatural()
 # Simulates orienting the device into its natural orientation and also freezes rotation by disabling the sensors.
 function uid_set_orientation_natural() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   uid_freeze_rotation "$device_id"
 
@@ -301,7 +301,7 @@ function uid_set_orientation_natural() {
 # setOrientationRight()
 # Simulates orienting the device to the right and also freezes rotation by disabling the sensors.
 function uid_set_orientation_right() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   uid_freeze_rotation "$device_id"
 
@@ -311,7 +311,7 @@ function uid_set_orientation_right() {
 # sleep()
 # This method simply presses the power button if the screen is ON else it does nothing if the screen is already OFF.
 function uid_sleep() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   adb -s $device_id shell input keyevent $KEYCODE_SLEEP
 }
@@ -319,7 +319,7 @@ function uid_sleep() {
 # swipe(int startX, int startY, int endX, int endY, int steps)
 # Performs a swipe from one coordinate to another using the number of steps to determine smoothness and speed.
 function uid_swipe() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
   local x_from="$2"
   local y_from="$3"
   local x_to="$4"
@@ -340,8 +340,8 @@ function uid_swipe() {
 # takeScreenshot(File storePath)
 # Take a screenshot of current window and store it as PNG Default scale of 1.0f (original size) and 90% quality is used The screenshot is adjusted per screen rotation
 function uid_take_screenshot() {
-  local device_id=`default $1 ''`
-  local screenshot_file_name=`default $2 temporary_screenshot_file_name.png`
+  local device_id="$1"
+  local screenshot_file_name=`default "$2" 'temporary_screenshot_file_name.png'`
 
   adb -s $device_id shell screencap -p > $screenshot_file_name
 }
@@ -349,7 +349,7 @@ function uid_take_screenshot() {
 # unfreezeRotation()
 # Re-enables the sensors and un-freezes the device rotation allowing its contents to rotate with the device physical rotation.
 function uid_unfreeze_rotation() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   adb -s $device_id shell settings put system accelerometer_rotation 1
 }
@@ -373,7 +373,7 @@ function uid_unfreeze_rotation() {
 # wakeUp()
 # This method simulates pressing the power button if the screen is OFF else it does nothing if the screen is already ON.
 function uid_wake_up() {
-  local device_id=`default $1 ''`
+  local device_id="$1"
 
   adb -s $device_id shell input keyevent $KEYCODE_WAKEUP
 }

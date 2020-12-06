@@ -51,8 +51,8 @@ function uio2_clear() {
 #
 #__DOCS
 function uio2_click() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local x=`default "$3" "$ANCHOR_POINT_CENTER"`
   local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
 
@@ -82,8 +82,8 @@ function uio2_click() {
 #
 #__DOCS
 function uio2_click_with_duration() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local duration=`default "$3" 500`
   local x=`default "$4" "$ANCHOR_POINT_CENTER"`
   local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
@@ -111,8 +111,8 @@ function uio2_click_with_duration() {
 #
 #__DOCS
 function uio2_click_and_wait() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local wait_time=`default "$3" 5`
   local x=`default "$4" "$ANCHOR_POINT_CENTER"`
   local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
@@ -145,9 +145,9 @@ function uio2_click_and_wait() {
 #
 #__DOCS
 function uio2_drag() {
-  local device_id=`default "$1" ''`
-  local node_from=`default "$2" ''`
-  local node_to=`default "$3" ''`
+  local device_id="$1"
+  local node_from="$2"
+  local node_to="$3"
   local duration=`default "$4" 500`
   local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
   local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
@@ -182,9 +182,9 @@ function uio2_drag() {
 #
 #__DOCS
 function uio2_drag_with_speed() {
-  local device_id=`default "$1" ''`
-  local node_from=`default "$2" ''`
-  local node_to=`default "$3" ''`
+  local device_id="$1"
+  local node_from="$2"
+  local node_to="$3"
   local speed=`default "$4" 1000`
   local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
   local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
@@ -261,7 +261,7 @@ function uio2_find_objects() {
 # getApplicationPackage()
 # Returns the package name of the app that this object belongs to.
 function uio2_get_application_package() {
-  local device_id=`default "$1" ''`
+  local device_id="$1"
 
   local package_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
   val_or_null "$package_name"
@@ -517,8 +517,8 @@ function uio2_is_selected() {
 # longClick()
 # Performs a long click on this object.
 function uio2_long_click() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local x=`default "$3" "$ANCHOR_POINT_CENTER"`
   local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
 
@@ -528,8 +528,8 @@ function uio2_long_click() {
 # pinchClose(float percent)
 # Performs a pinch close gesture on this object.
 function uio2_pinch_close() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local percent=`default "$3" '50%'`
   local duration=`default "$4" 500`
 
@@ -568,8 +568,8 @@ function uio2_pinch_close() {
 # pinchOpen(float percent)
 # Performs a pinch open gesture on this object.
 function uio2_pinch_open() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local percent=`default "$3" '50%'`
   local duration=`default "$4" 500`
 
@@ -628,8 +628,8 @@ function uio2_pinch_open() {
 # setText(String text)
 # Sets the text content if this object is an editable field.
 function uio2_set_text() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local content=`default "$3" ''`
   content=`echo "$content" | sed -E 's/(.)/_BTSEP_\1/g' | sed -E 's/_BTSEP_/\\\\/g'`
 
@@ -642,8 +642,8 @@ function uio2_set_text() {
 # swipe(Direction direction, float percent, int speed)
 # Performs a swipe gesture on this object.
 function uio2_swipe_with_speed() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local direction=`default "$3" "$DIRECTION_DOWN"`
   local percent=`default "$4" '50%'`
   local speed=`default "$5" 1000`
@@ -695,8 +695,8 @@ function uio2_swipe_with_speed() {
 # swipe(Direction direction, float percent)
 # Performs a swipe gesture on this object.
 function uio2_swipe() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
   local direction=`default "$3" "$DIRECTION_DOWN"`
   local percent=`default "$4" '50%'`
   local duration=`default "$5" 500`
