@@ -75,7 +75,8 @@ function uid_freeze_rotation() {
 function uid_get_current_activity_name() {
   local device_id=`default "$1" ''`
 
-  adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f2
+  local result=`adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f2`
+  val_or_null "$result"
 }
 # #SKIP But not sure if it will work for different devices for now
 #
@@ -88,7 +89,8 @@ function uid_get_current_activity_name() {
 function uid_get_display_height() {
   local device_id=`default $1 ''`
 
-  adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '2p'
+  local result=`adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '2p'`
+  val_or_null "$result"
 }
 #
 # getDisplayRotation()
@@ -96,7 +98,8 @@ function uid_get_display_height() {
 function uid_get_display_rotation() {
   local device_id=`default $1 ''`
 
-  adb -s $device_id shell settings get system accelerometer_rotation
+  local result=`adb -s $device_id shell settings get system accelerometer_rotation`
+  val_or_null "$result"
 }
 #
 # getDisplaySizeDp()
@@ -104,7 +107,8 @@ function uid_get_display_rotation() {
 function uid_get_display_size_dp() {
   local device_id=`default $1 ''`
 
-  echo `adb -s $device_id shell wm density | grep -oE '[0-9]+'`
+  local result=`adb -s $device_id shell wm density | grep -oE '[0-9]+'`
+  val_or_null "$result"
 }
 #
 # getDisplayWidth()
@@ -112,7 +116,8 @@ function uid_get_display_size_dp() {
 function uid_get_display_width() {
   local device_id=`default $1 ''`
 
-  adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '1p'
+  local result=`adb -s $device_id shell wm size | grep -oE '[0-9]+' | sed -n '1p'`
+  val_or_null "$result"
 }
 #
 # getInstance()
@@ -136,7 +141,8 @@ function uid_get_display_width() {
 function uid_get_product_name() {
   local device_id=`default $1 ''`
 
-  adb -s "$device_id" shell getprop ro.product.name
+  local result=`adb -s "$device_id" shell getprop ro.product.name`
+  val_or_null "$result"
 }
 #
 # hasAnyWatcherTriggered()
@@ -160,7 +166,8 @@ function uid_get_product_name() {
 function uid_is_screen_on() {
   local device_id=`default $1 ''`
 
-  adb -s "$device_id" shell dumpsys power | grep 'Display Power: state=ON'
+  local result=`adb -s "$device_id" shell dumpsys power | grep 'Display Power: state=ON'`
+  val_or_null "$result"
 }
 # #SKIP Not sure if it will work on all devices
 #

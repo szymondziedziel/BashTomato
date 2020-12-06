@@ -11,14 +11,14 @@ utils_restart_server
 device_id=`utils_devices 1`
 is_device_connected=`utils_is_device_connected "$device_id"`
 
-if [ "$is_device_connected" == 'false' ]
+if [ "$is_device_connected" == "$FALSE" ]
 then
   echo "***** NO DEVICE CONNECTED, I WILL NOT CONTINUE E2E CHECKS"
   echo "***** BUT ./dist/bashtomato.sh SHOULD BE BUILT AND AVAILABLE TO USE"
   exit 1
 fi
 
-utils_assert_true "$is_device_connected"
+utils_assert_true "$is_device_connected" 'Device is connected' 'Could execute command, unknown device provided'
 package_name='com.example.bashtomatotester'
 
 utils_stop_app "$device_id" "$package_name"
@@ -33,10 +33,10 @@ uid_freeze_rotation "$device_id"
 temp_xml_filename='temp.xml'
 uid_dump_window_hierarchy "$device_id" "$temp_xml_filename"
 if [ ! -f "$temp_xml_filename" ]; then exit 1; fi
-rotation_state=`utils_wait_to_see "$device_id" 'Portrait'`
+rotation_state=`utils_wait_to_see "$device_id" 'Portrait' 1 5`
 point=`calc_point_on_surface "$rotation_state"`
 uid_click "$device_id" "$point"
-rotation_state=`utils_wait_to_gone "$device_id" 'Portrait'`
+rotation_state=`utils_wait_to_gone "$device_id" 'Portrait' 1 5`
 rm -rf "$temp_xml_filename"
 uid_press_key_code "$device_id" $KEYCODE_HOME
 
@@ -78,7 +78,6 @@ utils_install_and_start "$device_id" "$package_name" "${SCRIPT_PATH}/bashtomatot
 
 utils_wait_to_see "$device_id" 'Home' > /dev/null
 curr_activity=`uid_get_current_activity_name "$device_id"`
-echo "$curr_activity"
 utils_assert_strings_are_equal "$curr_activity" 'com.example.bashtomatotester.MainActivity'
 
 toolbar=`utils_wait_to_see "$device_id" 'resource-id="com.example.bashtomatotester:id/toolbar"'`
@@ -90,7 +89,7 @@ toolbar_class=`uio2_get_class_name "$toolbar"`
 utils_assert_strings_are_equal "$toolbar_class" 'android.view.ViewGroup'
 
 toolbar_content_description=`uio2_get_content_description "$toolbar"`
-utils_assert_null "$toolbar_content_description"
+utils_assert_string_is_empty "$toolbar_content_description"
 
 xml_name='temporary_xml_dump.xml'
 xml=`cat "$xml_name"`
@@ -187,6 +186,7 @@ scroll_view_v_has_scroll_view_h=`uio2_has_object "$xml" "$scroll_view_v" 'resour
 
 package_from_object=`uio2_get_application_package "$device_id"`
 package_from_object_by_prop=`get_prop "$scroll_view_v" 'package'`
+
 utils_assert_strings_are_equal "$package_from_object" "$package_from_object_by_prop"
 utils_assert_true "$scroll_view_v_has_scroll_view_h"
 

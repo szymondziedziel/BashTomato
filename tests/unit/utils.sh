@@ -9,7 +9,7 @@ source "${SCRIPT_PATH}/../../dist/bashtomato.sh"
 function test_utils_assert_null_with_undeclared() {
   res=`utils_assert_null "$undeclared"`
   actual="$?"
-  expected=0
+  expected=1
   assertEquals $expected $actual
 }
 
@@ -17,7 +17,7 @@ function test_utils_assert_null_with_empty_string() {
   value=''
   res=`utils_assert_null "$value"`
   actual="$?"
-  expected=0
+  expected=1
   assertEquals $expected $actual
 }
 
@@ -51,7 +51,7 @@ function test_utils_assert_null_with_non_zero_number() {
 function test_utils_assert_not_null_with_undeclared() {
   res=`utils_assert_not_null "$undeclared"`
   actual="$?"
-  expected=1
+  expected=0
   assertEquals $expected $actual
 }
 
@@ -59,7 +59,7 @@ function test_utils_assert_not_null_with_empty_string() {
   value=''
   res=`utils_assert_not_null "$value"`
   actual="$?"
-  expected=1
+  expected=0
   assertEquals $expected $actual
 }
 
@@ -131,7 +131,7 @@ function test_utils_assert_true_with_non_zero_number() {
 }
 
 function test_utils_assert_true_with_string_true() {
-  value='true'
+  value="$TRUE"
   res=`utils_assert_true "$value"`
   actual="$?"
   expected=0
@@ -139,7 +139,7 @@ function test_utils_assert_true_with_string_true() {
 }
 
 function test_utils_assert_true_with_string_false() {
-  value='false'
+  value="$FALSE"
   res=`utils_assert_true "$value"`
   actual="$?"
   expected=1
@@ -189,7 +189,7 @@ function test_utils_assert_false_with_non_zero_number() {
 }
 
 function test_utils_assert_false_with_string_true() {
-  value='true'
+  value="$TRUE"
   res=`utils_assert_false "$value"`
   actual="$?"
   expected=1
@@ -197,7 +197,7 @@ function test_utils_assert_false_with_string_true() {
 }
 
 function test_utils_assert_false_with_string_false() {
-  value='false'
+  value="$FALSE"
   res=`utils_assert_false "$value"`
   actual="$?"
   expected=0

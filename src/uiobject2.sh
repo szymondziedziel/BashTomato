@@ -2,25 +2,54 @@
 
 # UIObject2 API start
 #
-# clear()
+#DOCS__
+#
+# ##### Docs from Google
+# ###### clear()
 # Clears the text content if this object is an editable field.
+#
+# ##### Docs from BashTomato
+# ###### uio2_clear()
+# Clears whole content for provided node on provided device.
+# Focuses the node automatically.
+# This is very poor in terms or performance for long contents.
+# 
+# ###### Parameters:
+# - device_id
+# - node
+#
+#__DOCS
 function uio2_clear() {
-  local device_id=`default "$1" ''`
-  local node=`default "$2" ''`
+  local device_id="$1"
+  local node="$2"
 
   local length=`get_prop "$node" 'text' | wc -c`
 
   uio2_click "$device_id" "$node"
-  uid_press_key_code $device_id $KEYCODE_MOVE_END
+  uid_press_key_code "$device_id" $KEYCODE_MOVE_END
   for i in `seq $length`
   do
-    uid_press_key_code $device_id $KEYCODE_DEL
+    uid_press_key_code "$device_id" $KEYCODE_DEL
   done
 }
-# #SKIP But this is poor solution for long texts
 #
-# click()
+#DOCS__
+#
+# ##### Docs from Google
+# ###### click()
 # Clicks on this object.
+#
+# ##### Docs from BashTomato
+# ###### uio2_click()
+# Clicks on provided node on provided device.
+# 
+# ###### Parameters:
+# - device_id
+# - node
+# - x
+# - y
+#
+#__DOCS
 function uio2_click() {
   local device_id=`default "$1" ''`
   local node=`default "$2" ''`
@@ -30,11 +59,28 @@ function uio2_click() {
   local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
   # It is not base on uio2_click_with_duration, because uses tap instead of swipe
-  adb -s $device_id shell input tap "$point_on_surface"
+  adb -s "$device_id" shell input tap "$point_on_surface"
 }
 #
+#DOCS__
+#
+# ##### Docs from Google
 # click(long duration)
 # Performs a click on this object that lasts for duration milliseconds.
+#
+# ##### Docs from BashTomato
+# ###### uio2_click_with_duration()
+# Clicks on provided node on provided device.
+# Gesture is longer than normal uio2_click()
+# 
+# ###### Parameters:
+# - device_id
+# - node
+# - duration
+# - x
+# - y
+#
+#__DOCS
 function uio2_click_with_duration() {
   local device_id=`default "$1" ''`
   local node=`default "$2" ''`
@@ -44,11 +90,26 @@ function uio2_click_with_duration() {
 
   local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
-  adb -s $device_id shell input swipe "$point_on_surface" "$point_on_surface" "$duration"
+  adb -s "$device_id" shell input swipe "$point_on_surface" "$point_on_surface" "$duration"
 }
 #
+#DOCS__
+#
+# ##### Docs from Google
 # clickAndWait(EventCondition<R> condition, long timeout)
 # Clicks on this object, and waits for the given condition to become true.
+#
+# ##### Docs from BashTomato
+# ###### uio2_click_and_wait()
+# Clicks on provided node on provided device and simply sleeps for some time.
+# 
+# ###### Parameters:
+# - device_id
+# - node
+# - x
+# - y
+#
+#__DOCS
 function uio2_click_and_wait() {
   local device_id=`default "$1" ''`
   local node=`default "$2" ''`
@@ -60,8 +121,29 @@ function uio2_click_and_wait() {
   sleep $wait_time
 }
 #
+#DOCS__
+#
+# ##### Docs from Google
 # drag(Point dest)
 # Drags this object to the specified location.
+#
+# ##### Docs from BashTomato
+# ###### uio2_drag()
+# Drags and drops from one node to another on provided device.
+# Useful as allows to find one node, which wll be moved to another.
+# The first one by default will be taken by center middle and dropped to center middle of another.
+# 
+# ###### Parameters:
+# - device_id
+# - node_from
+# - node_to
+# - duration
+# - x_from
+# - y_from
+# - x_to
+# - y_to
+#
+#__DOCS
 function uio2_drag() {
   local device_id=`default "$1" ''`
   local node_from=`default "$2" ''`
@@ -75,11 +157,30 @@ function uio2_drag() {
   local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
   local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
 
-  adb -s $device_id shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
+  adb -s "$device_id" shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
 }
 #
+#DOCS__
+#
+# ##### Docs from Google
 # drag(Point dest, int speed)
 # Drags this object to the specified location.
+#
+# ##### Docs from BashTomato
+# ###### uio2_drag_with_speed()
+# Like uio2_drag(), but takes speed instead of duration
+# 
+# ###### Parameters:
+# - device_id
+# - node_from
+# - node_to
+# - speed
+# - x_from
+# - y_from
+# - x_to
+# - y_to
+#
+#__DOCS
 function uio2_drag_with_speed() {
   local device_id=`default "$1" ''`
   local node_from=`default "$2" ''`
@@ -95,19 +196,31 @@ function uio2_drag_with_speed() {
 
   local duration=`calc_duration_from_distance_speed "$speed" "$point_on_surface_from" "$point_on_surface_to"`
 
-  adb -s $device_id shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
+  adb -s "$device_id" shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
 }
 #
+#DOCS__
+#
+# ##### Docs from Google
 # equals(Object object)
+#
+# ##### Docs from BashTomato
+# ###### uio2_equals()
+# 
+# ###### Parameters:
+# - node_a
+# - node_b
+#
+#__DOCS
 function uio2_equals() {
-  local objectA="$1"
-  local objectB="$2"
+  local node_a="$1"
+  local node_b="$2"
 
-  if [ "$objectA" == "$objectB" ]
+  if [ "$node_a" == "$node_b" ]
   then
-    echo "true"
+    echo "$TRUE"
   else
-    echo "false"
+    echo "$FALSE"
   fi
 }
 # #SKIP Probably does no make what should do
@@ -121,7 +234,8 @@ function uio2_find_object() {
 
   local nodes=`uio2_find_objects "$xml" "$filter"`
 
-  echo `echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
+  local node=`echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
+  val_or_null "$node"
 }
 #
 # findObjects(BySelector selector)
@@ -130,7 +244,8 @@ function uio2_find_objects() {
   local xml="$1"
   local filter="$2"
 
-  echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"
+  local nodes=`echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"`
+  val_or_null "$nodes"
 }
 #
 # fling(Direction direction, int speed)
@@ -148,7 +263,8 @@ function uio2_find_objects() {
 function uio2_get_application_package() {
   local device_id=`default "$1" ''`
 
-  echo `adb -s $device_id shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
+  local package_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
+  val_or_null "$package_name"
 }
 # #SKIP Not sure if will work for all devices
 #
@@ -175,17 +291,26 @@ function uio2_get_children() {
   xml=`echo "$xml" | sed -n "$((node_nr + 1)),${nodes_amount}p"`
   xml=`echo "$xml" | grep -oE 'NR[0-9]{1,4} DEPTH[0-9]{1,4} <[^\/].+?>'`
 
+  result=''
   while read -r node
   do
     local next_node_depth=`echo "$node" | grep -oE 'DEPTH[0-9]{1,4}' | grep -oE '[0-9]{1,4}'`
 
     if [ $next_node_depth -eq $child_node_depth ]
     then
-      echo "$node"
+      if [ -z "$result" ]
+      then
+        result="$node"
+      else
+        result="
+$result"
+      fi
     fi
 
     if [ $next_node_depth -lt $child_node_depth ]; then break; fi
   done <<<"$xml"
+
+  val_or_null "$result"
 }
 #
 # getClassName()
@@ -223,7 +348,7 @@ function uio2_get_parent() {
 
     if [ $next_node_depth -eq $parent_node_depth ]
     then
-      echo "$node"
+      val_or_null "$node"
       break
     fi
   done <<<"$xml"
@@ -308,9 +433,9 @@ function uio2_has_object() {
 
   if [ -n "$res" ]
   then
-    echo true
+    echo "$TRUE"
   else
-    echo false
+    echo "$FALSE"
   fi
 }
 #
@@ -510,7 +635,7 @@ function uio2_set_text() {
 
   uio2_click "$device_id" "$node"
 
-  adb -s $device_id shell input text "$content"
+  adb -s "$device_id" shell input text "$content"
 }
 # #TODO this is not able to type everything. Need huge improvement.
 #
@@ -564,7 +689,7 @@ function uio2_swipe_with_speed() {
 
   local duration=`calc_duration_from_distance_speed "$speed" "$point_on_surface_from" "$point_on_surface_to"`
 
-  adb -s $device_id shell input swipe $point_on_surface_from $point_on_surface_to $duration
+  adb -s "$device_id" shell input swipe $point_on_surface_from $point_on_surface_to $duration
 }
 #
 # swipe(Direction direction, float percent)
@@ -615,7 +740,7 @@ function uio2_swipe() {
   local point_on_surface_from=`calc_point_on_surface "$node" "$x_from" "$y_from"`
   local point_on_surface_to=`calc_point_on_surface "$node" "$x_to" "$y_to"`
 
-  adb -s $device_id shell input swipe $point_on_surface_from $point_on_surface_to $duration
+  adb -s "$device_id" shell input swipe $point_on_surface_from $point_on_surface_to $duration
 }
 #
 # wait(SearchCondition<R> condition, long timeout)

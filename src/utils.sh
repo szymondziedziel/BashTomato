@@ -2,44 +2,92 @@
 
 function utils_assert_null() {
   local value="$1"
-  if [ -z "$value" ]
+  local success_message="$2"
+  local error_message="$3"
+
+  local function_name="${FUNCNAME[0]}"
+  value=`echo "$value" | tr '[:upper:]' '[:lower:]'`
+
+  if [ "$value" == "$NULL" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value]"
   else
-    echo "${FUNCNAME[0]} failed for [$value]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value]"
     exit 1
   fi
 }
 
 function utils_assert_not_null() {
   local value="$1"
-  if [ -n "$value" ]
+  local success_message="$2"
+  local error_message="$3"
+
+  local function_name="${FUNCNAME[0]}"
+  value=`echo "$value" | tr '[:upper:]' '[:lower:]'`
+
+  if [ "$value" != "$NULL" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value]"
   else
-    echo "${FUNCNAME[0]} failed for [$value]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value]"
     exit 1
   fi
 }
 
 function utils_assert_true() {
   local value="$1"
-  if [ "$value" == 'true' ]
+  local success_message="$2"
+  local error_message="$3"
+
+  local function_name="${FUNCNAME[0]}"
+
+  if [ "$value" == "$TRUE" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value]"
   else
-    echo "${FUNCNAME[0]} failed for [$value]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value]"
     exit 1
   fi
 }
 
 function utils_assert_false() {
   local value="$1"
-  if [ "$value" == 'false' ]
+  local success_message="$2"
+  local error_message="$3"
+
+  local function_name="${FUNCNAME[0]}"
+
+  if [ "$value" == "$FALSE" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value]"
   else
-    echo "${FUNCNAME[0]} failed for [$value]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value]"
+    exit 1
+  fi
+}
+
+function utils_assert_string_is_empty() {
+  local value="$1"
+  local success_message="$2"
+  local error_message="$3"
+
+  local function_name="${FUNCNAME[0]}"
+
+  if [ -z "$value" ]
+  then
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value]"
+  else
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value]"
     exit 1
   fi
 }
@@ -47,11 +95,18 @@ function utils_assert_false() {
 function utils_assert_strings_are_equal() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" == "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -59,11 +114,18 @@ function utils_assert_strings_are_equal() {
 function utils_assert_strings_are_different() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" != "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -71,11 +133,18 @@ function utils_assert_strings_are_different() {
 function utils_assert_numbers_first_less_than_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -lt "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -83,11 +152,18 @@ function utils_assert_numbers_first_less_than_second() {
 function utils_assert_numbers_first_less_or_equal_than_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -le "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -95,11 +171,18 @@ function utils_assert_numbers_first_less_or_equal_than_second() {
 function utils_assert_numbers_first_equals_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -eq "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -107,11 +190,18 @@ function utils_assert_numbers_first_equals_second() {
 function utils_assert_numbers_first_greater_or_equal_than_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -ge "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -119,11 +209,18 @@ function utils_assert_numbers_first_greater_or_equal_than_second() {
 function utils_assert_numbers_first_greater_than_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -gt "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -131,11 +228,18 @@ function utils_assert_numbers_first_greater_than_second() {
 function utils_assert_numbers_first_is_not_equal_to_second() {
   local value_a="$1"
   local value_b="$2"
+  local success_message="$3"
+  local error_message="$4"
+
+  local function_name="${FUNCNAME[0]}"
+
   if [ "$value_a" -ne "$value_b" ]
   then
-    echo "${FUNCNAME[0]} passed for [$value_a] and [$value_b]"
+    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name passed for [$value_a] and [$value_b]"
   else
-    echo "${FUNCNAME[0]} failed for [$value_a] and [$value_b]"
+    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
+    echo "$function_name failed for [$value_a] and [$value_b]"
     exit 1
   fi
 }
@@ -146,10 +250,12 @@ function utils_devices() {
 
   if [ -z "$device_index" ]
   then
-    adb devices
+    device_id=`adb devices`
   else
-    adb devices | sed -n "$((device_index + 1))p" | cut -f1
+    device_id=`adb devices | sed -n "$((device_index + 1))p" | cut -f1`
   fi
+
+  val_or_null "$device_id"
 }
 #
 # is_device_connected
@@ -158,7 +264,7 @@ function utils_is_device_connected() {
 
   local res=`adb devices | grep "$device_id"`
 
-  if [ -z "$device_id" ] || [ -z "$res" ]; then echo false; else echo true; fi
+  if [ -z "$device_id" ] || [ -z "$res" ]; then echo "$FALSE"; else echo "$TRUE"; fi
 }
 #
 # restart_server
@@ -180,8 +286,8 @@ function utils_set_display() {
   resolution=`default "$resolution" 'reset'`
   density=`default "$density" 'reset'`
 
-  adb shell wm size "$resolution"
-  adb shell wm density "$density"
+  adb -s "$device_id" shell wm size "$resolution"
+  adb -s "$device_id" shell wm density "$density"
 }
 #
 # install & start

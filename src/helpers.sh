@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Values
+TRUE='true'
+FALSE='false'
+NULL='null'
+
 # Anchor points
 ANCHOR_POINT_LEFT='1%'
 ANCHOR_POINT_CENTER='50%'
@@ -20,6 +25,50 @@ DIRECTION_HORIZONTAL='DIRECTION_HORIZONTAL'
 
 # Helpers start
 #
+# echo_success
+# Helps easily print success/ green message
+function echo_success() {
+  message="$1"
+
+  echo -e '\033[33m'
+  echo -e "$message"
+  echo -e '\033[0m'
+}
+#
+# echo_warning
+# Helps easily print warning/ green message
+function echo_warning() {
+  message="$1"
+
+  echo -e '\033[32m'
+  echo -e "$message"
+  echo -e '\033[0m'
+}
+#
+#
+# echo_error
+# Helps easily print error/ red message
+function echo_error() {
+  message="$1"
+
+  echo -e "\033[31m"
+  echo -e "$message"
+  echo -e "\033[0m"
+}
+#
+# val_or_null
+# Helps setup default value for variable
+function val_or_null() {
+  local value="$1"
+
+  if [ -n "$value" ]
+  then
+    echo "$value"
+  else
+    echo "$NULL"
+  fi
+}
+#
 # default
 # Helps setup default value for variable
 function default() {
@@ -28,9 +77,9 @@ function default() {
 
   if [ -z "$current_value" ]; then current_value=$default_value; fi
 
-  echo "$current_value"
+  val_or_null "$current_value"
 }
-# 
+#
 # calc_point_on_section
 # Returns 1-dimentional-point (single number) from between two points
 function calc_point_on_section() {
@@ -52,7 +101,7 @@ function calc_point_on_section() {
 
   #TODO consider keeping $point within min max range ???
 
-  echo $point
+  val_or_null "$point"
 }
 #
 # calc_point_on_surface
@@ -72,7 +121,7 @@ function calc_point_on_surface() {
   x=`calc_point_on_section "$x" "$left" "$right"`
   y=`calc_point_on_section "$y" "$top" "$bottom"`
 
-  echo "$x $y"
+  val_or_null "$x $y"
 }
 #
 # get prop
@@ -96,7 +145,7 @@ function calc_duration_from_distance_speed() {
   local distance=`echo "$x_from $y_from $x_to $y_to" | awk '{printf("%d", sqrt(($1 - $3)^2 + ($2 - $4)^2))}'`
   local duration=`echo "$distance $speed" | awk '{printf("%d", ($1 / $2) * 1000)}'`
 
-  echo "$duration"
+  val_or_null "$duration"
 }
 # 
 # calc_colors_distance
@@ -131,7 +180,8 @@ function helper_string_length() {
 
   local length=`echo "$string" | wc -c`
   length=$((length - 1))
-  echo "$length"
+
+  val_or_null "$length"
 }
 # 
 # helper_substring
@@ -148,7 +198,7 @@ function helper_substring() {
     string=`echo "$string" | grep -oE "^.{${length}}" | sed -n '1p'`
   fi
 
-  echo "$string"
+  val_or_null "$string"
 }
 #
 # helper_to_lower
@@ -195,9 +245,9 @@ function helper_does_string_starts_with() {
 
   if [[ "$string" == "$start_string"* ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -209,9 +259,9 @@ function helper_does_string_ends_with() {
 
   if [[ "$string" == *"$end_string" ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -223,9 +273,9 @@ function helper_does_string_contains() {
 
   if [[ "$string" == *"$substring"* ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -237,9 +287,9 @@ function helper_string_is_lower_case() {
   local is_lower_case=`echo "$string" | grep '^[a-z]+$'`
   if [[ -n "$is_lower_case" ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -251,9 +301,9 @@ function helper_string_is_upper_case() {
   local is_upper_case=`echo "$string" | grep '^[A-Z]+$'`
   if [[ -n "$is_upper_case" ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -265,9 +315,9 @@ function helper_string_is_capitalised() {
   local is_capitalized=`echo "$string" | grep '^[A-Z][a-z]+$'`
   if [[ -n "$is_capitalized" ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
@@ -281,9 +331,9 @@ function helper_does_strings_are_equal() {
   string_b=`helper_to_lower "$string_b"`
   if [[ "$string_a" == "$string_b" ]]
   then
-    echo 'true'
+    echo "$TRUE"
   else
-    echo 'false'
+    echo "$FALSE"
   fi
 }
 #
