@@ -486,7 +486,7 @@ function utils_wait_to_see() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ -n "$o" ]
+    if [ "$o" != 'null' ]
     then
       echo "$o"
       break
@@ -519,7 +519,7 @@ function utils_search_node() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ -n "$o" ]
+    if [ "$o" != 'null' ]
     then
       echo "$o"
       break
@@ -573,7 +573,7 @@ function utils_wait_to_gone() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ -z "$o" ]
+    if [ "$o" == 'null' ]
     then
       echo "$o"
       break
