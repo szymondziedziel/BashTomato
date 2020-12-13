@@ -533,10 +533,10 @@ function utils_search_node() {
           uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_UP"
           ;;
         "${DIRECTION_HORIZONTAL}_1")
-          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_RIGHT"
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_LEFT"
           ;;
         "${DIRECTION_HORIZONTAL}_-1")
-          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_LEFT"
+          uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_RIGHT"
           ;;
         *)
           echo "Wrong direction. Do not know how to search."

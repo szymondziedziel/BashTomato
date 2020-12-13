@@ -190,7 +190,7 @@ package_from_object_by_prop=`get_prop "$scroll_view_v" 'package'`
 utils_assert_strings_are_equal "$package_from_object" "$package_from_object_by_prop"
 utils_assert_true "$scroll_view_v_has_scroll_view_h"
 
-uio2_swipe "$device_id" "$scroll_view_h" "$DIRECTION_RIGHT" '80%' 50
+uio2_swipe "$device_id" "$scroll_view_h" "$DIRECTION_LEFT" '80%' 50
 o=`utils_wait_to_see "$device_id" 'text="TOP_RIGHT"'`
 utils_assert_strings_are_different "$o" ''
 
@@ -201,7 +201,7 @@ uio2_swipe "$device_id" "$scroll_view_v" "$DIRECTION_DOWN" '80%' 50
 o=`utils_wait_to_see "$device_id" 'text="BOTTOM_RIGHT"'`
 utils_assert_strings_are_different "$o" ''
 
-uio2_swipe "$device_id" "$scroll_view_h" "$DIRECTION_LEFT" '80%' 50
+uio2_swipe "$device_id" "$scroll_view_h" "$DIRECTION_RIGHT" '80%' 50
 o=`utils_wait_to_see "$device_id" 'text="BOTTOM_LEFT"'`
 utils_assert_strings_are_different "$o" ''
 

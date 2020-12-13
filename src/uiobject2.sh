@@ -671,12 +671,12 @@ function uio2_swipe_with_speed() {
       y_to="$start"
       ;;
     $DIRECTION_LEFT)
-      x_from="$start"
-      x_to="$end"
-      ;;
-    $DIRECTION_RIGHT)
       x_from="$end"
       x_to="$start"
+      ;;
+    $DIRECTION_RIGHT)
+      x_from="$start"
+      x_to="$end"
       ;;
     $DIRECTION_UP)
       y_from="$start"
@@ -724,12 +724,12 @@ function uio2_swipe() {
       y_to="$start"
       ;;
     $DIRECTION_LEFT)
-      x_from="$start"
-      x_to="$end"
-      ;;
-    $DIRECTION_RIGHT)
       x_from="$end"
       x_to="$start"
+      ;;
+    $DIRECTION_RIGHT)
+      x_from="$start"
+      x_to="$end"
       ;;
     $DIRECTION_UP)
       y_from="$start"
