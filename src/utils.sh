@@ -425,12 +425,15 @@ function utils_install_and_start() {
   local device_id="$1"
   local package_name="$2"
   local apkpath="$3"
-  local force="$4"
+  local force=`default "$4" ''`
 
   local is_installed=`adb -s "$device_id" shell pm list packages | cut -d: -f2 | grep "$package_name"`
   if [ -z "$is_installed" ] || [ -n "$force" ]
   then
-    adb -s "$device_id" install -t "$apkpath"
+    if [ -n "$apkpath" ]
+    then
+      adb -s "$device_id" install -t "$apkpath"
+    fi
   fi
 
   adb -s "$device_id" shell monkey -p "$package_name" -c android.intent.category.LAUNCHER 1
@@ -475,6 +478,8 @@ function utils_wait_to_see() {
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
 
+  rm temporary_xml_dump.xml
+
   while [ "$attempts" -gt 0 ]
   do
     uid_dump_window_hierarchy "$device_id" > /dev/null
@@ -504,6 +509,8 @@ function utils_search_node() {
 
   local previous_xml_hash=`echo '' | md5`
   local direction_modifier=1
+
+  rm temporary_xml_dump.xml
 
   while [ "$swipes_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
   do
@@ -557,6 +564,8 @@ function utils_wait_to_gone() {
   local filter="$2"
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
+
+  rm temporary_xml_dump.xml
 
   while [ "$attempts" -gt 0 ]
   do

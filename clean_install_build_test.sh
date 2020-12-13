@@ -42,7 +42,7 @@ touch $dist_path/bashtomato.sh
 chmod 777 $dist_path/bashtomato.sh
 echo '#!/bin/bash
 ' > $dist_path/bashtomato.sh
-files=(helpers keycodes_for_bash_3_2 uidevice uiobject2 utils)
+files=(helpers keycodes_for_bash_3_2 uidevice uiobject2 utils extensions)
 for file in "${files[@]}"
 do
   echo "# File: $src_path/$file.sh" >> $dist_path/bashtomato.sh
