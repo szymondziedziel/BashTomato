@@ -529,8 +529,6 @@ function utils_search_node() {
       case_value="${swiping_direction}_${direction_modifier}"
       case $case_value in
         "${DIRECTION_VERTICAL}_1")
-          
-          echo "$o"
           uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_DOWN"
           ;;
         "${DIRECTION_VERTICAL}_-1")
