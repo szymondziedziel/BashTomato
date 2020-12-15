@@ -478,7 +478,7 @@ function utils_wait_to_see() {
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
 
-  rm temporary_xml_dump.xml
+  rm temporary_xml_dump.xml > /dev/null
 
   while [ "$attempts" -gt 0 ]
   do
@@ -486,7 +486,7 @@ function utils_wait_to_see() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ "$o" != 'null' ]
+    if [ "$o" != "$NULL" ]
     then
       echo "$o"
       break
@@ -494,6 +494,8 @@ function utils_wait_to_see() {
 
     attempts=$((attempts - 1))
   done
+  
+  echo "$NULL"
 }
 # #TODO make waits to be able to be more generic
 #
@@ -510,7 +512,7 @@ function utils_search_node() {
   local previous_xml_hash=`echo '' | md5`
   local direction_modifier=1
 
-  rm temporary_xml_dump.xml
+  rm temporary_xml_dump.xml > /dev/null
 
   while [ "$swipes_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
   do
@@ -519,7 +521,7 @@ function utils_search_node() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ "$o" != 'null' ]
+    if [ "$o" != "$NULL" ]
     then
       echo "$o"
       break
@@ -527,6 +529,8 @@ function utils_search_node() {
       case_value="${swiping_direction}_${direction_modifier}"
       case $case_value in
         "${DIRECTION_VERTICAL}_1")
+          
+          echo "$o"
           uio2_swipe "$device_id" "$object_to_search_in" "$DIRECTION_DOWN"
           ;;
         "${DIRECTION_VERTICAL}_-1")
@@ -556,6 +560,8 @@ function utils_search_node() {
 
     swipes_left=$((swipes_left - 1))
   done
+
+  echo "$NULL"
 }
 #
 # wait_to_gone
@@ -565,7 +571,7 @@ function utils_wait_to_gone() {
   local index=`default "$3" 1`
   local attempts=`default "$4" 30`
 
-  rm temporary_xml_dump.xml
+  rm temporary_xml_dump.xml > /dev/null
 
   while [ "$attempts" -gt 0 ]
   do
@@ -573,14 +579,16 @@ function utils_wait_to_gone() {
     local xml=`cat temporary_xml_dump.xml`
     local o=`uio2_find_object "$xml" "$filter" "$index"`
 
-    if [ "$o" == 'null' ]
+    if [ "$o" == "$NULL" ]
     then
-      echo "$o"
+      echo "$NULL"
       break
     fi
 
     attempts=$((attempts - 1))
   done
+  
+  echo "$o"
 }
 # TODO make waits to be able to be more generic
 
