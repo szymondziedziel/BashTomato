@@ -1,4 +1,4 @@
-functions=`cat ./dist/bashtomato.sh | grep 'function' | tr '()' ' ' | cut -d ' ' -f2`
+functions=`cat ./dist/bashtomato.sh | grep '^function ' | tr '()' ' ' | cut -d ' ' -f2`
 all_count=`echo -e "$functions" | wc -l`
 functions=($functions)
 
@@ -9,7 +9,13 @@ do
 
   if [ -z "$is_used" ]
   then
-    unused="$unused\n$f"
+    if [ -z "$unused" ]
+    then
+      unused="$f"
+    else
+      unused="$unused
+$f"
+    fi
   fi
 done
 

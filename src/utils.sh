@@ -1,6 +1,7 @@
 #!/bin/bash
 
-function utils_assert_null() {
+function utils_assert_null() { # exits with `success_message` and status 0 if `value` is `$NULL` else prints `error_message` with status 1
+
   local value="$1"
   local success_message="$2"
   local error_message="$3"
@@ -29,7 +30,7 @@ function utils_assert_null() {
   fi
 }
 
-function utils_assert_not_null() {
+function utils_assert_not_null() { # exits with `success_message` and status 0 if `value` is NOT `$NULL` else prints `error_message` with status 1
   local value="$1"
   local success_message="$2"
   local error_message="$3"
@@ -58,7 +59,7 @@ function utils_assert_not_null() {
   fi
 }
 
-function utils_assert_true() {
+function utils_assert_true() { # exits with `success_message` and status 0 if `value` is `$TRUE` else prints `error_message` with status 1
   local value="$1"
   local success_message="$2"
   local error_message="$3"
@@ -86,7 +87,7 @@ function utils_assert_true() {
   fi
 }
 
-function utils_assert_false() {
+function utils_assert_false() { # exits with `success_message` and status 0 if `value` is `$FALSE` else prints `error_message` with status 1
   local value="$1"
   local success_message="$2"
   local error_message="$3"
@@ -114,7 +115,7 @@ function utils_assert_false() {
   fi
 }
 
-function utils_assert_string_is_empty() {
+function utils_assert_string_is_empty() { # exits with `success_message` and status 0 if `value` expands to '' else prints `error_message` with status 1
   local value="$1"
   local success_message="$2"
   local error_message="$3"
@@ -142,7 +143,7 @@ function utils_assert_string_is_empty() {
   fi
 }
 
-function utils_assert_strings_are_equal() {
+function utils_assert_strings_are_equal() { # exits with `success_message` and status 0 if `value_a` and `value_b` expand to same values else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -171,7 +172,7 @@ function utils_assert_strings_are_equal() {
   fi
 }
 
-function utils_assert_strings_are_different() {
+function utils_assert_strings_are_different() { # exits with `success_message` and status 0 if `value_a` and `value_b` expand to different values else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -200,7 +201,7 @@ function utils_assert_strings_are_different() {
   fi
 }
 
-function utils_assert_numbers_first_less_than_second() {
+function utils_assert_numbers_first_less_than_second() { # exits with `success_message` and status 0 if `value_a` is less than `value_b` else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -229,7 +230,7 @@ function utils_assert_numbers_first_less_than_second() {
   fi
 }
 
-function utils_assert_numbers_first_less_or_equal_than_second() {
+function utils_assert_numbers_first_less_or_equal_than_second() { # exits with `success_message` and status 0 if `value_a` is less or equal than `value_b` else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -258,7 +259,7 @@ function utils_assert_numbers_first_less_or_equal_than_second() {
   fi
 }
 
-function utils_assert_numbers_first_equals_second() {
+function utils_assert_numbers_first_equals_second() { # exits with `success_message` and status 0 if `value_a` and `value_b` are equal else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -287,7 +288,7 @@ function utils_assert_numbers_first_equals_second() {
   fi
 }
 
-function utils_assert_numbers_first_greater_or_equal_than_second() {
+function utils_assert_numbers_first_greater_or_equal_than_second() { # exits with `success_message` and status 0 if `value_a` is greater or equal than `value_b` else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -316,7 +317,7 @@ function utils_assert_numbers_first_greater_or_equal_than_second() {
   fi
 }
 
-function utils_assert_numbers_first_greater_than_second() {
+function utils_assert_numbers_first_greater_than_second() { # exits with `success_message` and status 0 if `value_a` is greater than `value_b` else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -345,7 +346,7 @@ function utils_assert_numbers_first_greater_than_second() {
   fi
 }
 
-function utils_assert_numbers_first_is_not_equal_to_second() {
+function utils_assert_numbers_first_is_not_equal_to_second() { # exits with `success_message` and status 0 if `value_a` and `value_b` expand to different values else prints `error_message` with status 1
   local value_a="$1"
   local value_b="$2"
   local success_message="$3"
@@ -373,10 +374,9 @@ function utils_assert_numbers_first_is_not_equal_to_second() {
     exit 1
   fi
 }
-#
-# devices
-function utils_devices() {
-  local device_index="$1"
+
+function utils_devices() { # returns all devices ids list or single if `device_index` passed
+  local device_index=`default "$1" ''`
 
   if [ -z "$device_index" ]
   then
@@ -387,29 +387,26 @@ function utils_devices() {
 
   val_or_null "$device_id"
 }
-#
-# is_device_connected
-function utils_is_device_connected() {
+
+function utils_is_device_connected() { # checks if device with `device_id` is reachable from ADB, returns `$TRUE`/ `$FALSE`
   local device_id="$1"
 
   local res=`adb devices | grep "$device_id"`
 
   if [ -z "$device_id" ] || [ -z "$res" ]; then echo "$FALSE"; else echo "$TRUE"; fi
 }
-#
-# restart_server
-function utils_restart_server() {
+
+function utils_restart_server() { # restarts ADB server
   adb kill-server && adb start-server
 }
-#
-# reboot
-function utils_reboot() {
+
+function utils_reboot() { # reboots device by its `device_id`
   local device_id="$1"
 
   adb -s "$device_id" reboot
 }
-# display
-function utils_set_display() {
+
+function utils_set_display() { # sets resolution and density by provoding named params of deivce by `device_id`
   local device_id="$1"
   local resolution=`echo "$@" | grep -oE '--resolution=[0-9]{1,4}x[0-9]{1,4}' | cut -d '=' -f2`
   local density=`echo "$@" | grep -oE '--density=[0-9]{1,4}' | cut -d '=' -f2`
@@ -419,12 +416,11 @@ function utils_set_display() {
   adb -s "$device_id" shell wm size "$resolution"
   adb -s "$device_id" shell wm density "$density"
 }
-#
-# install & start
-function utils_install_and_start() {
+
+function utils_install_and_start() { # starts `package_name` on device with `device_id`, allows to install apk and force reinstall
   local device_id="$1"
   local package_name="$2"
-  local apkpath="$3"
+  local apkpath=`default "$3" ''`
   local force=`default "$4" ''`
 
   local is_installed=`adb -s "$device_id" shell pm list packages | cut -d: -f2 | grep "$package_name"`
@@ -438,41 +434,36 @@ function utils_install_and_start() {
 
   adb -s "$device_id" shell monkey -p "$package_name" -c android.intent.category.LAUNCHER 1
 }
-#
-# kill_app
-function utils_stop_app() {
+
+function utils_stop_app() { # stops app with `package_name` on device with `device_id`
   local device_id="$1"
   local package_name="$2"
 
   adb -s "$device_id" shell am force-stop "$package_name"
 }
-# 
-# uninstall_app
-function utils_uninstall() {
+
+function utils_uninstall() { # uninstalls app with `package_name` on device with `device_id`
   local device_id="$1"
   local package_name="$2"
 
   adb -s "$device_id" uninstall "$package_name"
 }
-#
-# clear_data
-function utils_clear_data() {
+
+function utils_clear_data() { # clears app data of `package_name` on device with `device_id`
   local device_id="$1"
   local package_name="$2"
 
   adb -s "$device_id" shell pm clear "$package_name"
 }
-# 
-# record
-function utils_record() {
+
+function utils_record() { # records video from device with `device_id`, for now this probably locks device blockick possibility to execute other functions
   local device_id="$1"
   local filename="$2"
 
   adb -s "$device_id" shell screenrecord "/sdcard/${filename}.mp4"
 }
-#
-# wait_to_see
-function utils_wait_to_see() {
+
+function utils_wait_to_see() { # search for element on device's screen by `device_id`, dumps hierarchy until element appeared or attempts exhaust
   local device_id="$1"
   local filter="$2"
   local index=`default "$3" 1`
@@ -498,23 +489,23 @@ function utils_wait_to_see() {
   echo "$NULL"
 }
 # #TODO make waits to be able to be more generic
-#
-function utils_search_node() {
+
+function utils_search_node() { # searches for element in advanced way, it scrolls horizontally or vertically through given element and searches for other element inside, moved by configurable steps, repeats `cycles` times
   local device_id="$1"
   local object_to_search_in=`default "$2" ''`
   local filter="$3"
   local index=`default "$4" 1`
   local swiping_direction=`default "$5" "$DIRECTION_VERTICAL"`
   local cycles=`default "$6" 1`
-  local swipe_length=`default $7 '50%'`
-  local swipes_left=`default "$8" 50`
+  local swipe_length=`default "$7" '50%'`
+  local swipes_count_left=`default "$8" 50`
 
   local previous_xml_hash=`echo '' | md5`
   local direction_modifier=1
 
   rm temporary_xml_dump.xml > /dev/null
 
-  while [ "$swipes_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
+  while [ "$swipes_count_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
   do
     previous_xml_hash=`cat temporary_xml_dump.xml | md5`
     uid_dump_window_hierarchy "$device_id" > /dev/null
@@ -556,14 +547,13 @@ function utils_search_node() {
       direction_modifier=$((direction_modifier * -1))
     fi
 
-    swipes_left=$((swipes_left - 1))
+    swipes_count_left=$((swipes_count_left - 1))
   done
 
   echo "$NULL"
 }
-#
-# wait_to_gone
-function utils_wait_to_gone() {
+
+function utils_wait_to_gone() { # search for element on device's screen by `device_id`, dumps hierarchy until element gone or attempts exhaust
   local device_id="$1"
   local filter="$2"
   local index=`default "$3" 1`
@@ -611,7 +601,7 @@ function utils_wait_to_gone() {
 #   done
 # }
 
-function utils_get_device_orientation() {
+function utils_get_device_orientation() { # gets device's orientation as number 0 to 3
   local device_id="$1"
 
   adb -s $device_id shell settings get system user_rotation
