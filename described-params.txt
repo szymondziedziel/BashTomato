@@ -1,0 +1,59 @@
+apkpath - path to .apk file to install and run
+attempts - number of tries after function will stop with result
+content - is text to type inside text editable
+current_value - actual value passed to function whic will be relaced when empty
+cycles - number of repeats the whole procedure like swiping to left/right top/bottom to reach the scroll limit. Cycle decreases when direction changes.
+default_value - value that replaces `current_value` when empty
+device_id - is the string like emulator-5554, emulator-5556
+device_index - is the order number of device comes from `adb devices`
+direction - is one of { $DIRECTION_DOWN $DIRECTION_LEFT $DIRECTION_RIGHT $DIRECTION_UP }
+directory - place where function results will be stored to not to be mixed with other files
+dump_xml_filename - is for use custom xml file name for dump. Pass without `.xml` extension
+duration - time expressed in seconds or milliseconds
+end_string - substring which must match to end of string
+error_message - message for assert printed when assertion fails
+filename - filename where to store screenshot of recording. Pass without extension.
+filter - grep -E like regular expression passed to find elements on screen
+force - forces given procedure e. g. reinstall
+from - expresses start/ begin of range of point
+glue - to join strings
+index - to point specified instance. Out of bound will result with empty result is is not $NULL in this case. Maybe this should return $NULL? #TODO
+keycode - any valid integer od one from consts from ./src/keycodes.sh from between brackets
+length - expresses length, size, amount
+max - limit which can't be exceeded or limits some value
+min - limit which can't be exceeded or limits some value
+node - an XML-string-like element description
+node_a - an XML-string-like element description
+node_b - an XML-string-like element description
+node_from - an XML-string-like element description
+node_screenshot_filename - filename for node screenshot
+node_to - an XML-string-like element description
+object_to_search_in - an XML-string-like element in which searching by swipe left/right top/left will be done
+objects - XML-string-like elements separated by newlines
+package_name - application package name
+percent - percent-value-string-like '50%'/'66%'/'1%'
+prop_name - an XML attribute name
+screenshot_filename - filename where screenshot will be stored
+speed - speed in pixels per second to perform gesture
+start_from - 
+start_string - substring which must match to begin of string
+string - main string used in helpers like in find or replace
+string_a - main od substring used in helpers like in find or replace
+string_b - substring used in helpers like in find or replace
+substring - substring used in helpers like in find or replace
+success_message - message for assert printed when assertion success
+swipe_length - distance between touchdown and touchup for swipe
+swipes_count_left - swipes left to perform before go to next cycles or stop procedure with som result
+swiping_direction - is one of { $DIRECTION_DOWN $DIRECTION_LEFT $DIRECTION_RIGHT $DIRECTION_UP }
+value - value to assert, null or default
+value_a - value to assert
+value_b - value to assert
+wait_time - time to wait after click in seconds
+which - element's bound to get { left, top, right, bottom}
+x - usually axpress horizontal margin from left where to do interaction with element
+x_from - usually axpress horizontal margin from left where to begin interaction with element
+x_to - usually axpress horizontal margin from left where to end interaction with element
+xml - any valid XML-source, usually comes from hierarchy dump
+y - usually axpress horizontal margin from left where to do interaction with element
+y_from - usually axpress horizontal margin from left where to begin interaction with element
+y_to - usually axpress horizontal margin from left where to end interaction with element
