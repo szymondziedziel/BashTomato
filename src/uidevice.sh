@@ -38,10 +38,10 @@ function uid_dump_window_hierarchy() { # retrieve XML-source of current visible 
   local device_id="$1"
   local dump_xml_filename=`default "$2" 'temporary_xml_dump.xml'`
 
-  local dumppath=`adb -s $device_id shell uiautomator dump | cut -d ' ' -f5`
-  local dumpfile=`basename $dumppath`
+  local dumppath=`adb -s "$device_id" shell uiautomator dump | cut -d ' ' -f5`
+  local dumpfile=`basename "$dumppath"`
 
-  adb -s $device_id pull $dumppath ./$dump_xml_filename.xml
+  adb -s "$device_id" pull "$dumppath" "./$dump_xml_filename"
 }
 #
 # findObject(UiSelector selector)
@@ -337,7 +337,7 @@ function uid_take_screenshot() { # takes screenshot to specified filename withou
   local device_id="$1"
   local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'`
 
-  adb -s $device_id shell screencap -p > $screenshot_filename.png
+  adb -s "$device_id" shell screencap -p > "$screenshot_filename"
 }
 #
 # unfreezeRotation()
@@ -345,7 +345,7 @@ function uid_take_screenshot() { # takes screenshot to specified filename withou
 function uid_unfreeze_rotation() { # unlock devide's reactions to rotations
   local device_id="$1"
 
-  adb -s $device_id shell settings put system accelerometer_rotation 1
+  adb -s "$device_id" shell settings put system accelerometer_rotation 1
 }
 #
 # wait(SearchCondition<R> condition, long timeout)

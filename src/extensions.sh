@@ -14,7 +14,7 @@ function ext_screenshot_node() { # makes screenshot and cuts out image of given 
   width=$((right - left))
   height=$((bottom - top))
 
-  convert "$screenshot_filename" -crop "${width}x${height}+${left}+${top}" "${node_screenshot_filename}.png"
+  convert "$screenshot_filename" -crop "${width}x${height}+${left}+${top}" "${node_screenshot_filename}"
 }
 
 function ext_inspect_window_hierarchy() { # makes screenshot and then images of all nodes in hierarchy

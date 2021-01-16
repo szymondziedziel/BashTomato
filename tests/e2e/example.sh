@@ -176,7 +176,6 @@ uio2_click "$device_id" "$o"
 o=`utils_wait_to_see "$device_id" 'text="TOP_LEFT"'`
 utils_assert_not_null "$o"
 
-xml_name='temporary_xml_dump.xml'
 uid_dump_window_hierarchy "$device_id" "$xml_name"
 xml=`cat "$xml_name"`
 scroll_view_v=`uio2_find_object "$xml" 'resource-id="com.example.bashtomatotester:id/scroll_view_v"'`
