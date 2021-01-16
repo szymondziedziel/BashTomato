@@ -15,6 +15,7 @@ and is created to automate simple, daily repetitive work in simple (or not that 
 
 - ADB installed
 - device or emulator properly configured
+- ./src/extensions.sh may require additional libs and packages like for example imagemagick for handling better screenshots and inspecting the screen hierarchy in more friendly graphical way
 
 ## Benefits
 
@@ -33,7 +34,7 @@ It uses `adb shell uiautomator dump` to get window's hierarchy, so it causes tha
 
 - clone repository to your local machine
 - create new shell-like script file
-- include ./src/bashtomato.sh or a bit minified version ./dist/bashtomato.sh. To have ./dist/bashtomato.sh it is required to execute ./clean_install_build_test.sh
+- include ./src/bashtomato.sh or a bit minified version ./dist/bashtomato.sh. To have ./dist/bashtomato.sh it is required to execute ./clean_install_build_test.sh (unit and E2E test will be automatically executed. E2E will fail for sure, but BashTomato should work correctly)
 - start automate
 
 ```sh
@@ -44,7 +45,7 @@ source './dist/bashtomato.sh'
 # your code goes here
 ```
 
-for more what your code should look like you can refer to ./tests/e2e/example.sh. I used there most of functions offered by BashTomato.
+for more what your testing code should look like you can refer to ./tests/e2e/example.sh. I used there most of functions offered by BashTomato to test them and show sample usage
 
 ## Testing
 
