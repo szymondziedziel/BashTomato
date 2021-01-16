@@ -1,25 +1,8 @@
 #!/bin/bash
 
 # UIObject2 API start
-#
-#DOCS__
-#
-# ##### Docs from Google
-# ###### clear()
-# Clears the text content if this object is an editable field.
-#
-# ##### Docs from BashTomato
-# ###### uio2_clear()
-# Clears whole content for provided node on provided device.
-# Focuses the node automatically.
-# This is very poor in terms or performance for long contents.
-# 
-# ###### Parameters:
-# - device_id
-# - node
-#
-#__DOCS
-function uio2_clear() {
+
+function uio2_clear() { # clears editable text, auto clicks on such element, very poor in terms of performance
   local device_id="$1"
   local node="$2"
 
@@ -32,25 +15,8 @@ function uio2_clear() {
     uid_press_key_code "$device_id" $KEYCODE_DEL
   done
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# ###### click()
-# Clicks on this object.
-#
-# ##### Docs from BashTomato
-# ###### uio2_click()
-# Clicks on provided node on provided device.
-# 
-# ###### Parameters:
-# - device_id
-# - node
-# - x
-# - y
-#
-#__DOCS
-function uio2_click() {
+
+function uio2_click() { # shortly clicks on element
   local device_id="$1"
   local node="$2"
   local x=`default "$3" "$ANCHOR_POINT_CENTER"`
@@ -61,27 +27,8 @@ function uio2_click() {
   # It is not base on uio2_click_with_duration, because uses tap instead of swipe
   adb -s "$device_id" shell input tap "$point_on_surface"
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# click(long duration)
-# Performs a click on this object that lasts for duration milliseconds.
-#
-# ##### Docs from BashTomato
-# ###### uio2_click_with_duration()
-# Clicks on provided node on provided device.
-# Gesture is longer than normal uio2_click()
-# 
-# ###### Parameters:
-# - device_id
-# - node
-# - duration
-# - x
-# - y
-#
-#__DOCS
-function uio2_click_with_duration() {
+
+function uio2_click_with_duration() { # clicks with given duration, default 0.5 second
   local device_id="$1"
   local node="$2"
   local duration=`default "$3" 500`
@@ -92,25 +39,8 @@ function uio2_click_with_duration() {
 
   adb -s "$device_id" shell input swipe "$point_on_surface" "$point_on_surface" "$duration"
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# clickAndWait(EventCondition<R> condition, long timeout)
-# Clicks on this object, and waits for the given condition to become true.
-#
-# ##### Docs from BashTomato
-# ###### uio2_click_and_wait()
-# Clicks on provided node on provided device and simply sleeps for some time.
-# 
-# ###### Parameters:
-# - device_id
-# - node
-# - x
-# - y
-#
-#__DOCS
-function uio2_click_and_wait() {
+
+function uio2_click_and_wait() { # shortly clicks on element and waits, default 5 seconds
   local device_id="$1"
   local node="$2"
   local wait_time=`default "$3" 5`
@@ -120,31 +50,8 @@ function uio2_click_and_wait() {
   uio2_click "$device_id" "$node" "$x" "$y"
   sleep $wait_time
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# drag(Point dest)
-# Drags this object to the specified location.
-#
-# ##### Docs from BashTomato
-# ###### uio2_drag()
-# Drags and drops from one node to another on provided device.
-# Useful as allows to find one node, which wll be moved to another.
-# The first one by default will be taken by center middle and dropped to center middle of another.
-# 
-# ###### Parameters:
-# - device_id
-# - node_from
-# - node_to
-# - duration
-# - x_from
-# - y_from
-# - x_to
-# - y_to
-#
-#__DOCS
-function uio2_drag() {
+
+function uio2_drag() { # drags from one element to another. Start, end points can be changed by top, left margins for each
   local device_id="$1"
   local node_from="$2"
   local node_to="$3"
@@ -159,29 +66,8 @@ function uio2_drag() {
 
   adb -s "$device_id" shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# drag(Point dest, int speed)
-# Drags this object to the specified location.
-#
-# ##### Docs from BashTomato
-# ###### uio2_drag_with_speed()
-# Like uio2_drag(), but takes speed instead of duration
-# 
-# ###### Parameters:
-# - device_id
-# - node_from
-# - node_to
-# - speed
-# - x_from
-# - y_from
-# - x_to
-# - y_to
-#
-#__DOCS
-function uio2_drag_with_speed() {
+
+function uio2_drag_with_speed() { # like uio2_drag, but speed may be defined instead fo duration
   local device_id="$1"
   local node_from="$2"
   local node_to="$3"
@@ -198,21 +84,8 @@ function uio2_drag_with_speed() {
 
   adb -s "$device_id" shell input draganddrop "$point_on_surface_from" "$point_on_surface_to" "$duration"
 }
-#
-#DOCS__
-#
-# ##### Docs from Google
-# equals(Object object)
-#
-# ##### Docs from BashTomato
-# ###### uio2_equals()
-# 
-# ###### Parameters:
-# - node_a
-# - node_b
-#
-#__DOCS
-function uio2_equals() {
+
+function uio2_equals() { # compares elements like XML-strigs, not by reference
   local node_a="$1"
   local node_b="$2"
 
@@ -224,10 +97,8 @@ function uio2_equals() {
   fi
 }
 # #SKIP Probably does no make what should do
-#
-# findObject(BySelector selector)
-# Searches all elements under this object and returns the first object to match the criteria, or null if no matching objects are found.
-function uio2_find_object() {
+
+function uio2_find_object() { # filters element from given XML-source matching regular expression pattern
   local xml="$1"
   local filter="$2"
   local index=`default "$3" 1`
@@ -237,10 +108,8 @@ function uio2_find_object() {
   local node=`echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
   val_or_null "$node"
 }
-#
-# findObjects(BySelector selector)
-# Searches all elements under this object and returns all objects that match the criteria.
-function uio2_find_objects() {
+
+function uio2_find_objects() { # filters many element from given XML-source matching regular expression pattern
   local xml="$1"
   local filter="$2"
 
@@ -258,28 +127,22 @@ function uio2_find_objects() {
 # #SKIP Please use uio2_swipe with duration from 50 to 200. Lower value means faster
 # #SKIP I may be also helpful to experiment with different percents
 #
-# getApplicationPackage()
-# Returns the package name of the app that this object belongs to.
-function uio2_get_application_package() {
+function uio2_get_application_package() { # get current package_name using ADB, may not work for all devices
   local device_id="$1"
 
   local package_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
   val_or_null "$package_name"
 }
 # #SKIP Not sure if will work for all devices
-#
-# getChildCount()
-# Returns the number of child elements directly under this object.
-function uio2_get_children_count() {
+
+function uio2_get_children_count() { # count children of given node based on whole XML-source
   local xml="$1"
   local node="$2"
 
   echo `uio2_get_children "$xml" "$node" | wc -l`
 }
-#
-# getChildren()
-# Returns a collection of the child elements directly under this object.
-function uio2_get_children() {
+
+function uio2_get_children() { # filter childrens like XML-strings of given node from wholre XML-source
   local xml="$1"
   local node="$2"
 
@@ -312,26 +175,20 @@ $result"
 
   val_or_null "$result"
 }
-#
-# getClassName()
-# Returns the class name of the underlying View represented by this object.
-function uio2_get_class_name() {
+
+function uio2_get_class_name() { # gets XML element's class attribute
   local node="$1"
 
   echo `get_prop "$node" 'class'`
 }
-#
-# getContentDescription()
-# Returns the content description for this object.
-function uio2_get_content_description() {
+
+function uio2_get_content_description() { # gets XML element's content-description attribute
   local node="$1"
 
   echo `get_prop "$node" 'content-desc'`
 }
-#
-# getParent()
-# Returns this object's parent, or null if it has no parent.
-function uio2_get_parent() {
+
+function uio2_get_parent() { # gets element's parent based on ginec element and whole XML-source
   local xml="$1"
   local node="$2"
 
@@ -353,26 +210,20 @@ function uio2_get_parent() {
     fi
   done <<<"$xml"
 }
-#
-# getResourceName()
-# Returns the fully qualified resource name for this object's id.
-function uio2_get_resource_id() {
+
+function uio2_get_resource_id() { # gets XML element's resource-id attribute
   local node="$1"
 
   echo `get_prop "$node" 'resource-id'`
 }
-#
-# getText()
-# Returns the text value for this object.
-function uio2_get_text() {
+
+function uio2_get_text() { # gets XML element's text attribute
   local node="$1"
 
   echo `get_prop "$node" 'text'`
 }
-#
-# getVisibleBounds()
-# Returns the visible bounds of this object in screen coordinates.
-function uio2_get_bounds() {
+
+function uio2_get_bounds() { # gets XML element's bounds attribute
   local node="$1"
   local which="$2"
 
@@ -391,16 +242,13 @@ function uio2_get_bounds() {
     *) echo "left=$left,top=$top,right=$right,bottom=$bottom" ;;
   esac
 }
-# getVisibleCenter()
-# Returns a point in the center of the visible bounds of this object.
-function uio2_get_visible_center() {
+
+function uio2_get_visible_center() { # calculates center of visible element's part
   local node="$1"
 
   calc_point_on_surface "$node"
 }
-#
-# hasObject(BySelector selector)
-# Returns whether there is a match for the given criteria under this object.
+
 function uio2_has_object() {
   local xml="$1"
   local node="$2"
@@ -428,7 +276,7 @@ function uio2_has_object() {
     if [ $next_node_depth -lt $child_node_depth ]; then break; fi
   done <<<"$xml"
 
-  res=`echo "$res" | grep "$filter"`
+  res=`echo "$res" | grep -E "$filter"`
   # echo $res
 
   if [ -n "$res" ]
@@ -441,82 +289,62 @@ function uio2_has_object() {
 #
 # hashCode()
 # #SKIP Not sure if it may be helpful at all
-#
-# isCheckable()
-# Returns whether this object is checkable.
-function uio2_is_checkable() {
+
+function uio2_is_checkable() { # gets XML element's checkable attribute
   local node="$1"
 
   echo `get_prop "$node" 'checkable'`
 }
-#
-# isChecked()
-# Returns whether this object is checked.
-function uio2_is_checked() {
+
+function uio2_is_checked() { # gets XML element's checked attribute
   local node="$1"
 
   echo `get_prop "$node" 'checked'`
 }
-#
-# isClickable()
-# Returns whether this object is clickable.
-function uio2_is_clickable() {
+
+function uio2_is_clickable() { # gets XML element's clickable attribute
   local node="$1"
 
   echo `get_prop "$node" '[^-]clickable'`
 }
-#
-# isEnabled()
-# Returns whether this object is enabled.
-function uio2_is_enabled() {
+
+function uio2_is_enabled() { # gets XML element's enabled attribute
   local node="$1"
 
   echo `get_prop "$node" 'enabled'`
 }
-#
-# isFocusable()
-# Returns whether this object is focusable.
-function uio2_is_focusable() {
+
+function uio2_is_focusable() { # gets XML element's focusable
   local node="$1"
 
   echo `get_prop "$node" 'focusable'`
 }
-#
-# isFocused()
-# Returns whether this object is focused.
-function uio2_is_focused() {
+
+function uio2_is_focused() { # gets XML element's focused attribute
   local node="$1"
 
   echo `get_prop "$node" 'focused'`
 }
-#
-# isLongClickable()
-# Returns whether this object is long clickable.
-function uio2_is_long_clickable() {
+
+function uio2_is_long_clickable() { # gets XML element's long-clickable attribute
   local node="$1"
 
   echo `get_prop "$node" 'long-clickable'`
 }
-#
-# isScrollable()
-# Returns whether this object is scrollable.
-function uio2_is_scrollable() {
+
+function uio2_is_scrollable() { # gets XML element's scrollable attribute
   local node="$1"
 
   echo `get_prop "$node" 'scrollable'`
 }
-#
-# isSelected()
-# Returns whether this object is selected.
-function uio2_is_selected() {
+
+function uio2_is_selected() { # gets XML element's selected attribute
   local node="$1"
 
   echo `get_prop "$node" 'selected'`
 }
-#
-# longClick()
-# Performs a long click on this object.
-function uio2_long_click() {
+
+function uio2_long_click() { # clicks 0.5 seconds long on element
   local device_id="$1"
   local node="$2"
   local x=`default "$3" "$ANCHOR_POINT_CENTER"`
@@ -524,10 +352,8 @@ function uio2_long_click() {
 
   uio2_click_with_duration "$device_id" "$node" "$x" "$y" 500
 } 
-#
-# pinchClose(float percent)
-# Performs a pinch close gesture on this object.
-function uio2_pinch_close() {
+
+function uio2_pinch_close() { # performs pinch close gesture on elemetn with specified size
   local device_id="$1"
   local node="$2"
   local percent=`default "$3" '50%'`
@@ -567,7 +393,7 @@ function uio2_pinch_close() {
 #
 # pinchOpen(float percent)
 # Performs a pinch open gesture on this object.
-function uio2_pinch_open() {
+function uio2_pinch_open() { # performs pinch open gesture on elemetn with specified size
   local device_id="$1"
   local node="$2"
   local percent=`default "$3" '50%'`
@@ -627,7 +453,7 @@ function uio2_pinch_open() {
 #
 # setText(String text)
 # Sets the text content if this object is an editable field.
-function uio2_set_text() {
+function uio2_set_text() { # write text to editable, auto clicks the element
   local device_id="$1"
   local node="$2"
   local content=`default "$3" ''`
@@ -638,10 +464,8 @@ function uio2_set_text() {
   adb -s "$device_id" shell input text "$content"
 }
 # #TODO this is not able to type everything. Need huge improvement.
-#
-# swipe(Direction direction, float percent, int speed)
-# Performs a swipe gesture on this object.
-function uio2_swipe_with_speed() {
+
+function uio2_swipe_with_speed() { # like uio2_swipe, but need speed instead of duration
   local device_id="$1"
   local node="$2"
   local direction=`default "$3" "$DIRECTION_DOWN"`
@@ -691,10 +515,8 @@ function uio2_swipe_with_speed() {
 
   adb -s "$device_id" shell input swipe $point_on_surface_from $point_on_surface_to $duration
 }
-#
-# swipe(Direction direction, float percent)
-# Performs a swipe gesture on this object.
-function uio2_swipe() {
+
+function uio2_swipe() { # performs swipe on element from its one point to another
   local device_id="$1"
   local node="$2"
   local direction=`default "$3" "$DIRECTION_DOWN"`
