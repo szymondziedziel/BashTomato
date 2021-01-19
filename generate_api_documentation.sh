@@ -37,6 +37,8 @@ function complete_descriptions() {
 function format_to_md() {
   local api="$1"
 
+  local is_prev_line_func=''
+
   while read -r line
   do
     local func=`echo "$line" | grep 'Function:'`
@@ -48,33 +50,45 @@ function format_to_md() {
 
     if [ -n "$func" ]
     then
-      echo "### $func"
-    fi
-
-    if [ -n "$param" ]
-    then
-      echo "#### $param"
+      echo "#### $func"
     fi
 
     if [ -n "$desc" ]
     then
-      echo "_${desc}_"
+      echo "${desc}" | sed 's/:/ /' | awk '{ printf("`%s`: ", $1); if ($2) { $1=""; printf("%s\n", $0); } }'
+
+      if [ -n "$is_prev_line_func" ]
+      then
+        echo "##### Params:
+"
+      else
+        echo "---
+"
+      fi
     fi
+
+    if [ -n "$param" ]
+    then
+      echo "${param}" | sed 's/:/ /' | awk '{ printf("`%s`: ", $1); if ($2) { $1=""; printf("%s\\\n", $0); } }'
+    fi
+
 
     if [ -n "$pos" ]
     then
-      echo "_${pos}_"
+      echo "${pos}" | sed 's/:/ /' | awk '{ printf("`%s`: ", $1); if ($2) { $1=""; printf("%s\\\n", $0); } }'
     fi
 
     if [ -n "$req" ]
     then
-      echo "**${req}**"
+      echo "${req}" | sed 's/:/ /' | awk '{ printf("`%s`\\\n", $1); }'
     fi
 
     if [ -n "$opt" ]
     then
-      echo "**${opt}**"
+      echo "${opt}" | sed 's/:/ /' | awk '{ printf("`%s`\\\n", $1); }'
     fi
+
+    is_prev_line_func="$func"
   done <<<"$api"
 }
 

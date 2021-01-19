@@ -1,7 +1,7 @@
 apkpath : path to .apk file to install and run
 attempts : number of tries after function will stop with result
 content : is a text to type inside text editable
-current_value : actual value passed to function whic will be relaced when empty
+current_value : actual value passed to function which will be relaced when empty
 cycles : number of repeats the whole procedure like swiping to left/right top/bottom to reach the scroll limit. Cycle decreases when direction changes
 default_value : value that replaces `current_value` when empty
 device_id : is a string like emulator-5554, emulator-5556
