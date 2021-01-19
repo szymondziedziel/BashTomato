@@ -65,18 +65,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  screenshot_filename\
 `position`:  2\
 `optional`\
 `description`:  filename where screenshot will be stored
+
 ---
 
 `name`:  node_screenshot_filename\
 `position`:  3\
 `optional`\
 `description`:  filename for node screenshot
+
 ---
 
 #### Function: ext_inspect_window_hierarchy
@@ -87,18 +90,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `optional`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  screenshot_filename\
 `position`:  2\
 `optional`\
 `description`:  filename where screenshot will be stored
+
 ---
 
 `name`:  directory\
 `position`:  3\
 `optional`\
 `description`:  place where function results will be stored to not to be mixed with other files
+
 ---
 
 #### Function: val_or_null
@@ -109,6 +115,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 #### Function: default
@@ -119,12 +126,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  actual value passed to function which will be relaced when empty
+
 ---
 
 `name`:  default_value\
 `position`:  2\
 `required`\
 `description`:  value that replaces `current_value` when empty
+
 ---
 
 #### Function: calc_point_on_section
@@ -135,18 +144,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  min\
 `position`:  2\
 `required`\
 `description`:  limit which can't be exceeded or limits some value
+
 ---
 
 `name`:  max\
 `position`:  3\
 `required`\
 `description`:  limit which can't be exceeded or limits some value
+
 ---
 
 #### Function: calc_point_on_surface
@@ -157,18 +169,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  x\
 `position`:  2\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  3\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: get_prop
@@ -179,12 +194,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  prop_name\
 `position`:  2\
 `required`\
 `description`:  an XML attribute name, be careful with names like click and long-click, where one is part of another
+
 ---
 
 #### Function: calc_duration_from_distance_speed
@@ -195,30 +212,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `optional`\
 `description`:  speed in pixels per second to perform gesture
+
 ---
 
 `name`:  x_from\
 `position`:  2\
 `required`\
 `description`:  usually expresses horizontal margin from left where to begin interaction with element
+
 ---
 
 `name`:  y_from\
 `position`:  3\
 `required`\
 `description`:  usually expresses horizontal margin from top where to begin interaction with element
+
 ---
 
 `name`:  x_to\
 `position`:  4\
 `required`\
 `description`:  usually expresses horizontal margin from left where to end interaction with element
+
 ---
 
 `name`:  y_to\
 `position`:  5\
 `required`\
 `description`:  usually expresses horizontal margin from top where to end interaction with element
+
 ---
 
 #### Function: helper_string_length
@@ -229,6 +251,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_substring
@@ -239,18 +262,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 `name`:  from\
 `position`:  2\
 `required`\
 `description`:  expresses start/ begin of range of point
+
 ---
 
 `name`:  length\
 `position`:  3\
 `required`\
 `description`:  expresses length, size, amount
+
 ---
 
 #### Function: helper_to_lower
@@ -261,6 +287,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_to_upper
@@ -271,6 +298,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_capitalize
@@ -281,6 +309,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_objects_count
@@ -291,6 +320,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  XML-string-like elements separated by newlines
+
 ---
 
 #### Function: helper_does_string_starts_with
@@ -301,12 +331,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 `name`:  start_string\
 `position`:  2\
 `required`\
 `description`:  substring which must match to begin of string
+
 ---
 
 #### Function: helper_does_string_ends_with
@@ -317,12 +349,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 `name`:  end_string\
 `position`:  2\
 `required`\
 `description`:  substring which must match to end of string
+
 ---
 
 #### Function: helper_does_string_contains
@@ -333,12 +367,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 `name`:  substring\
 `position`:  2\
 `required`\
 `description`:  substring used in helpers like find or replace
+
 ---
 
 #### Function: helper_string_is_lower_case
@@ -349,6 +385,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_string_is_upper_case
@@ -359,6 +396,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_string_is_capitalised
@@ -369,6 +407,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_does_strings_are_equal
@@ -379,12 +418,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main od substring used in helpers like find or replace
+
 ---
 
 `name`:  string_b\
 `position`:  2\
 `required`\
 `description`:  substring used in helpers like find or replace
+
 ---
 
 #### Function: helper_strings_join
@@ -395,30 +436,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `optional`\
 `description`:  to join strings
+
 ---
 
 `name`:  string_a\
 `position`:  1\
 `required`\
 `description`:  main od substring used in helpers like find or replace
+
 ---
 
 `name`:  string_b\
 `position`:  2\
 `required`\
 `description`:  substring used in helpers like find or replace
+
 ---
 
 `name`:  start_from\
 `position`:  3\
 `optional`\
 `description`:  position to start searching from
+
 ---
 
 `name`:  string\
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 #### Function: helper_string_replace
@@ -429,18 +475,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  main string used in helpers like in find or replace
+
 ---
 
 `name`:  string_a\
 `position`:  2\
 `required`\
 `description`:  main od substring used in helpers like find or replace
+
 ---
 
 `name`:  string_b\
 `position`:  3\
 `required`\
 `description`:  substring used in helpers like find or replace
+
 ---
 
 #### Function: uid_click
@@ -451,18 +500,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  x\
 `position`:  2\
 `required`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  3\
 `required`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: uid_drag
@@ -473,36 +525,42 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  x_from\
 `position`:  2\
 `required`\
 `description`:  usually expresses horizontal margin from left where to begin interaction with element
+
 ---
 
 `name`:  y_from\
 `position`:  3\
 `required`\
 `description`:  usually expresses horizontal margin from top where to begin interaction with element
+
 ---
 
 `name`:  x_to\
 `position`:  4\
 `required`\
 `description`:  usually expresses horizontal margin from left where to end interaction with element
+
 ---
 
 `name`:  y_to\
 `position`:  5\
 `required`\
 `description`:  usually expresses horizontal margin from top where to end interaction with element
+
 ---
 
 `name`:  duration\
 `position`:  6\
 `required`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 #### Function: uid_dump_window_hierarchy
@@ -513,12 +571,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  dump_xml_filename\
 `position`:  2\
 `optional`\
 `description`:  is for use custom xml file name for dump. Pass without `.xml` extension
+
 ---
 
 #### Function: uid_freeze_rotation
@@ -529,6 +589,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_current_activity_name
@@ -539,6 +600,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_display_height
@@ -549,6 +611,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_display_rotation
@@ -559,6 +622,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_display_size_dp
@@ -569,6 +633,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_display_width
@@ -579,6 +644,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_get_product_name
@@ -589,6 +655,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_is_screen_on
@@ -599,6 +666,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_open_notification
@@ -609,6 +677,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_press_key_code
@@ -619,12 +688,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  keycode\
 `position`:  2\
 `required`\
 `description`:  any valid integer of one from consts from ./src/keycodes.sh value from between brackets
+
 ---
 
 #### Function: uid_set_orientation_left
@@ -635,6 +706,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_set_orientation_natural
@@ -645,12 +717,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  device_id\
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_sleep
@@ -661,6 +735,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_swipe
@@ -671,36 +746,42 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  x_from\
 `position`:  2\
 `required`\
 `description`:  usually expresses horizontal margin from left where to begin interaction with element
+
 ---
 
 `name`:  y_from\
 `position`:  3\
 `required`\
 `description`:  usually expresses horizontal margin from top where to begin interaction with element
+
 ---
 
 `name`:  x_to\
 `position`:  4\
 `required`\
 `description`:  usually expresses horizontal margin from left where to end interaction with element
+
 ---
 
 `name`:  y_to\
 `position`:  5\
 `required`\
 `description`:  usually expresses horizontal margin from top where to end interaction with element
+
 ---
 
 `name`:  duration\
 `position`:  6\
 `required`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 #### Function: uid_take_screenshot
@@ -711,12 +792,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  screenshot_filename\
 `position`:  2\
 `optional`\
 `description`:  filename where screenshot will be stored
+
 ---
 
 #### Function: uid_unfreeze_rotation
@@ -727,6 +810,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uid_wake_up
@@ -737,6 +821,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uio2_clear
@@ -747,12 +832,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_click
@@ -763,24 +850,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  x\
 `position`:  3\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  4\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: uio2_click_with_duration
@@ -791,30 +882,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  duration\
 `position`:  3\
 `optional`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 `name`:  x\
 `position`:  4\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  5\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: uio2_click_and_wait
@@ -825,30 +921,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  wait_time\
 `position`:  3\
 `optional`\
 `description`:  time in seconds to wait after click
+
 ---
 
 `name`:  x\
 `position`:  4\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  5\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: uio2_drag
@@ -859,48 +960,56 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node_from\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  node_to\
 `position`:  3\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  duration\
 `position`:  4\
 `optional`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 `name`:  x_from\
 `position`:  5\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to begin interaction with element
+
 ---
 
 `name`:  y_from\
 `position`:  6\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to begin interaction with element
+
 ---
 
 `name`:  x_to\
 `position`:  7\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to end interaction with element
+
 ---
 
 `name`:  y_to\
 `position`:  8\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to end interaction with element
+
 ---
 
 #### Function: uio2_drag_with_speed
@@ -911,48 +1020,56 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node_from\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  node_to\
 `position`:  3\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  speed\
 `position`:  4\
 `optional`\
 `description`:  speed in pixels per second to perform gesture
+
 ---
 
 `name`:  x_from\
 `position`:  5\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to begin interaction with element
+
 ---
 
 `name`:  y_from\
 `position`:  6\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to begin interaction with element
+
 ---
 
 `name`:  x_to\
 `position`:  7\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to end interaction with element
+
 ---
 
 `name`:  y_to\
 `position`:  8\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to end interaction with element
+
 ---
 
 #### Function: uio2_equals
@@ -963,12 +1080,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  node_b\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_find_object
@@ -979,18 +1098,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  filter\
 `position`:  2\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 `name`:  index\
 `position`:  3\
 `optional`\
 `description`:  to point specified instance. Out of bound will result with empty result is is not $NULL in this case. Maybe this should return $NULL? #TODO
+
 ---
 
 #### Function: uio2_find_objects
@@ -1001,12 +1123,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  filter\
 `position`:  2\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 #### Function: uio2_get_application_package
@@ -1017,6 +1141,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: uio2_get_children_count
@@ -1027,12 +1152,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_children
@@ -1043,12 +1170,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_class_name
@@ -1059,6 +1188,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_content_description
@@ -1069,6 +1199,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_parent
@@ -1079,12 +1210,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_resource_id
@@ -1095,6 +1228,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_text
@@ -1105,6 +1239,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_get_bounds
@@ -1115,12 +1250,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  which\
 `position`:  2\
 `required`\
 `description`:  element's bound to get { left, top, right, bottom}
+
 ---
 
 #### Function: uio2_get_visible_center
@@ -1131,24 +1268,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  xml\
 `position`:  1\
 `required`\
 `description`:  any valid XML-source, usually comes from hierarchy dump
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  filter\
 `position`:  3\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 #### Function: uio2_is_checkable
@@ -1159,6 +1300,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_checked
@@ -1169,6 +1311,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_clickable
@@ -1179,6 +1322,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_enabled
@@ -1189,6 +1333,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_focusable
@@ -1199,6 +1344,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_focused
@@ -1209,6 +1355,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_long_clickable
@@ -1219,6 +1366,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_scrollable
@@ -1229,6 +1377,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_is_selected
@@ -1239,6 +1388,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 #### Function: uio2_long_click
@@ -1249,24 +1399,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  x\
 `position`:  3\
 `optional`\
 `description`:  usually expresses horizontal margin from left where to do interaction with element
+
 ---
 
 `name`:  y\
 `position`:  4\
 `optional`\
 `description`:  usually expresses horizontal margin from top where to do interaction with element
+
 ---
 
 #### Function: uio2_pinch_close
@@ -1277,24 +1431,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  percent\
 `position`:  3\
 `optional`\
 `description`:  percent-value-string-like '50%'/'66%'/'1%'
+
 ---
 
 `name`:  duration\
 `position`:  4\
 `optional`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 #### Function: uio2_pinch_open
@@ -1305,24 +1463,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  percent\
 `position`:  3\
 `optional`\
 `description`:  percent-value-string-like '50%'/'66%'/'1%'
+
 ---
 
 `name`:  duration\
 `position`:  4\
 `optional`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 #### Function: uio2_set_text
@@ -1333,18 +1495,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  content\
 `position`:  3\
 `optional`\
 `description`:  is a text to type inside text editable
+
 ---
 
 #### Function: uio2_swipe_with_speed
@@ -1355,30 +1520,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  direction\
 `position`:  3\
 `optional`\
 `description`:  is one of { $DIRECTION_DOWN $DIRECTION_LEFT $DIRECTION_RIGHT $DIRECTION_UP }
+
 ---
 
 `name`:  percent\
 `position`:  4\
 `optional`\
 `description`:  percent-value-string-like '50%'/'66%'/'1%'
+
 ---
 
 `name`:  speed\
 `position`:  5\
 `optional`\
 `description`:  speed in pixels per second to perform gesture
+
 ---
 
 #### Function: uio2_swipe
@@ -1389,30 +1559,35 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  node\
 `position`:  2\
 `required`\
 `description`:  an XML-string-like element description
+
 ---
 
 `name`:  direction\
 `position`:  3\
 `optional`\
 `description`:  is one of { $DIRECTION_DOWN $DIRECTION_LEFT $DIRECTION_RIGHT $DIRECTION_UP }
+
 ---
 
 `name`:  percent\
 `position`:  4\
 `optional`\
 `description`:  percent-value-string-like '50%'/'66%'/'1%'
+
 ---
 
 `name`:  duration\
 `position`:  5\
 `optional`\
 `description`:  time expressed in seconds or milliseconds
+
 ---
 
 #### Function: utils_assert_null
@@ -1423,18 +1598,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  success_message\
 `position`:  2\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_not_null
@@ -1445,18 +1623,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  success_message\
 `position`:  2\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_true
@@ -1467,18 +1648,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  success_message\
 `position`:  2\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_false
@@ -1489,18 +1673,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  success_message\
 `position`:  2\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_string_is_empty
@@ -1511,18 +1698,21 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert, to null or default
+
 ---
 
 `name`:  success_message\
 `position`:  2\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_strings_are_equal
@@ -1533,24 +1723,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_strings_are_different
@@ -1561,24 +1755,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_less_than_second
@@ -1589,24 +1787,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_less_or_equal_than_second
@@ -1617,24 +1819,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_equals_second
@@ -1645,24 +1851,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_greater_or_equal_than_second
@@ -1673,24 +1883,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_greater_than_second
@@ -1701,24 +1915,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_assert_numbers_first_is_not_equal_to_second
@@ -1729,24 +1947,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  value_b\
 `position`:  2\
 `required`\
 `description`:  value to assert
+
 ---
 
 `name`:  success_message\
 `position`:  3\
 `required`\
 `description`:  message for assert printed when assertion success
+
 ---
 
 `name`:  error_message\
 `position`:  4\
 `required`\
 `description`:  message for assert printed when assertion fails
+
 ---
 
 #### Function: utils_devices
@@ -1757,6 +1979,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `optional`\
 `description`:  is the order number of device comes from `adb devices`
+
 ---
 
 #### Function: utils_is_device_connected
@@ -1767,6 +1990,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: utils_restart_server
@@ -1781,6 +2005,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: utils_set_display
@@ -1791,6 +2016,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 #### Function: utils_install_and_start
@@ -1801,24 +2027,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  package_name\
 `position`:  2\
 `required`\
 `description`:  application package name
+
 ---
 
 `name`:  apkpath\
 `position`:  3\
 `optional`\
 `description`:  path to .apk file to install and run
+
 ---
 
 `name`:  force\
 `position`:  4\
 `optional`\
 `description`:  forces given procedure to do something e. g. reinstall
+
 ---
 
 #### Function: utils_stop_app
@@ -1829,12 +2059,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  package_name\
 `position`:  2\
 `required`\
 `description`:  application package name
+
 ---
 
 #### Function: utils_uninstall
@@ -1845,12 +2077,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  package_name\
 `position`:  2\
 `required`\
 `description`:  application package name
+
 ---
 
 #### Function: utils_clear_data
@@ -1861,12 +2095,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  package_name\
 `position`:  2\
 `required`\
 `description`:  application package name
+
 ---
 
 #### Function: utils_record
@@ -1877,12 +2113,14 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  filename\
 `position`:  2\
 `required`\
 `description`:  filename where to store screenshot of recording. Pass without extension
+
 ---
 
 #### Function: utils_wait_to_see
@@ -1893,24 +2131,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  filter\
 `position`:  2\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 `name`:  index\
 `position`:  3\
 `optional`\
 `description`:  to point specified instance. Out of bound will result with empty result is is not $NULL in this case. Maybe this should return $NULL? #TODO
+
 ---
 
 `name`:  attempts\
 `position`:  4\
 `optional`\
 `description`:  number of tries after function will stop with result
+
 ---
 
 #### Function: utils_search_node
@@ -1921,48 +2163,56 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  object_to_search_in\
 `position`:  2\
 `optional`\
 `description`:  an XML-string-like element in which searching by swipe left/right top/left will be done
+
 ---
 
 `name`:  filter\
 `position`:  3\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 `name`:  index\
 `position`:  4\
 `optional`\
 `description`:  to point specified instance. Out of bound will result with empty result is is not $NULL in this case. Maybe this should return $NULL? #TODO
+
 ---
 
 `name`:  swiping_direction\
 `position`:  5\
 `optional`\
 `description`:  is one of { $DIRECTION_DOWN $DIRECTION_LEFT $DIRECTION_RIGHT $DIRECTION_UP }
+
 ---
 
 `name`:  cycles\
 `position`:  6\
 `optional`\
 `description`:  number of repeats the whole procedure like swiping to left/right top/bottom to reach the scroll limit. Cycle decreases when direction changes
+
 ---
 
 `name`:  swipe_length\
 `position`:  7\
 `optional`\
 `description`:  distance between touchdown and touchup for swipe
+
 ---
 
 `name`:  swipes_count_left\
 `position`:  8\
 `optional`\
 `description`:  swipes left to perform before go to next cycles or stop procedure with some result
+
 ---
 
 #### Function: utils_wait_to_gone
@@ -1973,24 +2223,28 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
 `name`:  filter\
 `position`:  2\
 `required`\
 `description`:  grep -E like regular expression passed to find elements on screen
+
 ---
 
 `name`:  index\
 `position`:  3\
 `optional`\
 `description`:  to point specified instance. Out of bound will result with empty result is is not $NULL in this case. Maybe this should return $NULL? #TODO
+
 ---
 
 `name`:  attempts\
 `position`:  4\
 `optional`\
 `description`:  number of tries after function will stop with result
+
 ---
 
 #### Function: utils_get_device_orientation
@@ -2001,5 +2255,6 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `position`:  1\
 `required`\
 `description`:  is a string like emulator-5554, emulator-5556
+
 ---
 
