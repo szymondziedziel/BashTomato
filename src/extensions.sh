@@ -3,9 +3,9 @@
 # BashTomato Extensions API start
 
 function ext_screenshot_node() { # makes screenshot and cuts out image of given element
-  local node="$1"
-  local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'`
-  local node_screenshot_filename=`default "$3" 'temporary_node_screenshot_filename.png'`
+  local node="$1" # XML-string-like element of which screenshot is to be done
+  local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'` # path to full screenshot with `.png` extension from which node screenshot will be taken
+  local node_screenshot_filename=`default "$3" 'temporary_node_screenshot_filename.png'` # path to point to where node screenshot will be stored
   
   left=`uio2_get_bounds "$node" left`
   top=`uio2_get_bounds "$node" top`
@@ -17,10 +17,10 @@ function ext_screenshot_node() { # makes screenshot and cuts out image of given 
   convert "$screenshot_filename" -crop "${width}x${height}+${left}+${top}" "${node_screenshot_filename}"
 }
 
-function ext_inspect_window_hierarchy() { # makes screenshot and then images of all nodes in hierarchy
-  local xml=`default "$1" ''`
-  local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'`
-  local directory=`default "$3" 'inspect'`
+function ext_inspect_window_hierarchy() { # makes full screenshot and then images of all nodes in hierarchy
+  local xml=`default "$1" ''` # XML-like-string of entire window hierarchy or any of its subnode. 
+  local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'` # path to full screenshot with `.png` extension from which node screenshot will be taken
+  local directory=`default "$3" 'inspect'` # directory path where to store all nodes' screenshots
 
   local nodes=`uio2_find_objects "$xml"`
 

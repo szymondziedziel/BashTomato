@@ -3,24 +3,24 @@
 # UIObject2 API start
 
 function uio2_clear() { # clears editable text, auto clicks on such element, very poor in terms of performance
-  local device_id="$1"
-  local node="$2"
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
 
   local length=`get_prop "$node" 'text' | wc -c`
 
   uio2_click "$device_id" "$node"
-  uid_press_key_code "$device_id" $KEYCODE_MOVE_END
-  for i in `seq $length`
+  uid_press_key_code "$device_id" "$KEYCODE_MOVE_END"
+  for i in `seq "$length"`
   do
-    uid_press_key_code "$device_id" $KEYCODE_DEL
+    uid_press_key_code "$device_id" "$KEYCODE_DEL"
   done
 }
 
 function uio2_click() { # shortly clicks on element
-  local device_id="$1"
-  local node="$2"
-  local x=`default "$3" "$ANCHOR_POINT_CENTER"`
-  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local x=`default "$3" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
@@ -29,11 +29,11 @@ function uio2_click() { # shortly clicks on element
 }
 
 function uio2_click_with_duration() { # clicks with given duration, default 0.5 second
-  local device_id="$1"
-  local node="$2"
-  local duration=`default "$3" 500`
-  local x=`default "$4" "$ANCHOR_POINT_CENTER"`
-  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local duration=`default "$3" 500` # expresed in milliseconds
+  local x=`default "$4" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   local point_on_surface=`calc_point_on_surface "$node" "$x" "$y"`
 
@@ -41,25 +41,25 @@ function uio2_click_with_duration() { # clicks with given duration, default 0.5 
 }
 
 function uio2_click_and_wait() { # shortly clicks on element and waits, default 5 seconds
-  local device_id="$1"
-  local node="$2"
-  local wait_time=`default "$3" 5`
-  local x=`default "$4" "$ANCHOR_POINT_CENTER"`
-  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local wait_time=`default "$3" 5` # expressed in seconds, bash greater than 3.2 it is possible to use values like 3.5, 1.6 etc.
+  local x=`default "$4" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y=`default "$5" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   uio2_click "$device_id" "$node" "$x" "$y"
   sleep $wait_time
 }
 
 function uio2_drag() { # drags from one element to another. Start, end points can be changed by top, left margins for each
-  local device_id="$1"
-  local node_from="$2"
-  local node_to="$3"
-  local duration=`default "$4" 500`
-  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
-  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
-  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"`
-  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node_from="$2" # self explanatory
+  local node_to="$3" # self explanatory
+  local duration=`default "$4" 500` # expressed in milliseconds
+  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
+  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
   local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
@@ -68,14 +68,14 @@ function uio2_drag() { # drags from one element to another. Start, end points ca
 }
 
 function uio2_drag_with_speed() { # like uio2_drag, but speed may be defined instead fo duration
-  local device_id="$1"
-  local node_from="$2"
-  local node_to="$3"
-  local speed=`default "$4" 1000`
-  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"`
-  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"`
-  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"`
-  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node_from="$2" # self explanatory
+  local node_to="$3" # self explanatory
+  local speed=`default "$4" 1000` # expressed in milliseconds
+  local x_from=`default "$5" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y_from=`default "$6" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
+  local x_to=`default "$7" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   local point_on_surface_from=`calc_point_on_surface "$node_from" "$x_from" "$y_from"`
   local point_on_surface_to=`calc_point_on_surface "$node_to" "$x_to" "$y_to"`
@@ -86,8 +86,8 @@ function uio2_drag_with_speed() { # like uio2_drag, but speed may be defined ins
 }
 
 function uio2_equals() { # compares elements like XML-strigs, not by reference
-  local node_a="$1"
-  local node_b="$2"
+  local node_a="$1" # XML-string-like element, treated really as string not object reference in this case
+  local node_b="$2" # XML-string-like element, treated really as string not object reference in this case
 
   if [ "$node_a" == "$node_b" ]
   then
@@ -99,9 +99,9 @@ function uio2_equals() { # compares elements like XML-strigs, not by reference
 # #SKIP Probably does no make what should do
 
 function uio2_find_object() { # filters element from given XML-source matching regular expression pattern
-  local xml="$1"
-  local filter="$2"
-  local index=`default "$3" 1`
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local filter="$2" # simple bash-grep-like expression passed with -oE options
+  local index=`default "$3" 1` # instance number counting from 1
 
   local nodes=`uio2_find_objects "$xml" "$filter"`
 
@@ -110,8 +110,8 @@ function uio2_find_object() { # filters element from given XML-source matching r
 }
 
 function uio2_find_objects() { # filters many element from given XML-source matching regular expression pattern
-  local xml="$1"
-  local filter="$2"
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local filter="$2" # simple bash-grep-like expression passed with -oE options
 
   local nodes=`echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"`
   val_or_null "$nodes"
@@ -128,7 +128,7 @@ function uio2_find_objects() { # filters many element from given XML-source matc
 # #SKIP I may be also helpful to experiment with different percents
 #
 function uio2_get_application_package() { # get current package_name using ADB, may not work for all devices
-  local device_id="$1"
+  local device_id="$1" # device id taken from `adb devices`
 
   local package_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
   val_or_null "$package_name"
@@ -136,15 +136,15 @@ function uio2_get_application_package() { # get current package_name using ADB, 
 # #SKIP Not sure if will work for all devices
 
 function uio2_get_children_count() { # count children of given node based on whole XML-source
-  local xml="$1"
-  local node="$2"
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local node="$2" # XML-string-like element, which action will be performed at
 
   echo `uio2_get_children "$xml" "$node" | wc -l`
 }
 
 function uio2_get_children() { # filter childrens like XML-strings of given node from wholre XML-source
-  local xml="$1"
-  local node="$2"
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local node="$2" # XML-string-like element, which action will be performed at
 
   xml=`uio2_find_objects "$xml"`
   local nodes_amount=`echo "$xml" | wc -l`
@@ -177,20 +177,20 @@ $result"
 }
 
 function uio2_get_class_name() { # gets XML element's class attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'class'`
 }
 
 function uio2_get_content_description() { # gets XML element's content-description attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'content-desc'`
 }
 
 function uio2_get_parent() { # gets element's parent based on ginec element and whole XML-source
-  local xml="$1"
-  local node="$2"
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local node="$2" # XML-string-like element, which action will be performed at
 
   xml=`uio2_find_objects "$xml"`
   local node_nr=`echo "$node" | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
@@ -212,20 +212,20 @@ function uio2_get_parent() { # gets element's parent based on ginec element and 
 }
 
 function uio2_get_resource_id() { # gets XML element's resource-id attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'resource-id'`
 }
 
 function uio2_get_text() { # gets XML element's text attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'text'`
 }
 
 function uio2_get_bounds() { # gets XML element's bounds attribute
-  local node="$1"
-  local which="$2"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
+  local which="$2" # bounds name, one of `left`, `top`, `right`, `bottom`
 
   local bounds=`get_prop "$node" 'bounds'`
   bounds=`echo "$bounds" | grep -oE '[0-9]+'`
@@ -244,15 +244,15 @@ function uio2_get_bounds() { # gets XML element's bounds attribute
 }
 
 function uio2_get_visible_center() { # calculates center of visible element's part
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   calc_point_on_surface "$node"
 }
 
 function uio2_has_object() {
-  local xml="$1"
-  local node="$2"
-  local filter="$3"
+  local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
+  local node="$2" # XML-string-like element, which action will be performed at
+  local filter="$3" # simple bash-grep-like expression passed with -oE options
 
   xml=`uio2_find_objects "$xml"`
   local nodes_amount=`echo "$xml" | wc -l`
@@ -291,73 +291,73 @@ function uio2_has_object() {
 # #SKIP Not sure if it may be helpful at all
 
 function uio2_is_checkable() { # gets XML element's checkable attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'checkable'`
 }
 
 function uio2_is_checked() { # gets XML element's checked attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'checked'`
 }
 
 function uio2_is_clickable() { # gets XML element's clickable attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" '[^-]clickable'`
 }
 
 function uio2_is_enabled() { # gets XML element's enabled attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'enabled'`
 }
 
 function uio2_is_focusable() { # gets XML element's focusable
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'focusable'`
 }
 
 function uio2_is_focused() { # gets XML element's focused attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'focused'`
 }
 
 function uio2_is_long_clickable() { # gets XML element's long-clickable attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'long-clickable'`
 }
 
 function uio2_is_scrollable() { # gets XML element's scrollable attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'scrollable'`
 }
 
 function uio2_is_selected() { # gets XML element's selected attribute
-  local node="$1"
+  local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   echo `get_prop "$node" 'selected'`
 }
 
 function uio2_long_click() { # clicks 0.5 seconds long on element
-  local device_id="$1"
-  local node="$2"
-  local x=`default "$3" "$ANCHOR_POINT_CENTER"`
-  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local x=`default "$3" "$ANCHOR_POINT_CENTER"` # value in pixels or percent
+  local y=`default "$4" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   uio2_click_with_duration "$device_id" "$node" "$x" "$y" 500
 } 
 
 function uio2_pinch_close() { # performs pinch close gesture on elemetn with specified size
-  local device_id="$1"
-  local node="$2"
-  local percent=`default "$3" '50%'`
-  local duration=`default "$4" 500`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local percent=`default "$3" '50%'` # self explanatory
+  local duration=`default "$4" 500` # expressed in milliseconds
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -394,10 +394,10 @@ function uio2_pinch_close() { # performs pinch close gesture on elemetn with spe
 # pinchOpen(float percent)
 # Performs a pinch open gesture on this object.
 function uio2_pinch_open() { # performs pinch open gesture on elemetn with specified size
-  local device_id="$1"
-  local node="$2"
-  local percent=`default "$3" '50%'`
-  local duration=`default "$4" 500`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local percent=`default "$3" '50%'` # self explanatory
+  local duration=`default "$4" 500` # expressed in milliseconds
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -454,9 +454,9 @@ function uio2_pinch_open() { # performs pinch open gesture on elemetn with speci
 # setText(String text)
 # Sets the text content if this object is an editable field.
 function uio2_set_text() { # write text to editable, auto clicks the element
-  local device_id="$1"
-  local node="$2"
-  local content=`default "$3" ''`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local content=`default "$3" ''` # text to be typed inside editable
   content=`echo "$content" | sed -E 's/(.)/_BTSEP_\1/g' | sed -E 's/_BTSEP_/\\\\/g'`
 
   uio2_click "$device_id" "$node"
@@ -466,11 +466,11 @@ function uio2_set_text() { # write text to editable, auto clicks the element
 # #TODO this is not able to type everything. Need huge improvement.
 
 function uio2_swipe_with_speed() { # like uio2_swipe, but need speed instead of duration
-  local device_id="$1"
-  local node="$2"
-  local direction=`default "$3" "$DIRECTION_DOWN"`
-  local percent=`default "$4" '50%'`
-  local speed=`default "$5" 1000`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local direction=`default "$3" "$DIRECTION_DOWN"` # direction to which gesture should be moved
+  local percent=`default "$4" '50%'` # self explanatory
+  local speed=`default "$5" 1000` # expressed in milliseconds
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -517,11 +517,11 @@ function uio2_swipe_with_speed() { # like uio2_swipe, but need speed instead of 
 }
 
 function uio2_swipe() { # performs swipe on element from its one point to another
-  local device_id="$1"
-  local node="$2"
-  local direction=`default "$3" "$DIRECTION_DOWN"`
-  local percent=`default "$4" '50%'`
-  local duration=`default "$5" 500`
+  local device_id="$1" # device id taken from `adb devices`
+  local node="$2" # XML-string-like element, which action will be performed at
+  local direction=`default "$3" "$DIRECTION_DOWN"` # direction to which gesture should be moved
+  local percent=`default "$4" '50%'` # self explanatory
+  local duration=`default "$5" 500` # expressed in milliseconds
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 

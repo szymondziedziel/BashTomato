@@ -50,7 +50,7 @@ function format_to_md() {
 
     if [ -n "$func" ]
     then
-      echo "#### $func"
+      echo "### $func"
     fi
 
     if [ -n "$desc" ]
@@ -59,10 +59,10 @@ function format_to_md() {
 
       if [ -n "$is_prev_line_func" ]
       then
-        echo "##### Params:
+        echo "#### Params:
 "
       else
-        echo "---
+        echo "
 "
       fi
     fi
