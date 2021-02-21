@@ -492,7 +492,7 @@ function utils_wait_to_see() { # search for element on device's screen by `devic
 function utils_search_node() { # searches for element in advanced way, it scrolls horizontally or vertically through given element and searches for other element inside, moved by configurable steps, repeats `cycles` times
   local device_id="$1" # device id taken from `adb devices`
   local object_to_search_in="$2" # XML-string-like element (container) to search in
-  local filter="$3" #  # simple bash-grep-like expression passed with -oE options
+  local filter="$3" # simple bash-grep-like expression passed with -oE options
   local index=`default "$4" 1` # instance number counting from 1
   local swiping_direction=`default "$5" "$DIRECTION_VERTICAL"` # self explanatory
   local cycles=`default "$6" 1` # number of repeats (scroll back and forth) when scroll limit reached
@@ -554,7 +554,7 @@ function utils_search_node() { # searches for element in advanced way, it scroll
 
 function utils_wait_to_gone() { # search for element on device's screen by `device_id`, dumps hierarchy until element gone or attempts exhaust
   local device_id="$1" # device id taken from `adb devices`
-  local filter="$2" #  # simple bash-grep-like expression passed with -oE options
+  local filter="$2" # simple bash-grep-like expression passed with -oE options
   local index=`default "$3" 1` # instance number counting from 1
   local attempts=`default "$4" 30` # dumps to execute before return `$NULL`
 

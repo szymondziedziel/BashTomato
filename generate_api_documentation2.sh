@@ -1,6 +1,6 @@
 #!/bin/bash
 
-api=`find ./src/* | xargs cat | grep -E '(function|  local).+?#'`
+api=`find ./src/* | xargs cat | grep -E '^(function|  local).+?#'`
 
 position=0
 
@@ -17,7 +17,7 @@ do
     function_desc=`echo "$line" | cut -d'#' -f2`
     
     printf '\n### Function: %s\n' "$function_name"
-    printf '`%s`: %s\n' 'description:' "$function_desc"
+    printf '`%s`: %s\n' 'description' "$function_desc"
     printf '%s\n' '#### Params:'
   elif [ -n "$is_param" ]
   then
@@ -30,16 +30,16 @@ do
     param_default=`echo "$line" | grep -E '\`default.+?\`' | cut -d' ' -f4 | tr -d '\`'`
     param_desc=`echo "$line" | cut -d'#' -f2`
     
-    printf '\n\n`%s`: %s\\\n' 'name:' "$param_name"
-    printf '`%s`: %s\\\n' 'position:' "$param_position"
+    printf '\n\n`%s`: %s\\\n' 'name' "$param_name"
+    printf '`%s`: %s\\\n' 'position' "$param_position"
     if [ -n "$param_required" ]
     then
       printf '`%s`\\\n' 'required'
     elif [ -n "$param_optional" ]
     then
       printf '`%s`\\\n' 'optional'
-      printf '`%s`: %s\\\n' 'default:' "$param_default"
+      printf '`%s`: %s\\\n' 'default' "$param_default"
     fi
-    printf '`%s`: %s\n' 'description:' "$param_desc"
+    printf '`%s`: %s\n' 'description' "$param_desc"
   fi
 done <<<"$api"
