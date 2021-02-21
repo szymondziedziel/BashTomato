@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Requires ImageMagick installed
+
 # BashTomato Extensions API start
 
 function ext_screenshot_node() { # makes screenshot and cuts out image of given element

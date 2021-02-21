@@ -491,7 +491,7 @@ function utils_wait_to_see() { # search for element on device's screen by `devic
 
 function utils_search_node() { # searches for element in advanced way, it scrolls horizontally or vertically through given element and searches for other element inside, moved by configurable steps, repeats `cycles` times
   local device_id="$1" # device id taken from `adb devices`
-  local object_to_search_in=`default "$2" ''` # XML-string-like element (container) to saerch in
+  local object_to_search_in="$2" # XML-string-like element (container) to search in
   local filter="$3" #  # simple bash-grep-like expression passed with -oE options
   local index=`default "$4" 1` # instance number counting from 1
   local swiping_direction=`default "$5" "$DIRECTION_VERTICAL"` # self explanatory
