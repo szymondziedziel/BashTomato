@@ -137,7 +137,7 @@ function validators_node() {
   local node="$1"
   local exit="$2"
 
-  test=`echo "$node" | grep -oE "^NR[0-9]{1,4} DEPTH[0-9]{1,4} <[a-z-]>$"`
+  test=`echo "$node" | grep -oE "^null|NR[0-9]{1,4} DEPTH[0-9]{1,4} <[a-zA-Z\.]+ ([a-z-]+?=".*?")+>$"`
 
   if [ -z "$test" ]
   then
@@ -166,10 +166,10 @@ function validators_unsigned_integer() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | unsigned_integer=<${unsigned_integer}>, exit=<${exit}>"
-      logs_append "`logs_time` | WARNING | INPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | unsigned_integer=<${unsigned_integer}>, exit=<${exit}>"
-      validators_exit "`logs_time` | ERROR | INPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer" "$TRUE"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | unsigned_integer=<${unsigned_integer}>, exit=<${exit}>"
@@ -188,10 +188,10 @@ function validators_integer() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
-      logs_append "`logs_time` | WARNING | INPUT | Given integer=<${integer}> is not integer"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given integer=<${integer}> is not integer"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
-      validators_exit "`logs_time` | ERROR | INPUT | Given integer=<${integer}> is not integer" "$TRUE"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given integer=<${integer}> is not integer" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
@@ -210,10 +210,10 @@ function validators_percent() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
-      logs_append "$test" "`logs_time` | WARNING | INPUT | Given percent=<${percent}> is not percantage"
+      logs_append "$test" "`logs_time` | WARNING | OUTPUT | Given percent=<${percent}> is not percantage"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
-      validators_exit "$test" "`logs_time` | ERROR | INPUT | Given percent=<${percent}> is not percantage" "$TRUE"
+      validators_exit "$test" "`logs_time` | ERROR | OUTPUT | Given percent=<${percent}> is not percantage" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
@@ -248,10 +248,10 @@ function validators_bounds_name() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | bound_name=<${bound_name}>, exit=<${exit}>"
-      logs_append "`logs_time` | WARNING | INPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | bound_name=<${bound_name}>, exit=<${exit}>"
-      validators_exit "`logs_time` | ERROR | INPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed" "$TRUE"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | bound_name=<${bound_name}>, exit=<${exit}>"
@@ -270,10 +270,10 @@ function validators_direction() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | direction=<${direction}>, exit=<${exit}>"
-      logs_append "`logs_time` | WARNING | INPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | direction=<${direction}>, exit=<${exit}>"
-      validators_exit "`logs_time` | ERROR | INPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed" "$TRUE"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | direction=<${direction}>, exit=<${exit}>"

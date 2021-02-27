@@ -9,15 +9,34 @@ function setUp() {
 }
 
 function test_logs_clear() {
-  assertEquals 0 1
+  BASHTOMATO_LOGS="BASHTOMATO_LOGS"
+  assertEquals "$BASHTOMATO_LOGS" 'BASHTOMATO_LOGS'
+  logs_clear 
+  assertEquals "$BASHTOMATO_LOGS" ''
 }
 
 function test_logs_append() {
-  assertEquals 0 1
+  logs_append '1'
+  logs_append '2'
+  logs_append '3'
+  assertEquals "$BASHTOMATO_LOGS" '
+1
+2
+3'
 }
 
 function test_validators_exit() {
-  assertEquals 0 1
+  validators_exit '1' ''
+  local actual_exit_status="$?"
+  local expected_exit_status='0'
+  assertEquals "$expected_exit_status" "$actual_exit_status"
+  assertEquals "$BASHTOMATO_LOGS" ''
+  result=`validators_exit '2' 'fail_fast'`
+  local actual_exit_status="$?"
+  local expected_exit_status='1'
+  assertEquals "$expected_exit_status" "$actual_exit_status"
+  assertEquals "$result" '
+2'
 }
 
 function remove_logs_time() {
@@ -270,12 +289,12 @@ function test_validators_unsigned_integer_no_exit() {
     assertEquals "$current_logs" "$expected_logs"
   done<<<"123&fail_fast&0&||OK | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<123>, exit=<fail_fast>||OK | OUTPUT | function=<validators_unsigned_integer> | test=<123>||
 0&&0&||OK | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0>, exit=<>||OK | OUTPUT | function=<validators_unsigned_integer> | test=<0>||
--45&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<>||WARNING | INPUT | Given unsigned_integer=<-45> is not unsigned integer||
-1b1&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1b1>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1b1> is not unsigned integer||
-a1a&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<a1a>, exit=<>||WARNING | INPUT | Given unsigned_integer=<a1a> is not unsigned integer||
-000123&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<>||WARNING | INPUT | Given unsigned_integer=<000123> is not unsigned integer||
-1e14000123&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1e14000123>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1e14000123> is not unsigned integer||
-1.25&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
+-45&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<-45> is not unsigned integer||
+1b1&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1b1>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1b1> is not unsigned integer||
+a1a&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<a1a>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<a1a> is not unsigned integer||
+000123&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<000123> is not unsigned integer||
+1e14000123&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1e14000123>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1e14000123> is not unsigned integer||
+1.25&&0&||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
 }
 
 function test_validators_unsigned_integer_force_exit() {
@@ -293,12 +312,12 @@ function test_validators_unsigned_integer_force_exit() {
 
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
-  done<<<"1b1&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1b1>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1b1> is not unsigned integer||
--45&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<-45> is not unsigned integer||
-a1a&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<a1a>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<a1a> is not unsigned integer||
-000123&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<000123> is not unsigned integer||
-1e14000123&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1e14000123>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1e14000123> is not unsigned integer||
-1.25&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
+  done<<<"1b1&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1b1>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1b1> is not unsigned integer||
+-45&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<-45> is not unsigned integer||
+a1a&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<a1a>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<a1a> is not unsigned integer||
+000123&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<000123> is not unsigned integer||
+1e14000123&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1e14000123>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1e14000123> is not unsigned integer||
+1.25&fail_fast&1&||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
 }
 
 
@@ -321,11 +340,11 @@ function test_validators_integer_no_exit() {
   done<<<"123&fail_fast&0&||OK | INPUT | function=<validators_integer> | integer=<123>, exit=<fail_fast>||OK | OUTPUT | function=<validators_integer> | test=<123>||
 -45&&0&||OK | INPUT | function=<validators_integer> | integer=<-45>, exit=<>||OK | OUTPUT | function=<validators_integer> | test=<-45>||
 0&&0&||OK | INPUT | function=<validators_integer> | integer=<0>, exit=<>||OK | OUTPUT | function=<validators_integer> | test=<0>||
-1b1&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1b1>, exit=<>||WARNING | INPUT | Given integer=<1b1> is not integer||
-a1a&&0&||WARNING | INPUT | function=<validators_integer> | integer=<a1a>, exit=<>||WARNING | INPUT | Given integer=<a1a> is not integer||
-000123&&0&||WARNING | INPUT | function=<validators_integer> | integer=<000123>, exit=<>||WARNING | INPUT | Given integer=<000123> is not integer||
-1e14000123&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1e14000123>, exit=<>||WARNING | INPUT | Given integer=<1e14000123> is not integer||
-1.25&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1.25>, exit=<>||WARNING | INPUT | Given integer=<1.25> is not integer||"
+1b1&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1b1>, exit=<>||WARNING | OUTPUT | Given integer=<1b1> is not integer||
+a1a&&0&||WARNING | INPUT | function=<validators_integer> | integer=<a1a>, exit=<>||WARNING | OUTPUT | Given integer=<a1a> is not integer||
+000123&&0&||WARNING | INPUT | function=<validators_integer> | integer=<000123>, exit=<>||WARNING | OUTPUT | Given integer=<000123> is not integer||
+1e14000123&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1e14000123>, exit=<>||WARNING | OUTPUT | Given integer=<1e14000123> is not integer||
+1.25&&0&||WARNING | INPUT | function=<validators_integer> | integer=<1.25>, exit=<>||WARNING | OUTPUT | Given integer=<1.25> is not integer||"
 }
 
 function test_validators_integer_force_exit() {
@@ -343,11 +362,11 @@ function test_validators_integer_force_exit() {
 
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
-  done<<<"1b1&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1b1>, exit=<fail_fast>||ERROR | INPUT | Given integer=<1b1> is not integer||
-a1a&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<a1a>, exit=<fail_fast>||ERROR | INPUT | Given integer=<a1a> is not integer||
-000123&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<000123>, exit=<fail_fast>||ERROR | INPUT | Given integer=<000123> is not integer||
-1e14000123&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1e14000123>, exit=<fail_fast>||ERROR | INPUT | Given integer=<1e14000123> is not integer||
-1.25&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1.25>, exit=<fail_fast>||ERROR | INPUT | Given integer=<1.25> is not integer||"
+  done<<<"1b1&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1b1>, exit=<fail_fast>||ERROR | OUTPUT | Given integer=<1b1> is not integer||
+a1a&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<a1a>, exit=<fail_fast>||ERROR | OUTPUT | Given integer=<a1a> is not integer||
+000123&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<000123>, exit=<fail_fast>||ERROR | OUTPUT | Given integer=<000123> is not integer||
+1e14000123&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1e14000123>, exit=<fail_fast>||ERROR | OUTPUT | Given integer=<1e14000123> is not integer||
+1.25&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<1.25>, exit=<fail_fast>||ERROR | OUTPUT | Given integer=<1.25> is not integer||"
 }
 
 
@@ -379,14 +398,14 @@ function test_validators_seconds_no_exit() {
     assertEquals "$current_logs" "$expected_logs"
   done<<<"1&fail_fast&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1>, exit=<fail_fast>||OK | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1>, exit=<fail_fast>||OK | OUTPUT | function=<validators_unsigned_integer> | test=<1>||
 0&fail_fast&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<0>, exit=<fail_fast>||OK | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0>, exit=<fail_fast>||OK | OUTPUT | function=<validators_unsigned_integer> | test=<0>||
--45&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<-45>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<>||WARNING | INPUT | Given unsigned_integer=<-45> is not unsigned integer||
-1s&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1s>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1s>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1s> is not unsigned integer||
-time1&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<time1>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<time1>, exit=<>||WARNING | INPUT | Given unsigned_integer=<time1> is not unsigned integer||
-000123&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<000123>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<>||WARNING | INPUT | Given unsigned_integer=<000123> is not unsigned integer||
-1sec&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1sec>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1sec>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1sec> is not unsigned integer||
-1second&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1second>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1second>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1second> is not unsigned integer||
-2seconds&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<2seconds>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<2seconds>, exit=<>||WARNING | INPUT | Given unsigned_integer=<2seconds> is not unsigned integer||
-1.25&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1.25>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
+-45&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<-45>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<-45> is not unsigned integer||
+1s&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1s>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1s>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1s> is not unsigned integer||
+time1&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<time1>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<time1>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<time1> is not unsigned integer||
+000123&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<000123>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<000123> is not unsigned integer||
+1sec&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1sec>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1sec>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1sec> is not unsigned integer||
+1second&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1second>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1second>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1second> is not unsigned integer||
+2seconds&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<2seconds>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<2seconds>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<2seconds> is not unsigned integer||
+1.25&&0&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1.25>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
 }
 
 function test_validators_seconds_force_exit() {
@@ -404,14 +423,14 @@ function test_validators_seconds_force_exit() {
 
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
-  done<<<"-45&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<-45>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<-45> is not unsigned integer||
-1s&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1s>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1s>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1s> is not unsigned integer||
-time1&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<time1>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<time1>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<time1> is not unsigned integer||
-000123&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<000123>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<000123> is not unsigned integer||
-1sec&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1sec>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1sec>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1sec> is not unsigned integer||
-1second&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1second>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1second>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1second> is not unsigned integer||
-2seconds&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<2seconds>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<2seconds>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<2seconds> is not unsigned integer||
-1.25&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1.25>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
+  done<<<"-45&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<-45>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<-45>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<-45> is not unsigned integer||
+1s&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1s>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1s>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1s> is not unsigned integer||
+time1&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<time1>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<time1>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<time1> is not unsigned integer||
+000123&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<000123>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<000123>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<000123> is not unsigned integer||
+1sec&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1sec>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1sec>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1sec> is not unsigned integer||
+1second&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1second>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1second>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1second> is not unsigned integer||
+2seconds&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<2seconds>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<2seconds>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<2seconds> is not unsigned integer||
+1.25&fail_fast&1&||UNKNOWN | INPUT | function=<validators_seconds> | seconds=<1.25>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1.25> is not unsigned integer||"
 }
 
 
@@ -432,11 +451,11 @@ function test_validators_milliseconds_no_exit() {
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
   done<<<"1000&fail_fast&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1000>, exit=<fail_fast>||OK | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1000>, exit=<fail_fast>||OK | OUTPUT | function=<validators_unsigned_integer> | test=<1000>||
-1500a&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500a>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500a>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1500a> is not unsigned integer||
-1500ms&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500ms>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500ms>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1500ms> is not unsigned integer||
-1E50millis&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1E50millis>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1E50millis>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1E50millis> is not unsigned integer||
-0001000&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<0001000>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0001000>, exit=<>||WARNING | INPUT | Given unsigned_integer=<0001000> is not unsigned integer||
-1.25s&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1.25s>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25s>, exit=<>||WARNING | INPUT | Given unsigned_integer=<1.25s> is not unsigned integer||"
+1500a&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500a>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500a>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1500a> is not unsigned integer||
+1500ms&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500ms>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500ms>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1500ms> is not unsigned integer||
+1E50millis&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1E50millis>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1E50millis>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1E50millis> is not unsigned integer||
+0001000&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<0001000>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0001000>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<0001000> is not unsigned integer||
+1.25s&&0&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1.25s>, exit=<>||WARNING | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25s>, exit=<>||WARNING | OUTPUT | Given unsigned_integer=<1.25s> is not unsigned integer||"
 }
 
 function test_validators_milliseconds_force_exit() {
@@ -454,11 +473,11 @@ function test_validators_milliseconds_force_exit() {
 
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
-  done<<<"1500a&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500a>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500a>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1500a> is not unsigned integer||
-1500ms&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500ms>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500ms>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1500ms> is not unsigned integer||
-1E50millis&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1E50millis>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1E50millis>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1E50millis> is not unsigned integer||
-0001000&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<0001000>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0001000>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<0001000> is not unsigned integer||
-1.25s&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1.25s>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25s>, exit=<fail_fast>||ERROR | INPUT | Given unsigned_integer=<1.25s> is not unsigned integer||"
+  done<<<"1500a&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500a>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500a>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1500a> is not unsigned integer||
+1500ms&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1500ms>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1500ms>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1500ms> is not unsigned integer||
+1E50millis&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1E50millis>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1E50millis>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1E50millis> is not unsigned integer||
+0001000&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<0001000>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<0001000>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<0001000> is not unsigned integer||
+1.25s&fail_fast&1&||UNKNOWN | INPUT | function=<validators_milliseconds> | milliseconds=<1.25s>, exit=<fail_fast>||ERROR | INPUT | function=<validators_unsigned_integer> | unsigned_integer=<1.25s>, exit=<fail_fast>||ERROR | OUTPUT | Given unsigned_integer=<1.25s> is not unsigned integer||"
 }
 
 
@@ -482,11 +501,11 @@ function test_validators_bounds_name_no_exit() {
 right&fail_fast&0&||OK | INPUT | function=<validators_bounds_name> | bound_name=<right>, exit=<fail_fast>||OK | OUTPUT | function=<validators_bounds_name> | test=<right>||
 bottom&fail_fast&0&||OK | INPUT | function=<validators_bounds_name> | bound_name=<bottom>, exit=<fail_fast>||OK | OUTPUT | function=<validators_bounds_name> | test=<bottom>||
 left&fail_fast&0&||OK | INPUT | function=<validators_bounds_name> | bound_name=<left>, exit=<fail_fast>||OK | OUTPUT | function=<validators_bounds_name> | test=<left>||
-aright&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<aright>, exit=<>||WARNING | INPUT | Given bound_name=<aright> is not valid. Only top, right, bottom, left are allowed||
-center&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<center>, exit=<>||WARNING | INPUT | Given bound_name=<center> is not valid. Only top, right, bottom, left are allowed||
-middle&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<middle>, exit=<>||WARNING | INPUT | Given bound_name=<middle> is not valid. Only top, right, bottom, left are allowed||
-custom&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<custom>, exit=<>||WARNING | INPUT | Given bound_name=<custom> is not valid. Only top, right, bottom, left are allowed||
-other&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<other>, exit=<>||WARNING | INPUT | Given bound_name=<other> is not valid. Only top, right, bottom, left are allowed||"
+aright&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<aright>, exit=<>||WARNING | OUTPUT | Given bound_name=<aright> is not valid. Only top, right, bottom, left are allowed||
+center&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<center>, exit=<>||WARNING | OUTPUT | Given bound_name=<center> is not valid. Only top, right, bottom, left are allowed||
+middle&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<middle>, exit=<>||WARNING | OUTPUT | Given bound_name=<middle> is not valid. Only top, right, bottom, left are allowed||
+custom&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<custom>, exit=<>||WARNING | OUTPUT | Given bound_name=<custom> is not valid. Only top, right, bottom, left are allowed||
+other&&0&||WARNING | INPUT | function=<validators_bounds_name> | bound_name=<other>, exit=<>||WARNING | OUTPUT | Given bound_name=<other> is not valid. Only top, right, bottom, left are allowed||"
 }
 
 function test_validators_bounds_name_force_exit() {
@@ -504,17 +523,61 @@ function test_validators_bounds_name_force_exit() {
 
     assertEquals "$expected_exit_status" "$actual_exit_status"
     assertEquals "$current_logs" "$expected_logs"
-  done<<<"aright&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<aright>, exit=<fail_fast>||ERROR | INPUT | Given bound_name=<aright> is not valid. Only top, right, bottom, left are allowed||
-center&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<center>, exit=<fail_fast>||ERROR | INPUT | Given bound_name=<center> is not valid. Only top, right, bottom, left are allowed||
-middle&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<middle>, exit=<fail_fast>||ERROR | INPUT | Given bound_name=<middle> is not valid. Only top, right, bottom, left are allowed||
-custom&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<custom>, exit=<fail_fast>||ERROR | INPUT | Given bound_name=<custom> is not valid. Only top, right, bottom, left are allowed||
-other&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<other>, exit=<fail_fast>||ERROR | INPUT | Given bound_name=<other> is not valid. Only top, right, bottom, left are allowed||"
+  done<<<"aright&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<aright>, exit=<fail_fast>||ERROR | OUTPUT | Given bound_name=<aright> is not valid. Only top, right, bottom, left are allowed||
+center&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<center>, exit=<fail_fast>||ERROR | OUTPUT | Given bound_name=<center> is not valid. Only top, right, bottom, left are allowed||
+middle&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<middle>, exit=<fail_fast>||ERROR | OUTPUT | Given bound_name=<middle> is not valid. Only top, right, bottom, left are allowed||
+custom&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<custom>, exit=<fail_fast>||ERROR | OUTPUT | Given bound_name=<custom> is not valid. Only top, right, bottom, left are allowed||
+other&fail_fast&1&||ERROR | INPUT | function=<validators_bounds_name> | bound_name=<other>, exit=<fail_fast>||ERROR | OUTPUT | Given bound_name=<other> is not valid. Only top, right, bottom, left are allowed||"
 }
 
 
 
-function test_validators_direction() {
-  assertEquals 0 1
+function test_validators_direction_no_exit() {
+  while read -r gwtline
+  do
+    logs_clear
+    local direction=`echo "$gwtline" | cut -d'&' -f1`
+    local fail_fast=`echo "$gwtline" | cut -d'&' -f2`
+    local expected_exit_status=`echo "$gwtline" | cut -d'&' -f3`
+    local expected_logs=`echo "$gwtline" | cut -d'&' -f4`
+    validators_direction "$direction" "$fail_fast"
+    local actual_exit_status="$?"
+
+    local current_logs=`remove_logs_time "$BASHTOMATO_LOGS"`
+
+    assertEquals "$expected_exit_status" "$actual_exit_status"
+    assertEquals "$current_logs" "$expected_logs"
+  done<<<"UP&fail_fast&0&||OK | INPUT | function=<validators_direction> | direction=<UP>, exit=<fail_fast>||OK | OUTPUT | function=<validators_direction> | test=<UP>||
+RIGHT&fail_fast&0&||OK | INPUT | function=<validators_direction> | direction=<RIGHT>, exit=<fail_fast>||OK | OUTPUT | function=<validators_direction> | test=<RIGHT>||
+DOWN&fail_fast&0&||OK | INPUT | function=<validators_direction> | direction=<DOWN>, exit=<fail_fast>||OK | OUTPUT | function=<validators_direction> | test=<DOWN>||
+LEFT&fail_fast&0&||OK | INPUT | function=<validators_direction> | direction=<LEFT>, exit=<fail_fast>||OK | OUTPUT | function=<validators_direction> | test=<LEFT>||
+aright&&0&||WARNING | INPUT | function=<validators_direction> | direction=<aright>, exit=<>||WARNING | OUTPUT | Given direction=<aright> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+center&&0&||WARNING | INPUT | function=<validators_direction> | direction=<center>, exit=<>||WARNING | OUTPUT | Given direction=<center> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+middle&&0&||WARNING | INPUT | function=<validators_direction> | direction=<middle>, exit=<>||WARNING | OUTPUT | Given direction=<middle> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+custom&&0&||WARNING | INPUT | function=<validators_direction> | direction=<custom>, exit=<>||WARNING | OUTPUT | Given direction=<custom> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+other&&0&||WARNING | INPUT | function=<validators_direction> | direction=<other>, exit=<>||WARNING | OUTPUT | Given direction=<other> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||"
+}
+
+function test_validators_direction_force_exit() {
+  while read -r gwtline
+  do
+    logs_clear
+    local direction=`echo "$gwtline" | cut -d'&' -f1`
+    local fail_fast=`echo "$gwtline" | cut -d'&' -f2`
+    local expected_exit_status=`echo "$gwtline" | cut -d'&' -f3`
+    local expected_logs=`echo "$gwtline" | cut -d'&' -f4`
+    result=`validators_direction "$direction" "$fail_fast"`
+    local actual_exit_status="$?"
+
+    local current_logs=`remove_logs_time "$result"`
+
+    assertEquals "$expected_exit_status" "$actual_exit_status"
+    assertEquals "$current_logs" "$expected_logs"
+  done<<<"aright&fail_fast&1&||ERROR | INPUT | function=<validators_direction> | direction=<aright>, exit=<fail_fast>||ERROR | OUTPUT | Given direction=<aright> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+center&fail_fast&1&||ERROR | INPUT | function=<validators_direction> | direction=<center>, exit=<fail_fast>||ERROR | OUTPUT | Given direction=<center> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+middle&fail_fast&1&||ERROR | INPUT | function=<validators_direction> | direction=<middle>, exit=<fail_fast>||ERROR | OUTPUT | Given direction=<middle> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+custom&fail_fast&1&||ERROR | INPUT | function=<validators_direction> | direction=<custom>, exit=<fail_fast>||ERROR | OUTPUT | Given direction=<custom> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||
+other&fail_fast&1&||ERROR | INPUT | function=<validators_direction> | direction=<other>, exit=<fail_fast>||ERROR | OUTPUT | Given direction=<other> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed||"
 }
 
 # Load shUnit2.
