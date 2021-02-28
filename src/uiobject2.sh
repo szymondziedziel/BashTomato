@@ -6,7 +6,12 @@ function uio2_clear() { # clears editable text, auto clicks on such element, ver
   local device_id="$1" # device id taken from `adb devices`
   local node="$2" # XML-string-like element, which action will be performed at
 
+  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]} device_id=<${device_id}> node=<${node}>"
+  validators_device_id "$device_id"
+  validators_node "$node" "$TRUE"
+
   local length=`get_prop "$node" 'text' | wc -c`
+  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]} length=<${length}>"
 
   uio2_click "$device_id" "$node"
   uid_press_key_code "$device_id" "$KEYCODE_MOVE_END"
@@ -305,7 +310,7 @@ function uio2_is_checked() { # gets XML element's checked attribute
 function uio2_is_clickable() { # gets XML element's clickable attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
-  echo `get_prop "$node" '[^-]clickable'`
+  echo `get_prop "$node" 'clickable'`
 }
 
 function uio2_is_enabled() { # gets XML element's enabled attribute
