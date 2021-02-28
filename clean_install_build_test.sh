@@ -45,10 +45,8 @@ echo '#!/bin/bash
 
 echo '
 BASHTOMATO="BASHTOMATO"
-BASHTOMATO_OPTION_DEBUG="BASHTOMATO_OPTION_DEBUG"
 BASHTOMATO_LOGS="BASHTOMATO_LOGS"
-BASHTOMATO_TRACE="BASHTOMATO_TRACE"
-' >>  $dist_path/bashtomato.sh
+' >> $dist_path/bashtomato.sh
 
 files=(validators helpers keycodes_for_bash_3_2 uidevice uiobject2 utils extensions)
 for file in "${files[@]}"
@@ -65,7 +63,10 @@ sh ./generate_readme.sh
 
 # Tests
 # Units
+echo 'UNIT TESTING utils.sh'
 sh ./$unit_tests_path/utils.sh
+echo 'UNIT TESTING validators.sh'
+sh ./$unit_tests_path/validators.sh
 # Check if all bashtomato functions has been used
 sh ./check_functions_usage.sh
 # Run E2E
