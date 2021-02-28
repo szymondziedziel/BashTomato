@@ -208,4 +208,7 @@ uio2_swipe "$device_id" "$scroll_view_v" "$DIRECTION_UP" '80%' 50
 o=`utils_wait_to_see "$device_id" 'text="TOP_LEFT"'`
 utils_assert_strings_are_different "$o" ''
 
+echo "LOGS"
+echo "$BASHTOMATO_LOGS"
+
 echo "***** TEST REACHED END :)"

@@ -130,7 +130,13 @@ function validators_device_id() {
   local device_id="$1"
 
   test=`adb devices | grep -oE "$device_id"`
-  validators_exit "Connection with device '$device_id' seems to be lost" "$TRUE"
+
+  if [ -n "$test" ]
+  then
+    logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | device_id=<${device_id}>"
+  else
+    validators_exit "`logs_time` | ERROR | OUTPUT | Connection with device '$device_id' seems to be lost" "$TRUE"
+  fi
 }
 
 function validators_node() {

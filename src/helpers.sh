@@ -114,7 +114,7 @@ function get_prop() { # element or node is simply XML-string-like element, this 
   local node="$1" # XML-string-like element from which attribute value will be extracted
   local prop_name="$2" # XML attribute name
 
-  echo "$node" | grep -oE " $prop_name=\".*?\"" | cut -d '=' -f 2 | cut -d '"' -f 2 #PANICCHANGE
+  echo "$node" | grep -oE " $prop_name=\".*?\"" | cut -d '=' -f2 | cut -d '"' -f2 #PANICCHANGE
 }
 
 function calc_duration_from_distance_speed() { # calculates time needed to travel from one 2D point to another for given speed
