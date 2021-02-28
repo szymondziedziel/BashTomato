@@ -6,20 +6,17 @@ function utils_assert_null() { # exits with `success_message` and status 0 if `v
   local error_message=`default "$3" ''` # self explanatory
 
   local function_name="${FUNCNAME[0]}"
-  value=`echo "$value" | tr '[:upper:]' '[:lower:]'`
 
   if [ "$value" == "$NULL" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -35,20 +32,17 @@ function utils_assert_not_null() { # exits with `success_message` and status 0 i
   local error_message=`default "$3" ''` # self explanatory
 
   local function_name="${FUNCNAME[0]}"
-  value=`echo "$value" | tr '[:upper:]' '[:lower:]'`
 
   if [ "$value" != "$NULL" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -67,16 +61,14 @@ function utils_assert_true() { # exits with `success_message` and status 0 if `v
 
   if [ "$value" == "$TRUE" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -95,16 +87,14 @@ function utils_assert_false() { # exits with `success_message` and status 0 if `
 
   if [ "$value" == "$FALSE" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -123,16 +113,14 @@ function utils_assert_string_is_empty() { # exits with `success_message` and sta
 
   if [ -z "$value" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -152,16 +140,14 @@ function utils_assert_strings_are_equal() { # exits with `success_message` and s
 
   if [ "$value_a" == "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -181,16 +167,14 @@ function utils_assert_strings_are_different() { # exits with `success_message` a
 
   if [ "$value_a" != "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -210,16 +194,14 @@ function utils_assert_numbers_first_less_than_second() { # exits with `success_m
 
   if [ "$value_a" -lt "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -239,16 +221,14 @@ function utils_assert_numbers_first_less_or_equal_than_second() { # exits with `
 
   if [ "$value_a" -le "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -268,16 +248,14 @@ function utils_assert_numbers_first_equals_second() { # exits with `success_mess
 
   if [ "$value_a" -eq "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -297,16 +275,14 @@ function utils_assert_numbers_first_greater_or_equal_than_second() { # exits wit
 
   if [ "$value_a" -ge "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -326,16 +302,14 @@ function utils_assert_numbers_first_greater_than_second() { # exits with `succes
 
   if [ "$value_a" -gt "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
@@ -355,16 +329,14 @@ function utils_assert_numbers_first_is_not_equal_to_second() { # exits with `suc
 
   if [ "$value_a" -ne "$value_b" ]
   then
-    success_message=`echo "$success_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$success_message" ]
+    if [ "$success_message" != "$NULL" ]
     then
       echo "$success_message"
     else
       echo "$function_name passed for [$value_a] and [$value_b]"
     fi
   else
-    error_message=`echo "$error_message" | sed "s/__FUNCTION_NAME__/$function_name/g" | sed "s/__VALUE__/$value/g"`
-    if [ -n "$error_message" ]
+    if [ "$error_message" != "$NULL" ]
     then
       echo "$error_message"
     else
