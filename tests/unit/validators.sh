@@ -93,7 +93,6 @@ proper-/filename._123.tist&test&fail_fast&1&||ERROR | INPUT | function=<validato
 
 
 
-
 function test_validators_directory_invalid_no_exit() {
   while read -r gwtline
   do
@@ -371,13 +370,24 @@ a1a&fail_fast&1&||ERROR | INPUT | function=<validators_integer> | integer=<a1a>,
 
 
 
-# 
-# function test_validators_percent() {
-#   res=``
-#   actual=``
-#   expected=``
-# }
-# 
+
+function test_validators_percent_no_exit() {
+  assertEquals 0 1
+}
+
+function test_validators_percent_force_exit() {
+  assertEquals 0 1
+}
+
+
+
+function test_validators_integer_or_percent_no_exit() {
+  assertEquals 0 1
+}
+
+function test_validators_integer_or_percent_force_exit() {
+  assertEquals 0 1
+}
 
 
 

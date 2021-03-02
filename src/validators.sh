@@ -7,14 +7,19 @@ function logs_time() {
 }
 
 function logs_clear() {
-  BASHTOMATO_LOGS=''
+  # BASHTOMATO_LOGS=''
+  BASHTOMATO_LOGS="`mktemp`"
+  :> $BASHTOMATO_LOGS
 }
 
 function logs_append() {
   local logs="$1"
 
-  BASHTOMATO_LOGS="$BASHTOMATO_LOGS
-$logs"
+#   BASHTOMATO_LOGS="$BASHTOMATO_LOGS
+# -
+# $logs"
+  echo '-' >> $BASHTOMATO_LOGS
+  echo "$logs" >> $BASHTOMATO_LOGS
 }
 
 function validators_exit() {
@@ -24,7 +29,8 @@ function validators_exit() {
   if [ -n "$fail_fast" ]
   then
     logs_append "$logs"
-    echo "$BASHTOMATO_LOGS"
+    # echo "$BASHTOMATO_LOGS"
+    cat $BASHTOMATO_LOGS
     exit 1
   fi
 }
@@ -41,9 +47,11 @@ function validators_filename_with_extension() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | filename=<${filename}>, extension=<${extension}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given filename=<${filename}> does not have extension=<${extension}> or contains not valid characters. Must match /^[a-zA-Z0-9_-]+\.${extension}$/"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | filename=<${filename}>, extension=<${extension}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given filename=<${filename}> does not have extension=<${extension}> or contains not valid characters. Must match /^[a-zA-Z0-9_-]+\.${extension}$/" "$TRUE"
     fi
   else
@@ -65,9 +73,11 @@ function validators_directory() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | directory=<${directory}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given directory=<${directory}> is not valid. Must match /^/?([a-zA-Z0-9_\.-]+/?)+$/"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | directory=<${directory}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given directory=<${directory}> is not valid. Must match /^/?([a-zA-Z0-9_\.-]+/?)+$/" "$TRUE"
     fi
   else
@@ -97,9 +107,11 @@ function validators_filepath_with_extension() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | filepath=<${filepath}>, extension=<${extension}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given filepath=<${filepath}>, extension=<${extension}> is not valid. Path must be build from valid directory, filename and extension"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | filepath=<${filepath}>, extension=<${extension}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given filepath=<${filepath}>, extension=<${extension}> is not valid. Path must be build from valid directory, filename and extension" "$TRUE"
     fi
   else
@@ -143,17 +155,20 @@ function validators_node() {
   local node="$1"
   local exit="$2"
 
-  test=`echo "$node" | grep -oE "^null|NR[0-9]{1,4} DEPTH[0-9]{1,4} <[a-zA-Z\.]+ ([a-z-]+?=".*?")+>$"`
+  test=`echo "$node" | grep -oE "^null|NR[0-9]{1,4} DEPTH[0-9]{1,4} <node( [a-zA-Z-]+?=".*?")+( \/)?>$"`
+  echo "TEST: <$test>"
 
   if [ -z "$test" ]
   then
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | node=<${node}>, exit=<${exit}>"
-      logs_append "`logs_time` | WARNING | OUTPUT | Given node=<${node}> is not valid /^NR[0-9]{1,4} DEPTH[0-9]{1,4} <[a-z-]>$/"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given node=<${node}> is not valid /^null|NR[0-9]{1,4} DEPTH[0-9]{1,4} <node( [a-zA-Z-]+?=".*?")+( \/)?>$/"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | node=<${node}>, exit=<${exit}>"
-      validators_exit "`logs_time` | ERROR | OUTPUT | Given node=<${node}> is not valid /^NR[0-9]{1,4} DEPTH[0-9]{1,4} <[a-z-]>$/" "$TRUE"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given node=<${node}> is not valid /^^null|NR[0-9]{1,4} DEPTH[0-9]{1,4} <node( [a-zA-Z-]+?=".*?")+( \/)?>$/" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | node=<${node}>, exit=<${exit}>"
@@ -172,9 +187,11 @@ function validators_unsigned_integer() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | unsigned_integer=<${unsigned_integer}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | unsigned_integer=<${unsigned_integer}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given unsigned_integer=<${unsigned_integer}> is not unsigned integer" "$TRUE"
     fi
   else
@@ -194,37 +211,72 @@ function validators_integer() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given integer=<${integer}> is not integer"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given integer=<${integer}> is not integer" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | integer=<${integer}>, exit=<${exit}>"
     logs_append "`logs_time` | OK | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
   fi
+
+  echo "$test"
 }
 
 function validators_percent() {
   local percent="$1"
   local exit="$2"
 
-  test=`echo "$percent" | grep -oE "^-?(0|[1-9][0-9]*)%$"`
+  test=`echo "$percent" | grep -oE "^-?(0|[1-9][0-9]+)%$"`
 
   if [ -z "$test" ]
   then
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "$test" "`logs_time` | WARNING | OUTPUT | Given percent=<${percent}> is not percantage"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "$test" "`logs_time` | ERROR | OUTPUT | Given percent=<${percent}> is not percantage" "$TRUE"
     fi
   else
     logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | percent=<${percent}>, exit=<${exit}>"
     logs_append "`logs_time` | OK | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
   fi
+
+  echo "$test"
+}
+
+function validators_integer_or_percent() {
+  local value="$1"
+  local exit="$2"
+
+  test_a=`validators_integer "$value"`
+  test_b=`validators_percent "$value"`
+
+  if [ -z "${test_a}${test_b}" ]
+  then
+    if [ -z "$exit" ]
+    then
+      logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | value=<${value}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | Given value=<${value}> is not valid. Must be integer or percent"
+    else
+      logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | value=<${value}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
+      validators_exit "`logs_time` | ERROR | OUTPUT | Given value=<${value}> is not valid. Must be integer or percent" "$TRUE"
+    fi
+  else
+    logs_append "`logs_time` | OK | INPUT | function=<${FUNCNAME[0]}> | value=<${value}>, exit=<${exit}>"
+    logs_append "`logs_time` | OK | OUTPUT | function=<${FUNCNAME[0]}> | test_a=<${test_a}>, test_b=<${test_b}>"
+  fi
+
+  echo "${test_a}${test_b}"
 }
 
 function validators_seconds() {
@@ -254,9 +306,11 @@ function validators_bounds_name() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | bound_name=<${bound_name}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | bound_name=<${bound_name}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given bound_name=<${bound_name}> is not valid. Only top, right, bottom, left are allowed" "$TRUE"
     fi
   else
@@ -276,9 +330,11 @@ function validators_direction() {
     if [ -z "$exit" ]
     then
       logs_append "`logs_time` | WARNING | INPUT | function=<${FUNCNAME[0]}> | direction=<${direction}>, exit=<${exit}>"
+      logs_append "`logs_time` | WARNING | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       logs_append "`logs_time` | WARNING | OUTPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed"
     else
       logs_append "`logs_time` | ERROR | INPUT | function=<${FUNCNAME[0]}> | direction=<${direction}>, exit=<${exit}>"
+      logs_append "`logs_time` | ERROR | OUTPUT | function=<${FUNCNAME[0]}> | test=<${test}>"
       validators_exit "`logs_time` | ERROR | OUTPUT | Given direction=<${direction}> is not valid. Only UP, RIGHT, DOWN, LEFT are allowed" "$TRUE"
     fi
   else

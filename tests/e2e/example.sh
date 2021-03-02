@@ -6,6 +6,7 @@ SCRIPT_PATH=`dirname ${BASH_SOURCE[0]}`
 
 source "${SCRIPT_PATH}/../../dist/bashtomato.sh"
 
+logs_clear
 utils_restart_server
 
 device_id=`utils_devices 1`
@@ -209,6 +210,7 @@ o=`utils_wait_to_see "$device_id" 'text="TOP_LEFT"'`
 utils_assert_strings_are_different "$o" ''
 
 echo "LOGS"
-echo "$BASHTOMATO_LOGS"
+# echo "$BASHTOMATO_LOGS"
+cat $BASHTOMATO_LOGS
 
 echo "***** TEST REACHED END :)"
