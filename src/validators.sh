@@ -96,8 +96,8 @@ function validators_filepath_with_extension() {
   local filename=`echo "$filepath" | rev | cut -d'/' -f1 | rev`
   local directory=`echo "$filepath" | rev | cut -d'/' -f2- | rev`
 
-  test_a=`validators_filename_with_extension "$filename" "$extension"`
-  test_b=`validators_directory "$directory"`
+  test_a=`validators_filename_with_extension "$filename" "$extension" "$exit"`
+  test_b=`validators_directory "$directory" "$exit"`
 
   # echo "DIR: $directory, FN: $filename"
   # echo "TEST_A: $test_a, TEST_B: $test_b"
@@ -256,8 +256,8 @@ function validators_integer_or_percent() {
   local value="$1"
   local exit="$2"
 
-  test_a=`validators_integer "$value"`
-  test_b=`validators_percent "$value"`
+  test_a=`validators_integer "$value" "$exit"`
+  test_b=`validators_percent "$value" "$exit"`
 
   if [ -z "${test_a}${test_b}" ]
   then

@@ -7,7 +7,7 @@ function uio2_clear() { # clears editable text, auto clicks on such element, ver
   local node="$2" # XML-string-like element, which action will be performed at
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node" "$TRUE" > /dev/null
 
   local length=`get_prop "$node" 'text' | wc -c`
@@ -29,7 +29,7 @@ function uio2_click() { # shortly clicks on element
   local y=`default "$4" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> x=<${x}> y=<${y}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node" "$TRUE" > /dev/null
   validators_integer_or_percent "$x" "$TRUE" > /dev/null
   validators_integer_or_percent "$y" "$TRUE" > /dev/null
@@ -50,7 +50,7 @@ function uio2_click_with_duration() { # clicks with given duration, default 0.5 
   local y=`default "$5" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> duration=<${duration}> x=<${x}> y=<${y}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node" "$TRUE" > /dev/null
   validators_integer_or_percent "$x" "$TRUE" > /dev/null
   validators_integer_or_percent "$y" "$TRUE" > /dev/null
@@ -70,7 +70,7 @@ function uio2_click_and_wait() { # shortly clicks on element and waits, default 
   local y=`default "$5" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> wait_time=<${wait_time}> x=<${x}> y=<${y}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node" "$TRUE" > /dev/null
   validators_seconds "$wait_time" "$TRUE" > /dev/null
   validators_integer_or_percent "$x" "$TRUE" > /dev/null
@@ -93,7 +93,7 @@ function uio2_drag() { # drags from one element to another. Start, end points ca
   local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node_from=<${node_from}> node_to=<${node_to}> duration=<${duration}> x_from=<${x_from}> y_from=<${y_from}> x_to=<${x_to}> y_to=<${y_to}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node_from" "$TRUE" > /dev/null
   validators_node "$node_to" "$TRUE" > /dev/null
   validators_seconds "$duration" "$TRUE" > /dev/null
@@ -121,7 +121,7 @@ function uio2_drag_with_speed() { # like uio2_drag, but speed may be defined ins
   local y_to=`default "$8" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node_from=<${node_from}> node_to=<${node_to}> duration=<${duration}> x_from=<${x_from}> y_from=<${y_from}> x_to=<${x_to}> y_to=<${y_to}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_node "$node_from" "$TRUE" > /dev/null
   validators_node "$node_to" "$TRUE" > /dev/null
   validators_seconds "$duration" "$TRUE" > /dev/null
@@ -144,8 +144,8 @@ function uio2_equals() { # compares elements like XML-strigs, not by reference
   local node_b="$2" # XML-string-like element, treated really as string not object reference in this case
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node_a=<${node_a}> node_b=<${node_b}>"
-  validators_node "$node_a" > /dev/null
-  validators_node "$node_b" > /dev/null
+  validators_node "$node_a" "$TRUE" > /dev/null
+  validators_node "$node_b" "$TRUE" > /dev/null
 
   local test='UNDEFINED'
 
@@ -168,9 +168,9 @@ function uio2_find_object() { # filters element from given XML-source matching r
   local index=`default "$3" 1` # instance number counting from 1
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> filter=<${filter}> index=<${index}>"
-  # validators_node "$xml" > /dev/null
-  # validators_node "$filter" > /dev/null
-  validators_unsigned_integer "$index" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  # validators_node "$filter" "$TRUE" > /dev/null
+  validators_unsigned_integer "$index" "$TRUE" > /dev/null
 
   local nodes=`uio2_find_objects "$xml" "$filter"`
   local node=`echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
@@ -186,8 +186,8 @@ function uio2_find_objects() { # filters many element from given XML-source matc
   local filter="$2" # simple bash-grep-like expression passed with -oE options
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> filter=<${filter}>"
-  # validators_node "$xml" > /dev/null
-  # validators_node "$filter" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  # validators_node "$filter" "$TRUE" > /dev/null
 
   local nodes=`echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"`
   nodes=`val_or_null "$nodes"`
@@ -211,7 +211,7 @@ function uio2_get_application_package() { # get current package_name using ADB, 
   local device_id="$1" # device id taken from `adb devices`
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> device_id=<${device_id}>"
-  validators_device_id "$device_id" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local package_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f1`
   package_name=`val_or_null "$package_name"`
@@ -227,8 +227,8 @@ function uio2_get_children_count() { # count children of given node based on who
   local node="$2" # XML-string-like element, which action will be performed at
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> node=<${node}>"
-  # validators_node "$xml" > /dev/null
-  validators_node "$node" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local count=`uio2_get_children "$xml" "$node" | wc -l`
 
@@ -242,8 +242,8 @@ function uio2_get_children() { # filter childrens like XML-strings of given node
   local node="$2" # XML-string-like element, which action will be performed at
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> node=<${node}>"
-  # validators_node "$xml" > /dev/null
-  validators_node "$node" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   xml=`uio2_find_objects "$xml"`
   local nodes_amount=`echo "$xml" | wc -l`
@@ -283,7 +283,7 @@ function uio2_get_class_name() { # gets XML element's class attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local class=`get_prop "$node" 'class'`
 
@@ -296,7 +296,7 @@ function uio2_get_content_description() { # gets XML element's content-descripti
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local content_description=`get_prop "$node" 'content-desc'`
 
@@ -310,8 +310,8 @@ function uio2_get_parent() { # gets element's parent based on ginec element and 
   local node="$2" # XML-string-like element, which action will be performed at
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> node=<${node}>"
-  # validators_node "$xml" > /dev/null
-  validators_node "$node" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   xml=`uio2_find_objects "$xml"`
   local node_nr=`echo "$node" | grep -oE 'NR[0-9]{1,4}' | grep -oE '[0-9]+'`
@@ -341,7 +341,7 @@ function uio2_get_resource_id() { # gets XML element's resource-id attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local resource_id=`get_prop "$node" 'resource-id'`
 
@@ -354,7 +354,7 @@ function uio2_get_text() { # gets XML element's text attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local text=`get_prop "$node" 'text'`
 
@@ -368,8 +368,8 @@ function uio2_get_bounds() { # gets XML element's bounds attribute
   local bound_name="$2" # bounds name, one of `left`, `top`, `right`, `bottom`
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}> bound_name=<${bound_name}>"
-  validators_node "$node" > /dev/null
-  validators_bound_name "$bound_name" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_bounds_name "$bound_name" "$TRUE" > /dev/null
 
   local bounds=`get_prop "$node" 'bounds'`
   bounds=`echo "$bounds" | grep -oE '[0-9]+'`
@@ -396,7 +396,7 @@ function uio2_get_visible_center() { # calculates center of visible element's pa
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}> bound_name=<${bound_name}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local point_on_surface=`calc_point_on_surface "$node"`
 
@@ -411,9 +411,9 @@ function uio2_has_object() {
   local filter="$3" # simple bash-grep-like expression passed with -oE options
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> xml=<(...XML...)> node=<${node}> filter=<${filter}>"
-  # validators_node "$xml" > /dev/null
-  validators_node "$node" > /dev/null
-  # validators_node "$filter" > /dev/null
+  # validators_node "$xml" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  # validators_node "$filter" "$TRUE" > /dev/null
 
   xml=`uio2_find_objects "$xml"`
   local nodes_amount=`echo "$xml" | wc -l`
@@ -458,7 +458,7 @@ function uio2_is_checkable() { # gets XML element's checkable attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local checkable=`get_prop "$node" 'checkable'`
 
@@ -471,7 +471,7 @@ function uio2_is_checked() { # gets XML element's checked attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local checked=`get_prop "$node" 'checked'`
 
@@ -484,7 +484,7 @@ function uio2_is_clickable() { # gets XML element's clickable attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local clickable=`get_prop "$node" 'clickable'`
 
@@ -497,7 +497,7 @@ function uio2_is_enabled() { # gets XML element's enabled attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local enabled=`get_prop "$node" 'enabled'`
 
@@ -510,7 +510,7 @@ function uio2_is_focusable() { # gets XML element's focusable
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local focusable=`get_prop "$node" 'focusable'`
 
@@ -523,7 +523,7 @@ function uio2_is_focused() { # gets XML element's focused attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local focused=`get_prop "$node" 'focused'`
 
@@ -536,7 +536,7 @@ function uio2_is_long_clickable() { # gets XML element's long-clickable attribut
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local long_clickable=`get_prop "$node" 'long-clickable'`
 
@@ -549,7 +549,7 @@ function uio2_is_scrollable() { # gets XML element's scrollable attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local scrollable=`get_prop "$node" 'scrollable'`
 
@@ -562,7 +562,7 @@ function uio2_is_selected() { # gets XML element's selected attribute
   local node="$1" # XML-like-string element from which attribute's value will be extracted
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> node=<${node}>"
-  validators_node "$node" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   local selected=`get_prop "$node" 'selected'`
 
@@ -578,10 +578,10 @@ function uio2_long_click() { # clicks 0.5 seconds long on element
   local y=`default "$4" "$ANCHOR_POINT_MIDDLE"` # value in pixels or percent
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> x=<${x}> y=<${y}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
-  validators_integer_or_percent "$x" > /dev/null
-  validators_integer_or_percent "$y" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_integer_or_percent "$x" "$TRUE" > /dev/null
+  validators_integer_or_percent "$y" "$TRUE" > /dev/null
 
   logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
@@ -595,10 +595,10 @@ function uio2_pinch_close() { # performs pinch close gesture on elemetn with spe
   local duration=`default "$4" 500` # expressed in milliseconds
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> percent=<${percent}> duration=<${duration}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
-  validators_integer_or_percent "$percent" > /dev/null
-  validators_milliseconds "$duration" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_integer_or_percent "$percent" "$TRUE" > /dev/null
+  validators_milliseconds "$duration" "$TRUE" > /dev/null
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -643,10 +643,10 @@ function uio2_pinch_open() { # performs pinch open gesture on elemetn with speci
   local duration=`default "$4" 500` # expressed in milliseconds
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> percent=<${percent}> duration=<${duration}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
-  validators_integer_or_percent "$percent" > /dev/null
-  validators_milliseconds "$duration" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_integer_or_percent "$percent" "$TRUE" > /dev/null
+  validators_milliseconds "$duration" "$TRUE" > /dev/null
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -710,8 +710,8 @@ function uio2_set_text() { # write text to editable, auto clicks the element
   local content=`default "$3" ''` # text to be typed inside editable
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> content=<${content}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
 
   uio2_click "$device_id" "$node"
   content=`echo "$content" | sed -E 's/(.)/_BTSEP_\1/g' | sed -E 's/_BTSEP_/\\\\/g'`
@@ -730,10 +730,10 @@ function uio2_swipe_with_speed() { # like uio2_swipe, but need speed instead of 
   local speed=`default "$5" 1000` # expressed in milliseconds
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> percent=<${percent}> speed=<${speed}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
-  validators_integer_or_percent "$percent" > /dev/null
-  validators_unsigned_integer "$speed" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_integer_or_percent "$percent" "$TRUE" > /dev/null
+  validators_unsigned_integer "$speed" "$TRUE" > /dev/null
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
@@ -789,10 +789,10 @@ function uio2_swipe() { # performs swipe on element from its one point to anothe
   local duration=`default "$5" 500` # expressed in milliseconds
 
   logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> node=<${node}> percent=<${percent}> duration=<${duration}>"
-  validators_device_id "$device_id" > /dev/null
-  validators_node "$node" > /dev/null
-  validators_integer_or_percent "$percent" > /dev/null
-  validators_unsigned_integer "$duration" > /dev/null
+  validators_device_id "$device_id" "$TRUE" > /dev/null
+  validators_node "$node" "$TRUE" > /dev/null
+  validators_integer_or_percent "$percent" "$TRUE" > /dev/null
+  validators_unsigned_integer "$duration" "$TRUE" > /dev/null
 
   local percent_amount=`echo "$percent" | grep -oE '[0-9]+'`
 
