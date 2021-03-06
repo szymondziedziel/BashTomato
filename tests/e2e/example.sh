@@ -210,7 +210,6 @@ o=`utils_wait_to_see "$device_id" 'text="TOP_LEFT"'`
 utils_assert_strings_are_different "$o" ''
 
 echo "LOGS"
-# echo "$BASHTOMATO_LOGS"
 cat $BASHTOMATO_LOGS
 
 echo "***** TEST REACHED END :)"

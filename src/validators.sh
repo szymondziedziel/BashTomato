@@ -7,27 +7,34 @@ function logs_time() {
 }
 
 function logs_clear() {
-  BASHTOMATO_LOGS=''
-  # BASHTOMATO_LOGS="`mktemp`"
+  BASHTOMATO_LOGS_COUNT=0
+  BASHTOMATO_LOGS_BUFFER=''
+  BASHTOMATO_LOGS="`mktemp`"
   # echo "" > $BASHTOMATO_LOGS
 }
 
 function logs_append() {
   local logs="$1"
 
-#   BASHTOMATO_LOGS="$BASHTOMATO_LOGS
-# $logs"
-# echo '-' >> $BASHTOMATO_LOGS
-  # echo "$logs" >> $BASHTOMATO_LOGS
+  BASHTOMATO_LOGS_COUNT=$((BASHTOMATO_LOGS_COUNT + 1))
+  BASHTOMATO_LOGS_BUFFER="$BASHTOMATO_LOGS_BUFFER
+$logs"
+
+  if [ "$BASHTOMATO_LOGS_COUNT" -ge 40 ]
+  then
+    echo "$BASHTOMATO_LOGS_BUFFER" >> $BASHTOMATO_LOGS
+    BASHTOMATO_LOGS_COUNT=0
+    BASHTOMATO_LOGS_BUFFER=''
+  fi
 }
 
 function logs_read() {
-  # if [ ! -f $BAHTOMATO_LOGS ]
-  # then
-  #   BASHTOMATO_LOGS="`mktemp`"
-  # fi
-  # cat $BASHTOMATO_LOGS
-  echo "$BASHTOMATO_LOGS"
+  if [ ! -f $BAHTOMATO_LOGS ]
+  then
+    BASHTOMATO_LOGS="`mktemp`"
+  fi
+  cat $BASHTOMATO_LOGS
+  # echo "$BASHTOMATO_LOGS"
 }
 
 function validators_exit() {
