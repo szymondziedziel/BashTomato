@@ -1978,6 +1978,12 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `required`\
 `description`:  device id taken from `adb devices`
 
+
+`name`: filepath\
+`position`: 2\
+`required`\
+`description`:  self explanatory
+
 ### Function: utils_wait_to_see()
 `description`:  search for element on device's screen by `device_id`, dumps hierarchy until element appeared or attempts exhaust
 #### Params:

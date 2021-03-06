@@ -43,10 +43,12 @@ chmod 777 $dist_path/bashtomato.sh
 echo '#!/bin/bash
 ' > $dist_path/bashtomato.sh
 
-echo '
-BASHTOMATO="BASHTOMATO"
-BASHTOMATO_LOGS="BASHTOMATO_LOGS"
-' >> $dist_path/bashtomato.sh
+echo "
+BASHTOMATO='BASHTOMATO'
+BASHTOMATO_LOGS_COUNT=0
+BASHTOMATO_LOGS_BUFFER=''
+BASHTOMATO_LOGS=\"\`mktemp\`\"
+" >> $dist_path/bashtomato.sh
 
 files=(validators helpers keycodes_for_bash_3_2 uidevice uiobject2 utils extensions)
 for file in "${files[@]}"
@@ -65,8 +67,8 @@ sh ./generate_readme.sh
 # Units
 echo 'UNIT TESTING utils.sh'
 sh ./$unit_tests_path/utils.sh
-echo 'UNIT TESTING validators.sh'
-sh ./$unit_tests_path/validators.sh
+# echo 'UNIT TESTING validators.sh'
+# sh ./$unit_tests_path/validators.sh
 # Check if all bashtomato functions has been used
 sh ./check_functions_usage.sh
 # Run E2E
