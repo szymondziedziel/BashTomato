@@ -7,9 +7,9 @@ function uid_click() { # clicks on specified screen point, numbers x, y from top
   local x="$2" # distance in pixels from left screen edge
   local y="$3" # distance in pixels from top screen edge
 
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> x=<${x}> y=<${y}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> x=<${x}> y=<${y}>"
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell input tap "$x" "$y"
 }
@@ -24,7 +24,7 @@ function uid_drag() { # drags from point to point, from x, y (pixels) from left,
   local y_to="$5" # self explanatory
   local duration="$6" # expressed in milliseconds
 
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> x_from=<${x_from}> y_from=<${y_from}> x_to=<${x_to}> y_to=<${y_to}> duration=<${duration}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> x_from=<${x_from}> y_from=<${y_from}> x_to=<${x_to}> y_to=<${y_to}> duration=<${duration}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_integer_or_percent "$x_from" "$TRUE" > /dev/null
   validators_integer_or_percent "$y_from" "$TRUE" > /dev/null
@@ -32,7 +32,7 @@ function uid_drag() { # drags from point to point, from x, y (pixels) from left,
   validators_integer_or_percent "$y_to" "$TRUE" > /dev/null
   validators_milliseconds "$duration" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell input draganddrop "$x_from" "$y_from" "$x_to" "$y_to" "$duration"
 } 
@@ -52,14 +52,14 @@ function uid_dump_window_hierarchy() { # retrieve XML-source of current visible 
   local device_id="$1" # device id taken from `adb devices`
   local dump_filepath=`default "$2" 'temporary_xml_dump.xml'` # path where entire dump hierarchy will be stored
 
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> dump_filepath=<${dump_filepath}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> dump_filepath=<${dump_filepath}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_filepath_xml "$dump_filepath" "$TRUE" > /dev/null
 
   local dumppath=`adb -s "$device_id" shell uiautomator dump | cut -d ' ' -f5`
   local dumpfile=`basename "$dumppath"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> dumppath=<${dumppath}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> dumppath=<${dumppath}>"
 
   adb -s "$device_id" pull "$dumppath" "./$dump_filepath"
 }
@@ -81,10 +81,10 @@ function uid_dump_window_hierarchy() { # retrieve XML-source of current visible 
 function uid_freeze_rotation() { # disables device's sensor
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell settings put system accelerometer_rotation 0
 }
@@ -94,13 +94,13 @@ function uid_freeze_rotation() { # disables device's sensor
 function uid_get_current_activity_name() { # dumps current visible activity's name
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local current_activity_name=`adb -s "$device_id" shell dumpsys window windows | grep "mCurrentFocus" | grep -oE '\{(.+?)\}' | tr '}' ' ' | cut -d ' ' -f3 | cut -d '/' -f2`
   current_activity_name=`val_or_null "$current_activity_name"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> current_activity_name=<${current_activity_name}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> current_activity_name=<${current_activity_name}>"
 
   echo "$current_activity_name"
 }
@@ -115,13 +115,13 @@ function uid_get_current_activity_name() { # dumps current visible activity's na
 function uid_get_display_height() { # gets screen height in pixels
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local height=`adb -s "$device_id" shell wm size | grep -oE '[0-9]+' | sed -n '2p'`
   height=`val_or_null "$height"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> height=<${height}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> height=<${height}>"
 
   echo "$height"
 }
@@ -131,13 +131,13 @@ function uid_get_display_height() { # gets screen height in pixels
 function uid_get_display_rotation() { # gets screen rotation value previously set
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local display_rotation=`adb -s "$device_id" shell settings get system accelerometer_rotation`
   display_rotation=`val_or_null "$display_rotation"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> display_rotation=<${display_rotation}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> display_rotation=<${display_rotation}>"
 
   echo "$display_rotation"
 }
@@ -147,13 +147,13 @@ function uid_get_display_rotation() { # gets screen rotation value previously se
 function uid_get_display_size_dp() { # gets screen density
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local display_size_dp=`adb -s "$device_id" shell wm density | grep -oE '[0-9]+'`
   display_size_dp=`val_or_null "$display_size_dp"`
 
-    logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> display_size_dp=<${display_size_dp}>"
+    logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> display_size_dp=<${display_size_dp}>"
 
   echo "$display_size_dp"
 }
@@ -163,13 +163,13 @@ function uid_get_display_size_dp() { # gets screen density
 function uid_get_display_width() { # gets screen width in pixels
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local width=`adb -s "$device_id" shell wm size | grep -oE '[0-9]+' | sed -n '1p'`
   width=`val_or_null "$width"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> width=<${width}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> width=<${width}>"
 
   echo "$width"
 }
@@ -195,13 +195,13 @@ function uid_get_display_width() { # gets screen width in pixels
 function uid_get_product_name() { # retrieves the product name of the device
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local product_name=`adb -s "$device_id" shell getprop ro.product.name`
   product_name=`val_or_null "$product_name"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> product_name=<${product_name}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> product_name=<${product_name}>"
 
   echo "$product_name"
 }
@@ -227,13 +227,13 @@ function uid_get_product_name() { # retrieves the product name of the device
 function uid_is_screen_on() { # checks if screen in turned on
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   local is_screen_on=`adb -s "$device_id" shell dumpsys power | grep 'Display Power: state=ON'`
   is_screen_on=`val_or_null "$is_screen_on"`
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}> is_screen_on=<${is_screen_on}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> is_screen_on=<${is_screen_on}>"
 
   echo "$is_screen_on"
 }
@@ -244,10 +244,10 @@ function uid_is_screen_on() { # checks if screen in turned on
 function uid_open_notification() { # drags menu from top device bar
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell cmd statusbar expand-notifications
 }
@@ -312,11 +312,11 @@ function uid_press_key_code() { # sends key to the device to perform
   local device_id="$1" # device id taken from `adb devices`
   local keycode="$2" # keycode number, preferred way is to use named constants from within `keycodes.sh` or keycodes file fallback for bash 3.2
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> keycode=<${keycode}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> keycode=<${keycode}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
   # validators_keycode "$keycode" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell input keyevent "$keycode"
 }
@@ -362,12 +362,12 @@ function uid_press_key_code() { # sends key to the device to perform
 function uid_set_orientation_left() { # rotates device to the left counting from natural portrait position
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   uid_freeze_rotation "$device_id"
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell settings put system user_rotation 1
 }
@@ -377,12 +377,12 @@ function uid_set_orientation_left() { # rotates device to the left counting from
 function uid_set_orientation_natural() { # rotates device to natural portrait
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   uid_freeze_rotation "$device_id"
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell settings put system user_rotation 0
 }
@@ -392,12 +392,12 @@ function uid_set_orientation_natural() { # rotates device to natural portrait
 function uid_set_orientation_right() {  # rotates device to the right counting from natural portrait position
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
   uid_freeze_rotation "$device_id"
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell settings put system user_rotation 3
 }
@@ -407,10 +407,10 @@ function uid_set_orientation_right() {  # rotates device to the right counting f
 function uid_sleep() { # turns the screen off
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell input keyevent "$KEYCODE_SLEEP"
 }
@@ -442,11 +442,11 @@ function uid_take_screenshot() { # takes screenshot to specified filename withou
   local device_id="$1" # device id taken from `adb devices`
   local screenshot_path=`default "$2" 'temporary_screenshot_filename.png'` # path where the screenshot will be stored
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> screenshot_path=<${screenshot_path}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> screenshot_path=<${screenshot_path}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_filepath_png "$screenshot_path" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell screencap -p > "$screenshot_path"
 }
@@ -456,10 +456,10 @@ function uid_take_screenshot() { # takes screenshot to specified filename withou
 function uid_unfreeze_rotation() { # unlock devide's reactions to rotations
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell settings put system accelerometer_rotation 1
 }
@@ -485,10 +485,10 @@ function uid_unfreeze_rotation() { # unlock devide's reactions to rotations
 function uid_wake_up() { # turns the screen on
   local device_id="$1" # device id taken from `adb devices`
   
-  logs_append "`logs_time` | ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
 
-  logs_append "`logs_time` | ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
+  logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}>"
 
   adb -s "$device_id" shell input keyevent "$KEYCODE_WAKEUP"
 }

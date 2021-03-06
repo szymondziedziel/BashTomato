@@ -536,7 +536,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `description`:  device id taken from `adb devices`
 
 
-`name`: dump_xml_filename\
+`name`: dump_filepath\
 `position`: 2\
 `optional`\
 `default`: 'temporary_xml_dump.xml'\
@@ -739,7 +739,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `description`:  device id taken from `adb devices`
 
 
-`name`: screenshot_filename\
+`name`: screenshot_path\
 `position`: 2\
 `optional`\
 `default`: 'temporary_screenshot_filename.png'\
@@ -1163,7 +1163,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `description`:  XML-like-string element from which attribute's value will be extracted
 
 
-`name`: which\
+`name`: bound_name\
 `position`: 2\
 `required`\
 `description`:  bounds name, one of `left`, `top`, `right`, `bottom`
