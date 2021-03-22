@@ -325,7 +325,7 @@ function validators_direction() {
   local direction="$1"
   local exit="$2"
 
-  test=`echo "$direction" | grep -oE "^(UP|RIGHT|DOWN|LEFT)$"`
+  test=`echo "$direction" | grep -oE "^(UP|RIGHT|DOWN|LEFT|DIRECTION_VERTICAL|DIRECTION_HORIZONTAL)$"`
 
   if [ -z "$test" ]
   then

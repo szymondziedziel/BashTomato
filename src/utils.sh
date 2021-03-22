@@ -537,7 +537,7 @@ function utils_search_node() { # searches for element in advanced way, it scroll
   validators_unsigned_integer "$index" "$TRUE" > /dev/null
   validators_direction "$swiping_direction" "$TRUE" > /dev/null
   validators_unsigned_integer "$cycles" "$TRUE" > /dev/null
-  validators_unsigned_integer "$swipe_length" "$TRUE" > /dev/null
+  validators_integer_or_percent "$swipe_length" "$TRUE" > /dev/null
   validators_unsigned_integer "$swipes_count_left" "$TRUE" > /dev/null
 
   local previous_xml_hash=`echo '' | md5`
@@ -547,12 +547,13 @@ function utils_search_node() { # searches for element in advanced way, it scroll
 
   rm temporary_xml_dump.xml > /dev/null
 
+  local node='UNDEFINED'
   while [ "$swipes_count_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
   do
     previous_xml_hash=`cat temporary_xml_dump.xml | md5`
     uid_dump_window_hierarchy "$device_id" > /dev/null
     local xml=`cat temporary_xml_dump.xml`
-    local node=`uio2_find_object "$xml" "$filter" "$index"`
+    node=`uio2_find_object "$xml" "$filter" "$index"`
 
     if [ "$node" != "$NULL" ]
     then
@@ -594,7 +595,7 @@ function utils_search_node() { # searches for element in advanced way, it scroll
     swipes_count_left=$((swipes_count_left - 1))
   done
 
-  echo "$NULL"
+  echo "$node"
 }
 
 function utils_wait_to_gone() { # search for element on device's screen by `device_id`, dumps hierarchy until element gone or attempts exhaust
@@ -611,11 +612,12 @@ function utils_wait_to_gone() { # search for element on device's screen by `devi
 
   rm temporary_xml_dump.xml > /dev/null
 
+  local node='UNDEFINED'
   while [ "$attempts" -gt 0 ]
   do
     uid_dump_window_hierarchy "$device_id" > /dev/null
     local xml=`cat temporary_xml_dump.xml`
-    local node=`uio2_find_object "$xml" "$filter" "$index"`
+    node=`uio2_find_object "$xml" "$filter" "$index"`
 
     if [ "$node" == "$NULL" ]
     then
