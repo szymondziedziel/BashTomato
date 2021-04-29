@@ -61,7 +61,7 @@ function uid_dump_window_hierarchy() { # retrieve XML-source of current visible 
 
   logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> dumppath=<${dumppath}>"
 
-  adb -s "$device_id" pull "$dumppath" "./$dump_filepath"
+  adb -s "$device_id" pull "$dumppath" "$dump_filepath"
 }
 #
 # findObject(UiSelector selector)

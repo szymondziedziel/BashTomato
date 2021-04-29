@@ -812,7 +812,7 @@ function uio2_swipe() { # performs swipe on element from its one point to anothe
   local y_from="$ANCHOR_POINT_MIDDLE"
   local y_to="$ANCHOR_POINT_MIDDLE"
   case $direction in
-    $DIRECTION_DOWN)
+    $DIRECTION_UP)
       y_from="$end"
       y_to="$start"
       ;;
@@ -824,7 +824,7 @@ function uio2_swipe() { # performs swipe on element from its one point to anothe
       x_from="$start"
       x_to="$end"
       ;;
-    $DIRECTION_UP)
+    $DIRECTION_DOWN)
       y_from="$start"
       y_to="$end"
       ;;
