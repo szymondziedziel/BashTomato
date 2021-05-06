@@ -23,31 +23,33 @@ DIRECTION_UP='UP'
 DIRECTION_VERTICAL='DIRECTION_VERTICAL'
 DIRECTION_HORIZONTAL='DIRECTION_HORIZONTAL'
 
+# Colors
+INFO=34
+SUCCESS=92
+WARNING=93
+ERROR=91
+
 # Helpers start
 
-# function echo_success() {
-#   message="$1"
-# 
-#   echo -e '\033[33m'
-#   echo -e "$message"
-#   echo -e '\033[0m'
-# }
-# 
-# function echo_warning() {
-#   message="$1"
-# 
-#   echo -e '\033[32m'
-#   echo -e "$message"
-#   echo -e '\033[0m'
-# }
-# 
-# function echo_error() {
-#   message="$1"
-# 
-#   echo -e "\033[31m"
-#   echo -e "$message"
-#   echo -e "\033[0m"
-# }
+function echo_info() {
+  message="$1"
+  echo -e "\033[${INFO}m${message}\033[0m"
+}
+
+function echo_success() {
+  message="$1"
+  echo -e "\033[${SUCCESS}m${message}\033[0m"
+}
+
+function echo_warning() {
+  message="$1"
+  echo -e "\033[${WARNING}m${message}\033[0m"
+}
+
+function echo_error() {
+  message="$1"
+  echo -e "\033[${ERROR}m${message}\033[0m"
+}
 
 function val_or_null() { # takes care to return special `$NULL` when given value is bash-like-empty
   local value="$1" # value that may be normalized to `$NULL`
