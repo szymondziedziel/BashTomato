@@ -19,22 +19,56 @@ function ext_screenshot_node() { # makes screenshot and cuts out image of given 
   convert "$screenshot_filename" -crop "${width}x${height}+${left}+${top}" "${node_screenshot_filename}"
 }
 
-function ext_inspect_window_hierarchy() { # makes full screenshot and then images of all nodes in hierarchy
+function ext_inspect_window_hierarchy() { # makes full screenshot and then images of all nodes in hierarchy (very poor performance)
   local xml=`default "$1" ''` # XML-like-string of entire window hierarchy or any of its subnode. 
-  local screenshot_filename=`default "$2" 'temporary_screenshot_filename.png'` # path to full screenshot with `.png` extension from which node screenshot will be taken
-  local directory=`default "$3" 'inspect'` # directory path where to store all nodes' screenshots
+  local filter=`default "$2" ''`
+  local screenshot_filename=`default "$3" 'temporary_screenshot_filename.png'` # path to full screenshot with `.png` extension from which node screenshot will be taken
+  local directory=`default "$4" 'inspect'` # directory path where to store all nodes' screenshots
 
-  local nodes=`uio2_find_objects "$xml"`
-
+  if [ "$filter" == "$NULL" ]
+  then
+    local nodes=`uio2_find_objects "$xml"`
+  else
+    local nodes=`uio2_find_objects "$xml" "$filter"`
+  fi
   mkdir -p "$directory"
+
+  html="<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head><body>"
 
   while read -r node
   do
     nr_depth_id=`echo "$node" | cut -d' ' -f1-2 | sed 's/ /_/' | tr '[:upper:]' '[:lower:]'`
+    current_depth=`echo "$nr_depth_id" | sed -E 's/nr[0-9]+_depth([0-9]+)/\1/'`
     ext_screenshot_node "$node" "$screenshot_filename" "$directory/${nr_depth_id}.png"
+    id=`uio2_get_resource_id "$node"`
+    desc=`uio2_get_content_description "$node"`
+    text=`uio2_get_text "$node"`
+    class=`uio2_get_class_name "$node"`
+
+    html="$html
+    <table style=\"margin-left: $((current_depth * 20))px; margin-bottom: 20px;\">
+    <body>
+    <tr>
+    <td>
+    <img src=\"$nr_depth_id.png\" style=\"max-width: 100px; max-height: 100px;\">
+    </td>
+    <td>
+    <code>id: [$id]</code><br>
+    <code>desc: [$desc]</code><br>
+    <code>text: [$text]</code><br>
+    <code>class: [$class]</code>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    "
   done <<<"$nodes"
 
-  # #TODO create html with hierarchy tree
+  html="$html</body></html>"
+
+  echo "$html" > "$directory/main.html"
+
+  # TODO: Better view
 }
 #
 # ext_get_node_colors_description

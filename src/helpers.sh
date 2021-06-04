@@ -66,7 +66,7 @@ function default() { # helps easily assign default value to variable when bash-l
   local current_value="$1" # actual value
   local default_value="$2" # value to return when actual value will be bash-like-empty. If this value will be also bash-like-empty then `val_or_null` function will be applied to actual value
 
-  if [ -z "$current_value" ]; then current_value=$default_value; fi
+  if [ -z "$current_value" ]; then current_value="$default_value"; fi
 
   val_or_null "$current_value"
 }

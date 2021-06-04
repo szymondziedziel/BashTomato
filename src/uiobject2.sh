@@ -189,7 +189,7 @@ function uio2_find_objects() { # filters many element from given XML-source matc
   # validators_node "$xml" "$TRUE" > /dev/null
   # validators_node "$filter" "$TRUE" > /dev/null
 
-  local nodes=`echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <.+?$filter.+?>"`
+  local nodes=`echo "$xml" | grep -oE '<.+?>' | awk 'BEGIN{depth=0} { if (substr($0, length($0) - 1, 1) == "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); } else if (substr($0, 2, 1) != "/") { printf("NR%d DEPTH%d %s\n", NR, depth, $0); depth++; } else { depth--; printf("NR%d DEPTH%d %s\n", NR, depth, $0); } }' | grep -oE "NR[0-9]{1,4} DEPTH[0-9]{1,4} <[^/].+?$filter.+?>"`
   nodes=`val_or_null "$nodes"`
 
   logs_append "`logs_time` | UIOBJECT2_ACTION | OUTPUT | function=<${FUNCNAME[0]}> nodes=<(...NODES...)>"
@@ -237,7 +237,7 @@ function uio2_get_children_count() { # count children of given node based on who
   echo "$count"
 }
 
-function uio2_get_children() { # filter childrens like XML-strings of given node from wholre XML-source
+function uio2_get_children() { # filter childrens like XML-strings of given node from whole XML-source
   local xml="$1" # XML-string-like hierarchy or any of its part where the search will be performed
   local node="$2" # XML-string-like element, which action will be performed at
 
