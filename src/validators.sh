@@ -29,7 +29,7 @@ $logs"
 }
 
 function logs_read() {
-  if [ ! -f $BAHTOMATO_LOGS ]
+  if [ ! -f $BASHTOMATO_LOGS ]
   then
     BASHTOMATO_LOGS="`mktemp`"
   fi

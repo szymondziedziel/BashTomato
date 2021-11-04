@@ -83,7 +83,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `description`:  path to point to where node screenshot will be stored
 
 ### Function: ext_inspect_window_hierarchy()
-`description`:  makes full screenshot and then images of all nodes in hierarchy
+`description`:  makes full screenshot and then images of all nodes in hierarchy (very poor performance)
 #### Params:
 
 
@@ -1081,7 +1081,7 @@ I run test on emulator Nexus 6 with API 27, 1440x2560 560dpi as tests strictly c
 `description`:  XML-string-like element, which action will be performed at
 
 ### Function: uio2_get_children()
-`description`:  filter childrens like XML-strings of given node from wholre XML-source
+`description`:  filter childrens like XML-strings of given node from whole XML-source
 #### Params:
 
 
