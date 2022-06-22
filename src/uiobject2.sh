@@ -176,7 +176,7 @@ function uio2_find_object() { # filters element from given XML-source matching r
   local node=`echo "$nodes" | sed -n "${index}p" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'`
   node=`val_or_null "$node"`
 
-  logs_append "`logs_time` | UIOBJECT2_ACTION | OUTPUT | function=<${FUNCNAME[0]}> nodes=<(...NODES...) node=<${node}>>"
+  logs_append "`logs_time` | UIOBJECT2_ACTION | OUTPUT | function=<${FUNCNAME[0]}> nodes=<(...NODES...)> node=<${node}>"
 
   echo "$node"
 }

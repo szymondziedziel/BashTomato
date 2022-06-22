@@ -56,7 +56,7 @@ function uid_dump_window_hierarchy() { # retrieve XML-source of current visible 
   validators_device_id "$device_id" "$TRUE" > /dev/null
   validators_filepath_xml "$dump_filepath" "$TRUE" > /dev/null
 
-  local dumppath=`adb -s "$device_id" shell uiautomator dump | cut -d ' ' -f5`
+  local dumppath=`adb -s "$device_id" shell uiautomator dump | tr -d '\r\n' | cut -d ' ' -f5`
   local dumpfile=`basename "$dumppath"`
 
   logs_append "`logs_time` | UIDEVICE_ACTION | OUTPUT | function=<${FUNCNAME[0]}> dumppath=<${dumppath}>"
