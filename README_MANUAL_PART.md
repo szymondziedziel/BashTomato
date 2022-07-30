@@ -32,7 +32,7 @@ It uses `adb shell uiautomator dump` to get window's hierarchy, so it causes tha
 
 ## Appium as better dumper
 
-Better until it starts server, creates session on the device, install all additional APKs (may require to user-click-agree), and then will no crash
+Better right after it starts server, creates session on the device, install all additional APKs (may require to user-click-agree), and then will no crash
 
 ### Additional requirements:
 

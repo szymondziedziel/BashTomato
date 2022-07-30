@@ -57,33 +57,34 @@ function uid_dump_window_hierarchy_with_appium() {
   local device_id="$1" # device id taken from `adb devices`
   local dump_filepath=`default "$2" 'temporary_xml_dump.xml'` # path where entire dump hierarchy will be stored
 
-  if [[ -z "$(pgrep appium)$(lsof -i :4723)" ]]
+  if [[ -z "$(lsof -t -i :4723)" ]]
   then
-    appium &
+    appium > /dev/null 2>&1 &
     sleep 10
   fi
 
-  local session_id=$(echo "$BASHTOMATO_APPIUM_SERVER_SESSIONS" | grep -E "^$device_id=" | sed -n '1p' | cut -d'=' -f1)
+  local session_id=$(cat 'bashtomato_appium_server_sessions.txt' | grep -E "$device_id=" | sed -n '$p' | cut -d'=' -f2)
+  local res_msg=$(curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id" | jq -rM .value.error)
 
-  if [[ -z "$session_id" ]]
+  if [[ "$res_msg" == 'invalid session id' ]]
   then
-    res_status=$(curl --silent "http://localhost:4723/wd/hub/session/$session_id" | jq -rM .status)
-    if [[ "$res_status" != 'null' ]]
+    new_session_id=$(curl --silent -X POST -H "Content-Type: application/json" -d "{\"capabilities\":{\"alwaysMatch\":{\"udid\":\"$device_id\",\"platformVersion\":\"$(adb -s $device_id shell getprop ro.build.version.release)\",\"platformName\":\"Android\"}}}" 'http://0.0.0.0:4723/wd/hub/session' | jq -rM .value.sessionId)
+    if [[ "$new_session_id" == 'null' ]]
     then
-      new_session_id=$(curl --silent -X POST -H "Content-Type: application/json" -d "{\"capabilities\":{\"alwaysMatch\":{\"udid\":\"$device_id\",\"platformVersion\":\"$(adb -s $device_id shell getprop ro.build.version.release)\",\"platformName\":\"Android\"}}}" 'http://0.0.0.0:4723/wd/hub/session' | jq -rM .value.sessionId)
-      if [[ "$new_session_id" != 'null' ]]
-      then
-        BASHTOMATO_APPIUM_SERVER_SESSIONS="$BASHTOMATO_APPIUM_SERVER_SESSIONS
-$device_id=$new_session_id"
-        session_id="$new_session_id"
-      else
-        echo "Something went wrong :(. Exiting now."
-        exit 1
-      fi
+      echo "Something went wrong :(. Exiting now."
+      echo "Try to review/ resolve the issue with following commands:"
+      echo "lsof -i:4723"
+      echo "kill $(lsof -t -i:4723)"
+      echo 'for package in $(adb shell pm list packages -3 | grep appium | cut -d":" -f2 | xargs); do adb uninstall $package; done'
+      echo "adb kill-server && adb devices"
+      exit 1
+    else
+      echo "$device_id=$new_session_id" >> 'bashtomato_appium_server_sessions.txt'
+      session_id="$new_session_id"
     fi
   fi
 
-  curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id/source" | jq -rM .value | tr -d '\r\n' | sed -E 's#>[ ]+<#><#g' > "$dump_filepath"
+  curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id/source" | jq -rM .value | tr -d '\r\n' | sed -E 's#>[ ]+<#><#g' | sed -E 's#<[^ ]+ #<node #g' > "$dump_filepath"
 }
 
 # * * * * * * * * * * * * * * *  #
