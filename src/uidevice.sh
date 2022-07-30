@@ -63,10 +63,14 @@ function uid_dump_window_hierarchy_with_appium() {
     sleep 10
   fi
 
-  local session_id=$(cat 'bashtomato_appium_server_sessions.txt' | grep -E "$device_id=" | sed -n '$p' | cut -d'=' -f2)
+  local session_id=''
+  if [[ -f 'bashtomato_appium_server_sessions.txt' ]]
+  then
+    session_id=$(cat 'bashtomato_appium_server_sessions.txt' | grep -E "$device_id=" | sed -n '$p' | cut -d'=' -f2)
+  fi
   local res_msg=$(curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id" | jq -rM .value.error)
 
-  if [[ "$res_msg" == 'invalid session id' ]]
+  if [[ "$res_msg" == 'invalid session id' ]] || [[ -z "$session_id" ]]
   then
     new_session_id=$(curl --silent -X POST -H "Content-Type: application/json" -d "{\"capabilities\":{\"alwaysMatch\":{\"udid\":\"$device_id\",\"platformVersion\":\"$(adb -s $device_id shell getprop ro.build.version.release)\",\"platformName\":\"Android\"}}}" 'http://0.0.0.0:4723/wd/hub/session' | jq -rM .value.sessionId)
     if [[ "$new_session_id" == 'null' ]]
