@@ -7,6 +7,8 @@ BASHTOMATO_LOGS_BUFFER=''
 BASHTOMATO_LOGS="`mktemp`"
 BASHTOMATO_PATH=`dirname ${BASH_SOURCE[0]}`
 
+BASHTOMATO_APPIUM_SERVER_SESSIONS=''
+
 if [ -f "$BASHTOMATO_PATH/keycodes_for_bash_3_2.sh" ]
 then
   source "$BASHTOMATO_PATH/keycodes_for_bash_3_2.sh"

@@ -23,12 +23,37 @@ and is created to automate simple, daily repetitive work in simple (or not that 
 - works with device/ emulator immediately after script started, no code compilation
 - Bash is present on most unix-like systems, so no additional configurations and dependencies needed
 
-## Unfortunately
+## Unfortunately (Update: I add appium as better dumper)
 
 It uses `adb shell uiautomator dump` to get window's hierarchy, so it causes that BashTomato is not able to:
 
 - touch on screen keyboard
 - inspect webview's content
+
+## Appium as better dumper
+
+Better until it starts server, creates session on the device, install all additional APKs (may require to user-click-agree), and then will no crash
+
+### Additional requirements:
+
+- Install NodeJS
+- Install Appium through NodeJS to make it available globally (I will consider to make it possible to use local Appium installation)
+- Install `jq` program
+- Appium asked me to install Android SDK, so I did just by installing Android Studio (I have adb thanks to Android Studio)
+- And there were problems with lack of exported variables (I have macOS and use ZSH), so:
+
+I added:
+
+```
+export ANDROID_HOME="/Users/$USER/Library/Android/sdk"
+export ANDROID_SDK_ROOT="/Users/$USER/Library/Android/sdk"
+```
+
+to my `~/.zshrc`
+
+To force BashTomato to use Appium export everytime `export BASHTOMATO_HIERARCHY_DUMPER='appium'` or also add this to your shell file (my is ~/.zshrc)
+
+And that's it. You should not care about starting appium server or preparing annoying capabilities. BashTomato will do the rest for you
 
 ## How to use it
 
