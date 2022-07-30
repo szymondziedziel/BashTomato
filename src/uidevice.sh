@@ -57,9 +57,10 @@ function uid_dump_window_hierarchy_with_appium() {
   local device_id="$1" # device id taken from `adb devices`
   local dump_filepath=`default "$2" 'temporary_xml_dump.xml'` # path where entire dump hierarchy will be stored
 
-  if [[ -z "$(pgrep appium)" ]]
+  if [[ -z "$(pgrep appium)$(lsof -i :4723)" ]]
   then
     appium &
+    sleep 10
   fi
 
   local session_id=$(echo "$BASHTOMATO_APPIUM_SERVER_SESSIONS" | grep -E "^$device_id=" | sed -n '1p' | cut -d'=' -f1)
@@ -82,8 +83,12 @@ $device_id=$new_session_id"
     fi
   fi
 
-  curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id/source" | jq -rM .value | tr -d '\r\n' | sed -E 's#>[ ]+<#><#g'
+  curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id/source" | jq -rM .value | tr -d '\r\n' | sed -E 's#>[ ]+<#><#g' > "$dump_filepath"
 }
+
+# * * * * * * * * * * * * * * *  #
+# End of Appium dumper extension #
+# * * * * * * * * * * * * * * *  #
 
 function uid_dump_window_hierarchy_with_adb_automator_dump() { # retrieve XML-source of current visible application screen. Unable to get complete XML for password/ pin screen, on-screen keyboard, webview is presented
   local device_id="$1" # device id taken from `adb devices`
@@ -101,16 +106,11 @@ function uid_dump_window_hierarchy_with_adb_automator_dump() { # retrieve XML-so
   adb -s "$device_id" pull "$dumppath" "$dump_filepath"
 }
 
-# * * * * * * * * * * * * * * *  #
-# End of Appium dumper extension #
-# * * * * * * * * * * * * * * *  #
-
 function uid_dump_window_hierarchy() { # retrieve XML-source of current visible application screen. Unable to get complete XML for password/ pin screen, on-screen keyboard, webview is presented
   if [[ "$BASHTOMATO_HIERARCHY_DUMPER" == 'appium' ]]
   then
     uid_dump_window_hierarchy_with_appium "$device_id" "$dump_filepath"
   else
-  then
     uid_dump_window_hierarchy_with_adb_automator_dump "$device_id" "$dump_filepath"
   fi
 }
