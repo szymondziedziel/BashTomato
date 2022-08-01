@@ -264,8 +264,8 @@ function uio2_get_children() { # filter childrens like XML-strings of given node
       then
         children="$node"
       else
-        children="
-$children"
+        children="$children
+$node"
       fi
     fi
 
