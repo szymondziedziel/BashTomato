@@ -50,7 +50,7 @@ function uid_drag() { # drags from point to point, from x, y (pixels) from left,
 # Please use uid_dump_window_hierarchy
 function uid_dump_window_hierarchy() { # retrieve XML-source of current visible application screen. Unable to get complete XML for password/ pin screen, on-screen keyboard, webview is presented
   local device_id="$1" # device id taken from `adb devices`
-  local dump_filepath=`default "$2" 'temporary_xml_dump.xml'` # path where entire dump hierarchy will be stored
+  local dump_filepath=$(default "$2" "$TEMPORARY_XML_DUMP") # path where entire dump hierarchy will be stored
 
   logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> dump_filepath=<${dump_filepath}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null
@@ -440,7 +440,7 @@ function uid_swipe() { # performs swipe on screen instead of element, specify nu
 # Take a screenshot of current window and store it as PNG Default scale of 1.0f (original size) and 90% quality is used The screenshot is adjusted per screen rotation
 function uid_take_screenshot() { # takes screenshot to specified filename without .png extension
   local device_id="$1" # device id taken from `adb devices`
-  local screenshot_path=`default "$2" 'temporary_screenshot_filename.png'` # path where the screenshot will be stored
+  local screenshot_path=$(default "$2" "$TEMPORARY_SCREENSHOT_FILENAME") # path where the screenshot will be stored
   
   logs_append "`logs_time` | UIDEVICE_ACTION | INPUT | function=<${FUNCNAME[0]}> device_id=<${device_id}> screenshot_path=<${screenshot_path}>"
   validators_device_id "$device_id" "$TRUE" > /dev/null

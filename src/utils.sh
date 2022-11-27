@@ -494,13 +494,13 @@ function utils_wait_to_see() { # search for element on device's screen by `devic
   validators_unsigned_integer "$index" "$TRUE" > /dev/null
   validators_unsigned_integer "$attempts" "$TRUE" > /dev/null
 
-  rm temporary_xml_dump.xml > /dev/null
+  rm "$TEMPORARY_XML_DUMP" > /dev/null
 
   local node='UNDEFINED'
   while [ "$attempts" -gt 0 ]
   do
     uid_dump_window_hierarchy "$device_id" > /dev/null
-    local xml=`cat temporary_xml_dump.xml`
+    local xml=$(cat "$TEMPORARY_XML_DUMP")
     node=`uio2_find_object "$xml" "$filter" "$index"`
 
     if [ "$node" != "$NULL" ]
@@ -545,14 +545,14 @@ function utils_search_node() { # searches for element in advanced way, it scroll
 
   logs_append "`logs_time` | UTILS_ACTION | OUTPUT | function=<${FUNCNAME[0]}> previous_xml_hash=<${previous_xml_hash}> direction_modifier=<${direction_modifier}>"
 
-  rm temporary_xml_dump.xml > /dev/null
+  rm "$TEMPORARY_XML_DUMP" > /dev/null
 
   local node='UNDEFINED'
   while [ "$swipes_count_left" -gt 0 ] && [ "$cycles" -gt 0 ] 
   do
-    previous_xml_hash=`cat temporary_xml_dump.xml | md5`
+    previous_xml_hash=$(cat "$TEMPORARY_XML_DUMP" | md5)
     uid_dump_window_hierarchy "$device_id" > /dev/null
-    local xml=`cat temporary_xml_dump.xml`
+    local xml=$(cat "$TEMPORARY_XML_DUMP")
     node=`uio2_find_object "$xml" "$filter" "$index"`
 
     if [ "$node" != "$NULL" ]
@@ -581,8 +581,8 @@ function utils_search_node() { # searches for element in advanced way, it scroll
     fi
 
     uid_dump_window_hierarchy "$device_id" > /dev/null
-    xml=`cat temporary_xml_dump.xml`
-    current_xml_hash=`cat temporary_xml_dump.xml | md5`
+    xml=$(cat "$TEMPORARY_XML_DUMP")
+    current_xml_hash=$(cat "$TEMPORARY_XML_DUMP" | md5)
     if [ "$current_xml_hash" == "$previous_xml_hash" ]
     then
 
@@ -610,13 +610,13 @@ function utils_wait_to_gone() { # search for element on device's screen by `devi
   validators_unsigned_integer "$index" "$TRUE" > /dev/null
   validators_unsigned_integer "$attempts" "$TRUE" > /dev/null
 
-  rm temporary_xml_dump.xml > /dev/null
+  rm "$TEMPORARY_XML_DUMP" > /dev/null
 
   local node='UNDEFINED'
   while [ "$attempts" -gt 0 ]
   do
     uid_dump_window_hierarchy "$device_id" > /dev/null
-    local xml=`cat temporary_xml_dump.xml`
+    local xml=$(cat "$TEMPORARY_XML_DUMP")
     node=`uio2_find_object "$xml" "$filter" "$index"`
 
     if [ "$node" == "$NULL" ]
