@@ -34,6 +34,12 @@ It uses `adb shell uiautomator dump` to get window's hierarchy, so it causes tha
 
 Better right after it starts server, creates session on the device, install all additional APKs (may require to user-click-agree), and then will no crash
 
+### More benefits
+
+- compatibility with different Androids based on installed Appium
+- do not need to be in idle state to dump hierarchy
+- seems to be able to dump more than ADB automator dump e. g. browser search results, hope webview too (will check)
+
 ### Additional requirements:
 
 - Install NodeJS

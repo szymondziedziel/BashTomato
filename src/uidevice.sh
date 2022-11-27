@@ -88,6 +88,8 @@ function uid_dump_window_hierarchy_with_appium() {
     fi
   fi
 
+  echo "SESSION_ID=[$session_id]"
+
   curl --silent "http://0.0.0.0:4723/wd/hub/session/$session_id/source" | jq -rM .value | tr -d '\r\n' | sed -E 's#>[ ]+<#><#g' | sed -E 's#<[^ ]+ #<node #g' > "$dump_filepath"
 }
 
