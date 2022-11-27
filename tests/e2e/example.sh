@@ -161,7 +161,7 @@ utils_assert_strings_are_equal "$o_text" 'Gallery'
 uio2_click "$device_id" "$o"
 
 o=`utils_wait_to_see "$device_id" 'resource-id="com.example.bashtomatotester:id/gallery"'`
-xml=`cat temporary_xml_dump.xml`
+xml=$(cat "$xml_name")
 o=`uio2_find_objects "$xml" 'class="android.widget.Button"'`
 o_count=`helper_objects_count "$o"`
 utils_assert_numbers_first_equals_second "$o_count" 12
